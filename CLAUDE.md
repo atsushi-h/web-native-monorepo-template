@@ -52,6 +52,25 @@ pnpm check-types  # すべてのプロジェクトの型チェック
 
 ## プロジェクト構造
 
+### ディレクトリ構造
+```
+nextjs-expo-monorepo-template/
+├── .claude/                    # Claude Code設定
+├── .vscode/                    # VS Code設定
+├── apps/
+│   ├── native/                 # React Native (Expo)アプリ
+│   └── web/                    # Next.js Webアプリ
+├── packages/
+│   ├── ui/                     # 共有UIコンポーネント
+│   └── typescript-config/      # TypeScript設定
+├── CLAUDE.md                   # このファイル
+├── README.md
+├── package.json                # ルートパッケージ
+├── pnpm-workspace.yaml         # pnpmワークスペース設定
+├── turbo.json                  # Turborepo設定
+└── biome.json                  # Biome設定
+```
+
 ### アーキテクチャ
 - **モノレポ**: タスクオーケストレーションとキャッシュにTurborepoを使用
 - **パッケージマネージャー**: ワークスペース対応のpnpm
