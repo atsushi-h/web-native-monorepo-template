@@ -1,0 +1,17 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "types": ["vite/client"]
+  },
+  "include": [
+    ".storybook/**/*",
+    "stories/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "storybook-static"
+  ]
+}
