@@ -116,4 +116,27 @@ expo start --web
 npm run reset-project
 ```
 
+## Claude Code Hooks
+
+`.claude/`ディレクトリには、Claude Codeの自動実行設定が含まれています。
+
+### 自動実行される処理
+
+Claude Codeがタスクを完了すると、以下のコマンドが自動実行されます：
+
+1. **`pnpm fix`** - コードの自動修正とフォーマット
+2. **`pnpm check-types`** - TypeScript型チェック
+
+### エラーハンドリング
+
+- コマンドでエラーが発生した場合、自動で修正を試行
+- 最大3回まで再試行
+- 型エラーは段階的に解決を試行
+
+### 設定ファイル
+
+- `.claude/settings.json` - 基本設定
+- `.claude/hooks.json` - 詳細なコマンド設定
+- `.claude/README.md` - 設定の詳細ドキュメント
+
 このコードベースで作業する際は、確立されたパターンを常に使用し、変更をコミットする前に適切な品質チェックを実行してください。

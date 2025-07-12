@@ -1,0 +1,31 @@
+{
+  "hooks": {
+    "enabled": true,
+    "onTaskComplete": [
+      {
+        "name": "fix-code",
+        "command": "pnpm fix",
+        "description": "自動的にコードを修正・フォーマット",
+        "continueOnError": true,
+        "retryCount": 1
+      },
+      {
+        "name": "type-check",
+        "command": "pnpm check-types",
+        "description": "TypeScript型チェック",
+        "continueOnError": false,
+        "retryCount": 2
+      }
+    ],
+    "onError": [
+      {
+        "name": "auto-fix-retry",
+        "command": "pnpm fix",
+        "description": "エラー発生時の自動修正再試行",
+        "maxRetries": 2
+      }
+    ]
+  },
+  "autoCommit": false,
+  "verboseLogging": true
+}

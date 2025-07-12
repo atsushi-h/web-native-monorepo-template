@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "hooks": {
+    "afterTaskCompletion": {
+      "enabled": true,
+      "commands": [
+        {
+          "id": "format-and-fix",
+          "command": "pnpm fix",
+          "description": "コードのフォーマットとlintの自動修正",
+          "workingDirectory": ".",
+          "timeout": 30000,
+          "retryOnFailure": true,
+          "maxRetries": 2,
+          "failureAction": "continue"
+        },
+        {
+          "id": "type-check",
+          "command": "pnpm check-types",
+          "description": "TypeScript型チェックの実行",
+          "workingDirectory": ".",
+          "timeout": 60000,
+          "retryOnFailure": true,
+          "maxRetries": 1,
+          "failureAction": "halt"
+        }
+      ]
+    },
+    "beforeCommit": {
+      "enabled": true,
+      "commands": [
+        {
+          "id": "pre-commit-check",
+          "command": "pnpm check",
+          "description": "コミット前の品質チェック",
+          "workingDirectory": ".",
+          "timeout": 120000
+        }
+      ]
+    },
+    "onError": {
+      "enabled": true,
+      "errorHandling": {
+        "autoRetry": true,
+        "maxGlobalRetries": 3,
+        "retryCommands": [
+          "pnpm fix",
+          "pnpm format",
+          "pnpm check-types"
+        ]
+      }
+    }
+  },
+  "logging": {
+    "level": "info",
+    "includeTimestamps": true,
+    "logFile": ".claude/hooks.log"
+  }
+}
