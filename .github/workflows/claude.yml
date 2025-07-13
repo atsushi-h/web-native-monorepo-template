@@ -25,60 +25,34 @@ jobs:
       id-token: write
       actions: read
     steps:
-      - name: Debug - Print environment
-        run: |
-          echo "=== GitHub Context ==="
-          echo "GitHub Token present: ${{ env.GITHUB_TOKEN != '' }}"
-          echo "Event name: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
-          echo "Actor: ${{ github.actor }}"
-          
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Debug - Check gh CLI
-        run: |
-          echo "=== GH CLI Status ==="
-          which gh || echo "gh not found"
-          gh --version || echo "gh version failed"
-          echo "GH_TOKEN present: ${GH_TOKEN:+true}"
-          gh auth status || echo "gh auth status failed"
-
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@beta
         env:
-          GH_TOKEN: ${{ github.token }}
-          ACTIONS_STEP_DEBUG: true  # Enable debug logging
-          ACTIONS_RUNNER_DEBUG: true # Enable runner debug logging
+          # secretsを使用してGITHUB_TOKENを参照
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
           additional_permissions: |
             actions: read
           
-          # Very permissive for debugging - REVERT AFTER FIXING
+          # デバッグ用に一時的に全許可
           allowed_tools: |
-            Bash(*),
-            Edit,
-            Read,
-            Write,
-            mcp__github__create_pull_request,
-            mcp__github__update_pull_request
+            Bash(*)
           
           custom_instructions: |
-            DEBUGGING MODE ENABLED
+            Follow detailed guidelines in CLAUDE.md.
             
-            Before attempting to create a PR, please run these debug commands:
-            1. echo "Current directory: $(pwd)"
-            2. echo "Git status:" && git status
-            3. echo "GH auth check:" && gh auth status
-            4. echo "GH token present: ${GH_TOKEN:+true}"
-            5. echo "Attempting simple gh command:" && gh pr list --limit 1
+            Before creating PR, verify GitHub CLI setup:
+            echo "GH_TOKEN is: ${GH_TOKEN:+set}"
             
-            Then proceed with PR creation.
+            For PR creation, use:
+            gh pr create --title "..." --body "..."
             
-            Follow detailed guidelines in CLAUDE.md for PR creation.
             CRITICAL: Always use `gh pr create` command to create actual PRs.
