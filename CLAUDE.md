@@ -156,4 +156,27 @@ pnpm check-types
 pnpm check
 ```
 
+## MCP (Model Context Protocol) サーバー
+
+このプロジェクトではPlaywright MCPサーバーを使用してブラウザ自動化が可能です。
+
+### 使用方法
+```bash
+# プロジェクトで初めて使用する場合、承認が必要です
+# Claude Codeで以下のコマンドを実行：
+/mcp
+
+# ブラウザ操作の例：
+# "Use playwright mcp to open https://example.com and take a screenshot"
+```
+
+### 利用可能な機能
+- Webページのナビゲーション
+- 要素のクリック、テキスト入力
+- スクリーンショットの撮影
+- フォームの操作
+- JavaScriptの実行
+- タブの管理
+
+
 詳細な設定については、`.claude/README.md`を参照してください。

@@ -17,5 +17,7 @@
       "Bash(npm uninstall:*)",
       "Bash(npm remove:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": ["playwright"],
+  "enableAllProjectMcpServers": true
 }
