@@ -1,31 +1,26 @@
 {
   "hooks": {
-    "enabled": true,
-    "onTaskComplete": [
+    "Stop": [
       {
-        "name": "fix-code",
-        "command": "pnpm fix",
-        "description": "自動的にコードを修正・フォーマット",
-        "continueOnError": true,
-        "retryCount": 1
-      },
-      {
-        "name": "type-check",
-        "command": "pnpm check-types",
-        "description": "TypeScript型チェック",
-        "continueOnError": false,
-        "retryCount": 2
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm fix"
+          }
+        ]
       }
     ],
-    "onError": [
+    "PostToolUse": [
       {
-        "name": "auto-fix-retry",
-        "command": "pnpm fix",
-        "description": "エラー発生時の自動修正再試行",
-        "maxRetries": 2
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm check-types"
+          }
+        ]
       }
     ]
-  },
-  "autoCommit": false,
-  "verboseLogging": true
+  }
 }

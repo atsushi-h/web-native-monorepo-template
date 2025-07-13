@@ -11,15 +11,9 @@ export function Card({
   children: React.ReactNode
   href: string
 }): JSX.Element {
-  // フォーマットエラー: インデントが不揃い
-  const wrongType: number = 'これは文字列です' // 型エラー
-  
-  // より複雑な型エラー
-  const complexError: { name: string; age: number } = {
-    name: 123, // 数値を文字列に
-    age: "25", // 文字列を数値に
-    extra: true // 存在しないプロパティ
-  }
+  // フォーマットテスト: インデントが不揃い
+  const demo: string = '正しい文字列'
+  const unused = '未使用変数' // Lintエラー
   return (
     <a
       className={className}
