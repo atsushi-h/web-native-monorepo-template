@@ -55,10 +55,6 @@ jobs:
           # allowed_tools: "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
           # PR作成に必要なコマンドを許可する
           allowed_tools: |
-            Bash(npm install),
-            Bash(npm run build),
-            Bash(npm run test*),
-            Bash(npm run lint*),
             Bash(pnpm install),
             Bash(pnpm run build),
             Bash(pnpm run test*),
