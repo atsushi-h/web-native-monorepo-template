@@ -283,8 +283,11 @@ git push
 ```
 
 #### 5. PR作成
+
+**重要**: Claude Codeを使用する場合は、必ず`gh pr create`コマンドを実行してPRを作成してください。PR作成用のURLを提供するだけでは不十分です。
+
 ```bash
-# GitHub CLIを使用してPR作成
+# GitHub CLIを使用してPR作成（必ず実行）
 gh pr create \
   --title "feat: ユーザープロフィール機能を追加 (#123)" \
   --body "## 概要
@@ -317,6 +320,18 @@ Closes #123
 - [x] 依存関係の変更がない" \
   --base main
 ```
+
+#### Claude Code使用時の注意事項
+
+- **❌ 避けるべきこと**
+  - PR作成用のURLを生成して終了
+  - 「Create PR →」のようなリンクだけを提供
+  - ユーザーに手動でPR作成を促す
+
+- **✅ 必ず行うこと**
+  - `gh pr create`コマンドを実際に実行
+  - PRが作成されたことを確認
+  - 作成されたPRのURLを報告
 
 ### コミットメッセージ規則（Conventional Commits）
 
