@@ -26,6 +26,21 @@
       }
     ]
   },
+  "allowed_tools": [
+    "Bash(git *)",
+    "Bash(gh *)",
+    "Bash(echo *)",
+    "Bash(pnpm *)",
+    "Bash(npm *)",
+    "Bash(cat *)",
+    "Bash(ls *)",
+    "Bash(pwd)",
+    "Edit",
+    "Read",
+    "Write",
+    "Create",
+    "Delete"
+  ],
   "enabled": true,
   "debug": false,
   "logLevel": "info"

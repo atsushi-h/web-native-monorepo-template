@@ -1,6 +1,15 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(pnpm *)",
+      "Bash(npm *)",
+      "Bash(echo *)",
+      "Bash(cat *)",
+      "Bash(ls *)",
+      "Bash(pwd)"
+    ],
     "deny": [
       "Bash(sudo:*)",
       "Bash(rm:*)",
