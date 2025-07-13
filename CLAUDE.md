@@ -416,3 +416,90 @@ git branch -d feat/123-add-user-profile
 # リモートブランチも削除（GitHubが自動削除しない場合）
 git push origin --delete feat/123-add-user-profile
 ```
+
+## セキュリティガイドライン
+
+### PR作成時の注意事項
+
+1. **機密情報の取り扱い**
+   - 環境変数、APIキー、トークンをPR説明に含めない
+   - `.env`ファイルの内容を引用しない
+   - エラーログに含まれる機密情報を削除する
+
+2. **Gitコマンドの安全な使用**
+   - `--force`オプションの使用禁止
+   - `main`ブランチへの直接プッシュ禁止
+   - リモートブランチ削除は慎重に実施
+
+3. **コードレビュー前の確認**
+   - セキュリティスキャンの結果確認
+   - 依存関係の脆弱性チェック
+   - 意図しないファイルが含まれていないか確認
+
+## ワークフローテスト手順
+
+### 1. Claude Code Actions の動作確認
+
+#### 初回セットアップテスト
+```bash
+# テスト用Issueを作成
+gh issue create --title "Test: Claude Code Actions動作確認" --body "@claude このテストIssueに対してコメントで応答してください"
+
+# 応答確認後、Issueをクローズ
+gh issue close [issue-number]
+```
+
+#### PR作成機能テスト
+```bash
+# テスト用Issueを作成
+gh issue create --title "Test: PR作成機能" --body "@claude 簡単なREADME更新を行ってPRを作成してください"
+
+# Claude CodeがPRを作成することを確認
+# 作成されたPRの内容を確認してクローズ
+```
+
+### 2. 権限テスト
+
+#### allowed_tools の検証
+```markdown
+@claude 以下のコマンドを順番に実行して結果を報告してください：
+1. git status
+2. git branch -a
+3. gh pr list
+```
+
+#### エラーハンドリングテスト
+```markdown
+@claude 存在しないブランチにチェックアウトを試みて、エラーハンドリングを確認してください：
+git checkout non-existent-branch
+```
+
+### 3. 統合テスト
+
+#### 完全なワークフローテスト
+1. Issueを作成
+2. Claude Codeに実装を依頼
+3. PR作成まで自動実行されることを確認
+4. CI/CDが正常に動作することを確認
+
+#### 同時実行テスト
+- 複数のIssueで同時に`@claude`を呼び出し、競合が発生しないことを確認
+
+### 4. トラブルシューティング
+
+#### よくある問題と対処法
+
+**問題**: Claude Codeが応答しない
+- GitHub Appの権限を確認
+- ワークフローのログを確認
+- `CLAUDE_CODE_OAUTH_TOKEN`の有効性を確認
+
+**問題**: PR作成に失敗
+- `gh`コマンドの認証状態を確認
+- ブランチ保護ルールを確認
+- 権限設定を再確認
+
+**問題**: テストが失敗
+- `pnpm install`が実行されているか確認
+- 依存関係の問題を確認
+- キャッシュをクリア
