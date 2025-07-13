@@ -1,0 +1,32 @@
+{
+  "hooks": {
+    "task-completion": [
+      {
+        "command": "pnpm fix",
+        "description": "自動コード修正とフォーマット",
+        "timeout": 30000,
+        "retry": 2,
+        "continueOnError": false
+      },
+      {
+        "command": "pnpm check-types",
+        "description": "TypeScript型チェック",
+        "timeout": 60000,
+        "retry": 1,
+        "continueOnError": false
+      }
+    ],
+    "pre-commit": [
+      {
+        "command": "pnpm check",
+        "description": "コミット前の品質チェック",
+        "timeout": 120000,
+        "retry": 1,
+        "continueOnError": false
+      }
+    ]
+  },
+  "enabled": true,
+  "debug": false,
+  "logLevel": "info"
+}

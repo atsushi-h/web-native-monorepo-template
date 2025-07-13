@@ -117,3 +117,43 @@ npm run reset-project
 ```
 
 このコードベースで作業する際は、確立されたパターンを常に使用し、変更をコミットする前に適切な品質チェックを実行してください。
+
+## Claude Code Hooks
+
+このプロジェクトでは、Claude Code Hooksを使用して自動品質チェックを実行します。
+
+### 自動実行される処理
+
+Claude Codeが指示を完了する際に、以下のコマンドが自動実行されます：
+
+1. **`pnpm fix`** - Biomeによる自動コード修正とフォーマット
+2. **`pnpm check-types`** - TypeScript型チェック
+
+### Hooks設定ファイル
+
+- `.claude/settings.json` - 基本的なHooks設定
+- `.claude/hooks.json` - 詳細なHooks設定とエラーハンドリング
+- `.claude/README.md` - Hooks設定のドキュメント
+
+### エラーハンドリング
+
+エラーが発生した場合：
+1. 自動的に設定回数まで再試行
+2. `pnpm fix`でフォーマットとlintの問題を自動修正
+3. `pnpm check-types`で型エラーを検出・報告
+4. エラーが解決されない場合、詳細なログを出力
+
+### 手動でのHooks実行
+
+Hooksの動作をテストしたい場合：
+
+```bash
+# 個別実行
+pnpm fix
+pnpm check-types
+
+# 包括的なチェック
+pnpm check
+```
+
+詳細な設定については、`.claude/README.md`を参照してください。
