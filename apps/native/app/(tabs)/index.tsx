@@ -5,6 +5,17 @@ import { HelloWave } from '@/components/HelloWave'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
+import { 
+  Box,
+  Button, 
+  ButtonText,
+  VStack,
+  HStack,
+  Heading,
+  Text,
+  Input,
+  InputField,
+} from '@repo/ui'
 
 export default function HomeScreen() {
   return (
@@ -51,6 +62,52 @@ export default function HomeScreen() {
           <ThemedText type='defaultSemiBold'>app</ThemedText> to{' '}
           <ThemedText type='defaultSemiBold'>app-example</ThemedText>.
         </ThemedText>
+      </ThemedView>
+      
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type='subtitle'>Step 4: gluestack-ui v2 Demo</ThemedText>
+        <ThemedText>
+          Check out the new gluestack-ui v2 components with custom theming:
+        </ThemedText>
+        
+        <Box className="p-4 bg-background-50 dark:bg-background-900 rounded-lg mt-4">
+          <VStack space="md">
+            <Heading size="lg" className="text-primary-600 dark:text-primary-400">
+              Welcome to gluestack-ui v2!
+            </Heading>
+            
+            <Text size="md" className="text-typography-700 dark:text-typography-300">
+              これはカスタムテーマが適用されたコンポーネントのデモです。
+            </Text>
+            
+            <Input variant="outline" size="md" className="bg-white dark:bg-background-800">
+              <InputField 
+                placeholder="Enter text here..."
+                className="text-typography-900 dark:text-typography-50"
+              />
+            </Input>
+            
+            <HStack space="sm">
+              <Button 
+                size="md" 
+                variant="solid" 
+                action="primary"
+                className="flex-1"
+              >
+                <ButtonText>Primary</ButtonText>
+              </Button>
+              
+              <Button 
+                size="md" 
+                variant="outline" 
+                action="secondary"
+                className="flex-1"
+              >
+                <ButtonText className="text-secondary-600 dark:text-secondary-400">Secondary</ButtonText>
+              </Button>
+            </HStack>
+          </VStack>
+        </Box>
       </ThemedView>
     </ParallaxScrollView>
   )

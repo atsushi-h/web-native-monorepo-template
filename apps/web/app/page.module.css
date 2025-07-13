@@ -185,6 +185,26 @@ button.secondary {
   }
 }
 
+/* gluestack-ui demo section */
+.gluestackDemo {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.gluestackDemo h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--foreground);
+}
+
+.gluestackDemo p {
+  font-size: 14px;
+  color: var(--foreground);
+  opacity: 0.8;
+  margin-bottom: 16px;
+}
+
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();

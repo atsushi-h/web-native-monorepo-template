@@ -1,4 +1,15 @@
 import { Button } from '@repo/ui/button'
+import { 
+  Box,
+  Button as GluestackButton, 
+  ButtonText,
+  VStack,
+  HStack,
+  Heading,
+  Text,
+  Input,
+  InputField,
+} from '@repo/ui'
 import Image, { type ImageProps } from 'next/image'
 import styles from './page.module.css'
 
@@ -66,6 +77,51 @@ export default function Home() {
         <Button appName='web' className={styles.secondary}>
           Open alert
         </Button>
+        
+        {/* gluestack-ui v2 Demo Section */}
+        <div className={styles.gluestackDemo}>
+          <h2>gluestack-ui v2 Demo</h2>
+          <p>Check out the new gluestack-ui v2 components with custom theming:</p>
+          
+          <Box className="p-6 bg-background-50 dark:bg-background-900 rounded-lg mt-4 max-w-md mx-auto">
+            <VStack space="md">
+              <Heading size="lg" className="text-primary-600 dark:text-primary-400">
+                Welcome to gluestack-ui v2!
+              </Heading>
+              
+              <Text size="md" className="text-typography-700 dark:text-typography-300">
+                これはカスタムテーマが適用されたコンポーネントのデモです。
+              </Text>
+              
+              <Input variant="outline" size="md" className="bg-white dark:bg-background-800">
+                <InputField 
+                  placeholder="Enter text here..."
+                  className="text-typography-900 dark:text-typography-50"
+                />
+              </Input>
+              
+              <HStack space="sm">
+                <GluestackButton 
+                  size="md" 
+                  variant="solid" 
+                  action="primary"
+                  className="flex-1"
+                >
+                  <ButtonText>Primary</ButtonText>
+                </GluestackButton>
+                
+                <GluestackButton 
+                  size="md" 
+                  variant="outline" 
+                  action="secondary"
+                  className="flex-1"
+                >
+                  <ButtonText className="text-secondary-600 dark:text-secondary-400">Secondary</ButtonText>
+                </GluestackButton>
+              </HStack>
+            </VStack>
+          </Box>
+        </div>
       </main>
       <footer className={styles.footer}>
         <a
