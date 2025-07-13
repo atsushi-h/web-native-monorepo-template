@@ -62,18 +62,24 @@ jobs:
             Bash(pnpm fix),
             Bash(pnpm check),
             Bash(pnpm check-types),
-            Bash(gh pr create*),
+            Bash(gh pr create --title * --body *),
             Bash(gh pr list),
-            Bash(gh pr view*),
-            Bash(git checkout*),
-            Bash(git branch*),
-            Bash(git add*),
-            Bash(git commit*),
-            Bash(git push*),
-            Bash(git pull),
+            Bash(gh pr view *),
+            Bash(git checkout -b *),
+            Bash(git checkout main),
+            Bash(git branch -a),
+            Bash(git branch -d *),
+            Bash(git add .),
+            Bash(git add *),
+            Bash(git commit -m *),
+            Bash(git push origin HEAD),
+            Bash(git push -u origin *),
+            Bash(git pull origin main),
+            Bash(git pull origin *),
             Bash(git status),
-            Bash(git diff*),
-            Bash(git log*)
+            Bash(git diff --cached),
+            Bash(git diff HEAD),
+            Bash(git log --oneline -n *)
           
           # Optional: Add custom instructions for Claude to customize its behavior for your project
           # custom_instructions: |
@@ -81,30 +87,13 @@ jobs:
           #   Ensure all new code has tests
           #   Use TypeScript for new files
           custom_instructions: |
-            Follow our coding standards in CLAUDE.md
-            Ensure all new code has tests
-            Use TypeScript for new files
+            Follow detailed guidelines in CLAUDE.md, especially:
+            - "GitHub Actions と PR作成" section for PR creation workflow
+            - "コミットメッセージ規則" for Conventional Commits
+            - "ブランチルール" for branch naming conventions
             
-            When implementing features or fixes from issues:
-            1. Create a new branch following our naming convention
-            2. Make necessary changes
-            3. Run tests and quality checks
-            4. Commit with Conventional Commits format
-            5. Push the branch
-            6. Create PR using: gh pr create --title "<type>: <description> (#<issue>)" --body "<detailed description>"
-            
-            IMPORTANT: Always use `gh pr create` command to create actual PRs, not just generate URLs.
-            Do NOT just provide a PR creation URL - actually execute the PR creation.
-            
-            PR body should include:
-            - Summary of changes
-            - Test results
-            - Related issue reference (Closes #XXX)
-            
-            Example PR creation command:
-            gh pr create \
-              --title "feat: Add user authentication (#123)" \
-              --body "## Summary\nImplemented user authentication feature.\n\n## Changes\n- Added login/logout functionality\n- Implemented JWT tokens\n- Added auth middleware\n\n## Tests\n- [x] Unit tests added\n- [x] Integration tests pass\n- [x] Manual testing completed\n\n## Related Issue\nCloses #123"
+            CRITICAL: Always use `gh pr create` command to create actual PRs.
+            Never just provide PR creation URLs.
           
           # Optional: Custom environment variables for Claude
           # claude_env: |
