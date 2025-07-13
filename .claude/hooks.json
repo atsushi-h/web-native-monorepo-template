@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schema.anthropic.com/claude-code/hooks.json",
+  "version": "1.0.0",
+  "description": "Claude Code Hooks設定 - タスク完了時の自動品質チェック",
+  "hooks": {
+    "task-completion": {
+      "enabled": true,
+      "description": "指示完了時に実行されるフック",
+      "commands": [
+        {
+          "name": "code-fix",
+          "command": "pnpm fix",
+          "description": "Biomeによる自動コード修正とフォーマット",
+          "workingDirectory": ".",
+          "timeout": 30000,
+          "retryAttempts": 2,
+          "retryDelay": 1000,
+          "continueOnError": false,
+          "environment": {
+            "NODE_ENV": "development"
+          },
+          "conditions": {
+            "fileTypes": ["ts", "tsx", "js", "jsx", "json"],
+            "skipIfNoChanges": false
+          }
+        },
+        {
+          "name": "type-check",
+          "command": "pnpm check-types",
+          "description": "TypeScript型チェック",
+          "workingDirectory": ".",
+          "timeout": 60000,
+          "retryAttempts": 1,
+          "retryDelay": 2000,
+          "continueOnError": false,
+          "environment": {
+            "NODE_ENV": "development"
+          },
+          "conditions": {
+            "fileTypes": ["ts", "tsx"],
+            "skipIfNoChanges": false
+          }
+        }
+      ],
+      "errorHandling": {
+        "strategy": "stop-on-first-error",
+        "maxRetries": 3,
+        "logErrors": true,
+        "notifyOnError": true
+      }
+    },
+    "pre-commit": {
+      "enabled": true,
+      "description": "コミット前に実行されるフック",
+      "commands": [
+        {
+          "name": "quality-check",
+          "command": "pnpm check",
+          "description": "包括的な品質チェック（lint + format + types）",
+          "workingDirectory": ".",
+          "timeout": 120000,
+          "retryAttempts": 1,
+          "continueOnError": false,
+          "conditions": {
+            "skipIfNoChanges": true
+          }
+        }
+      ]
+    }
+  },
+  "global": {
+    "enabled": true,
+    "debug": false,
+    "logLevel": "info",
+    "concurrency": 1,
+    "defaultTimeout": 60000,
+    "workingDirectory": ".",
+    "shell": "/bin/bash"
+  },
+  "notifications": {
+    "onSuccess": true,
+    "onError": true,
+    "onTimeout": true,
+    "format": "compact"
+  }
+}
