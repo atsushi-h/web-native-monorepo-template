@@ -55,29 +55,31 @@ jobs:
           # allowed_tools: "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
           # PR作成に必要なコマンドを許可する
           allowed_tools: |
-            Bash(npm install),
-            Bash(npm run build),
-            Bash(npm run test:*),
-            Bash(npm run lint:*),
             Bash(pnpm install),
             Bash(pnpm run build),
-            Bash(pnpm run test:*),
-            Bash(pnpm run lint:*),
+            Bash(pnpm run test*),
+            Bash(pnpm run lint*),
             Bash(pnpm fix),
             Bash(pnpm check),
             Bash(pnpm check-types),
-            Bash(gh pr create:*),
+            Bash(gh pr create --title * --body *),
             Bash(gh pr list),
-            Bash(gh pr view:*),
-            Bash(git checkout:*),
-            Bash(git branch:*),
-            Bash(git add:*),
-            Bash(git commit:*),
-            Bash(git push:*),
-            Bash(git pull),
+            Bash(gh pr view *),
+            Bash(git checkout -b *),
+            Bash(git checkout main),
+            Bash(git branch -a),
+            Bash(git branch -d *),
+            Bash(git add .),
+            Bash(git add *),
+            Bash(git commit -m *),
+            Bash(git push origin HEAD),
+            Bash(git push -u origin *),
+            Bash(git pull origin main),
+            Bash(git pull origin *),
             Bash(git status),
-            Bash(git diff:*),
-            Bash(git log:*)
+            Bash(git diff --cached),
+            Bash(git diff HEAD),
+            Bash(git log --oneline -n *)
           
           # Optional: Add custom instructions for Claude to customize its behavior for your project
           # custom_instructions: |
@@ -85,16 +87,14 @@ jobs:
           #   Ensure all new code has tests
           #   Use TypeScript for new files
           custom_instructions: |
-            Follow our coding standards in CLAUDE.md
-            Ensure all new code has tests
-            Use TypeScript for new files
-            When creating PRs, always include:
-            - Clear title and description
-            - Summary of changes
-            - Test results
-            Use Conventional Commits for commit messages
+            Follow detailed guidelines in CLAUDE.md, especially:
+            - "GitHub Actions と PR作成" section for PR creation workflow
+            - "コミットメッセージ規則" for Conventional Commits
+            - "ブランチルール" for branch naming conventions
+            
+            CRITICAL: Always use `gh pr create` command to create actual PRs.
+            Never just provide PR creation URLs.
           
           # Optional: Custom environment variables for Claude
           # claude_env: |
           #   NODE_ENV: test
-
