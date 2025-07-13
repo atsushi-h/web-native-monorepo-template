@@ -79,7 +79,9 @@ jobs:
             Bash(git status),
             Bash(git diff --cached),
             Bash(git diff HEAD),
-            Bash(git log --oneline -n *)
+            Bash(git log --oneline -n *),
+            "mcp__github__create_pull_request",
+            "mcp__github__update_pull_request"
           
           # Optional: Add custom instructions for Claude to customize its behavior for your project
           # custom_instructions: |
