@@ -44,7 +44,31 @@ jobs:
           
           # デバッグ用に一時的に全許可
           allowed_tools: |
-            Bash(*)
+            Bash(pnpm install),
+            Bash(pnpm run build),
+            Bash(pnpm run test*),
+            Bash(pnpm run lint*),
+            Bash(pnpm fix),
+            Bash(pnpm check),
+            Bash(pnpm check-types),
+            Bash(gh pr create --title * --body *),
+            Bash(gh pr list),
+            Bash(gh pr view *),
+            Bash(git checkout -b *),
+            Bash(git checkout main),
+            Bash(git branch -a),
+            Bash(git branch -d *),
+            Bash(git add .),
+            Bash(git add *),
+            Bash(git commit -m *),
+            Bash(git push origin HEAD),
+            Bash(git push -u origin *),
+            Bash(git pull origin main),
+            Bash(git pull origin *),
+            Bash(git status),
+            Bash(git diff --cached),
+            Bash(git diff HEAD),
+            Bash(git log --oneline -n *)
           
           custom_instructions: |
             Follow detailed guidelines in CLAUDE.md.
