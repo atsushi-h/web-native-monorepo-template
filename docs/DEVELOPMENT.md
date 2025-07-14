@@ -1,0 +1,222 @@
+# 開発ガイド
+
+このドキュメントでは、プロジェクトの詳細なアーキテクチャと開発に関する情報を提供します。
+
+## プロジェクト構造
+
+### ディレクトリ構造
+
+```
+nextjs-expo-monorepo-template/
+├── .claude/                    # Claude Code設定
+├── .vscode/                    # VS Code設定
+├── apps/
+│   ├── native/                 # React Native (Expo)アプリ
+│   └── web/                    # Next.js Webアプリ
+├── packages/
+│   ├── ui/                     # 共有UIコンポーネント
+│   └── typescript-config/      # TypeScript設定
+├── docs/                       # プロジェクトドキュメント
+├── CLAUDE.md                   # Claude Code用ガイド
+├── README.md                   # プロジェクトREADME
+├── package.json                # ルートパッケージ
+├── pnpm-workspace.yaml         # pnpmワークスペース設定
+├── turbo.json                  # Turborepo設定
+└── biome.json                  # Biome設定
+```
+
+### アーキテクチャ
+
+- **モノレポ管理**: Turborepoによるタスクオーケストレーションとキャッシュ
+- **パッケージマネージャー**: pnpm（ワークスペース対応）
+- **コード品質**: Biome（ESLint/Prettierの代替）
+- **型安全性**: TypeScript（共有設定）
+
+### 重要な設定ファイル
+
+#### turbo.json
+Turborepoのタスク設定とパイプライン定義
+
+#### biome.json
+コードフォーマットとlintルール
+- インデント: 2スペース
+- 行幅: 100文字
+- セミコロン: あり
+- クォート: ダブルクォート
+
+#### pnpm-workspace.yaml
+ワークスペースのパッケージ定義
+
+## 各アプリケーションの詳細
+
+### Web App (`apps/web`)
+
+Next.js 15を使用したWebアプリケーション
+
+**主な機能:**
+- App Router
+- Server Components
+- Tailwind CSS
+- 共有UIコンポーネントの使用
+
+**開発サーバー:**
+```bash
+pnpm dev:web  # http://localhost:3000
+```
+
+### Native App (`apps/native`)
+
+Expo SDK 53を使用したReact Nativeアプリ
+
+**主な機能:**
+- Expo Router（ファイルベースルーティング）
+- NativeWind（Tailwind for React Native）
+- プラットフォーム固有の最適化
+- ハプティックフィードバック
+
+**特殊なコンポーネント:**
+- `ThemedText` - テーマ対応テキスト
+- `ThemedView` - テーマ対応ビュー
+- `TabBarIcon` - プラットフォーム固有アイコン
+
+**開発コマンド:**
+```bash
+# 開発サーバー起動
+pnpm dev:native
+
+# プラットフォーム別起動
+expo start --android
+expo start --ios
+expo start --web
+
+# プロジェクトリセット（サンプルコード削除）
+npm run reset-project
+```
+
+## パッケージ
+
+### UI Package (`packages/ui`)
+
+共有UIコンポーネントライブラリ
+
+**特徴:**
+- React 19対応
+- TypeScript
+- Web/Native両対応コンポーネント
+
+**使用方法:**
+```typescript
+import { Button, Card } from '@repo/ui';
+```
+
+### TypeScript Config (`packages/typescript-config`)
+
+共有TypeScript設定
+
+**提供される設定:**
+- `base.json` - 基本設定
+- `nextjs.json` - Next.js用設定
+- `react-library.json` - Reactライブラリ用設定
+
+## 依存関係管理
+
+### バージョン固定
+
+ルートの`package.json`でpnpm overridesを使用：
+
+```json
+{
+  "pnpm": {
+    "overrides": {
+      "react": "19.0.0",
+      "react-dom": "19.0.0",
+      "@types/react": "19.0.10"
+    }
+  }
+}
+```
+
+### エンジン要件
+
+- Node.js: >= 24
+- pnpm: 10.12.4（packageManagerで定義）
+
+## 開発ワークフロー
+
+### 新機能の追加
+
+1. **新しいコンポーネント**
+   - `packages/ui/src/`に作成
+   - `packages/ui/src/index.ts`からexport
+   - 必要に応じてプラットフォーム別実装
+
+2. **アプリ固有のコード**
+   - 各アプリの`src/`ディレクトリに配置
+   - 共有可能な部分は`packages/ui`へ
+
+3. **設定の追加**
+   - TypeScript設定: `packages/typescript-config/`
+   - 環境変数: 各アプリの`.env`ファイル
+
+### コードスタイル
+
+Biomeによる自動フォーマット：
+- インデント: 2スペース
+- 行幅: 100文字
+- セミコロン: あり
+- 末尾カンマ: あり
+- クォート: ダブルクォート
+
+### テスト戦略
+
+（プロジェクトのテスト戦略に応じて追加）
+
+## トラブルシューティング
+
+### よくある問題
+
+1. **依存関係の競合**
+   ```bash
+   pnpm install --force
+   ```
+
+2. **キャッシュの問題**
+   ```bash
+   turbo daemon clean
+   pnpm store prune
+   ```
+
+3. **型エラー**
+   ```bash
+   pnpm check-types
+   ```
+
+4. **Native開発の問題**
+   - iOS: Xcodeが最新であることを確認
+   - Android: Android Studioの設定を確認
+   - `expo doctor`を実行して環境をチェック
+
+## パフォーマンス最適化
+
+### Turborepoキャッシュ
+
+- ローカルキャッシュは自動
+- リモートキャッシュの設定（オプション）
+- `--force`フラグでキャッシュを無視
+
+### ビルド最適化
+
+- 並列ビルドの活用
+- 依存関係の最小化
+- Tree shakingの活用
+
+## デバッグ
+
+### Chrome DevTools
+
+- Web: 通常のDevTools
+- Native: React Native Debugger使用推奨
+
+### VS Code拡張機能
+
+推奨拡張機能は`.vscode/extensions.json`で定義されています。
