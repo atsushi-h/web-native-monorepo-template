@@ -22,10 +22,10 @@ export default function TamaguiExample() {
         }
       >
         <YStack gap='$2'>
-          <TamaguiButton onPress={() => alert('Small button!')} size='small' variant='ghost'>
+          <TamaguiButton onPress={() => alert('Small button!')} customSize='small' variant='ghost'>
             Small Ghost Button
           </TamaguiButton>
-          <TamaguiButton onPress={() => alert('Large button!')} size='large'>
+          <TamaguiButton onPress={() => alert('Large button!')} customSize='large'>
             Large Button
           </TamaguiButton>
         </YStack>

@@ -20,7 +20,7 @@ export const StyledButton = styled(TamaguiButtonBase, {
         color: '$color',
       },
     },
-    size: {
+    customSize: {
       small: {
         px: '$2',
         py: '$1',
@@ -40,7 +40,7 @@ export const StyledButton = styled(TamaguiButtonBase, {
   } as const,
   defaultVariants: {
     variant: 'primary',
-    size: 'medium',
+    customSize: 'medium',
   },
 })
 
