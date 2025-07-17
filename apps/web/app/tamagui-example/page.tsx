@@ -2,34 +2,62 @@
 
 import { TamaguiButton } from '@repo/ui/tamagui-button'
 import { TamaguiCard } from '@repo/ui/tamagui-card'
-import { YStack } from 'tamagui'
+import { useState } from 'react'
 
 export default function TamaguiExample() {
+  const [message, setMessage] = useState<string>('')
+
+  const handleButtonPress = (buttonType: string) => {
+    setMessage(`${buttonType} button was pressed!`)
+    // 本番環境ではalertの代わりにtoast通知などを使用
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`${buttonType} button pressed`)
+    }
+  }
+
   return (
-    <YStack flex={1} p='$4' gap='$4'>
+    <div style={{ padding: '16px' }}>
+      <h1>Tamagui Example</h1>
+      {message && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: '#f0f0f0',
+            borderRadius: '8px',
+            textAlign: 'center',
+            marginBottom: '16px',
+          }}
+        >
+          {message}
+        </div>
+      )}
       <TamaguiCard
         title='Welcome to Tamagui'
         description='This is a cross-platform UI component that works on both web and native!'
         footer={
-          <YStack gap='$2'>
-            <TamaguiButton onPress={() => alert('Primary button clicked!')} variant='primary'>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <TamaguiButton onPress={() => handleButtonPress('Primary')} variant='primary'>
               Primary Button
             </TamaguiButton>
-            <TamaguiButton onPress={() => alert('Secondary button clicked!')} variant='secondary'>
+            <TamaguiButton onPress={() => handleButtonPress('Secondary')} variant='secondary'>
               Secondary Button
             </TamaguiButton>
-          </YStack>
+          </div>
         }
       >
-        <YStack gap='$2'>
-          <TamaguiButton onPress={() => alert('Small button!')} customSize='small' variant='ghost'>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <TamaguiButton
+            onPress={() => handleButtonPress('Small ghost')}
+            customSize='small'
+            variant='ghost'
+          >
             Small Ghost Button
           </TamaguiButton>
-          <TamaguiButton onPress={() => alert('Large button!')} customSize='large'>
+          <TamaguiButton onPress={() => handleButtonPress('Large')} customSize='large'>
             Large Button
           </TamaguiButton>
-        </YStack>
+        </div>
       </TamaguiCard>
-    </YStack>
+    </div>
   )
 }

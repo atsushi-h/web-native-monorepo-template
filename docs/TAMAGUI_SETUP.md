@@ -33,8 +33,8 @@ import { withTamagui } from '@tamagui/next-plugin'
 const tamaguiPlugin = withTamagui({
   config: '../../packages/ui/src/tamagui.config.ts',
   components: ['tamagui', '@repo/ui'],
-  useReactNativeWebLite: true,
-  disableExtraction: process.env.NODE_ENV === 'development',
+  useReactNativeWebLite: false, // React 19互換性のためfalseに設定
+  disableExtraction: true, // React 19互換性のためextractionを無効化
 })
 ```
 

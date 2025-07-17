@@ -1,10 +1,11 @@
+import type { ReactNode } from 'react'
 import type { CardProps } from 'tamagui'
 import { Card, H2, Paragraph, XStack, YStack } from 'tamagui'
 
 interface TamaguiCardProps extends CardProps {
   title?: string
   description?: string
-  footer?: React.ReactNode
+  footer?: ReactNode
 }
 
 export function TamaguiCard({ title, description, footer, children, ...props }: TamaguiCardProps) {
