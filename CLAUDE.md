@@ -2,172 +2,75 @@
 
 このファイルは、Claude Code (claude.ai/code)がこのリポジトリを効率的に扱うためのガイドです。
 
-## 目次
-
-- [プロジェクト概要](#プロジェクト概要)
-- [クイックスタート](#クイックスタート)
-- [コマンドリファレンス](#コマンドリファレンス)
-- [Claude Code設定](#claude-code設定)
-- [詳細ドキュメント](#詳細ドキュメント)
-
 ## プロジェクト概要
 
 **Next.js + Expo + Hono モノレポテンプレート**
 - Turborepo + pnpmによるモノレポ管理
-- TypeScript + Biome（コード品質）
+- TypeScript + Biome（コード品質）+ Tamagui（クロスプラットフォームUI）
 - Web（Next.js）、Native（Expo）、API（Hono）の同時開発
 
 ### 構成
 - `apps/web` - Next.js Webアプリ（ポート3000）
-- `apps/native` - Expo React Nativeアプリ
+- `apps/native` - Expo React Nativeアプリ  
 - `apps/api` - Hono APIアプリ（Cloudflare Workers、ポート8787）
-- `packages/ui` - 共有UIコンポーネント
+- `packages/ui` - Tamagui共有UIコンポーネント
 - `packages/typescript-config` - 共有TypeScript設定
 
-## クイックスタート
+## 基本コマンド
 
 ```bash
-# 依存関係のインストール
-pnpm install
-
 # 開発サーバー起動
 pnpm dev          # すべてのアプリ
 pnpm dev:web      # Webのみ
-pnpm dev:native   # Nativeのみ
+pnpm dev:native   # Nativeのみ  
 pnpm dev:api      # APIのみ
 
-# コード品質チェック
+# コード品質（コミット前必須）
 pnpm fix          # 自動修正
 pnpm check        # 包括的チェック
 ```
 
-## コマンドリファレンス
-
-| コマンド | 説明 | 使用場面 |
-|---------|------|---------|
-| `pnpm dev` | すべてのアプリを開発モードで起動 | 通常の開発時 |
-| `pnpm dev:web` | Webアプリのみ起動 | Web開発に集中したい時 |
-| `pnpm dev:native` | Nativeアプリのみ起動 | Native開発に集中したい時 |
-| `pnpm dev:api` | APIアプリのみ起動 | API開発に集中したい時 |
-| `pnpm build` | すべてのアプリをビルド | 本番デプロイ前 |
-| `pnpm fix` | コードの自動修正とフォーマット | コミット前（必須） |
-| `pnpm check` | lint + format + 型チェック | PR作成前（必須） |
-| `pnpm check-types` | TypeScript型チェックのみ | 型エラーの確認時 |
-
-### アプリ個別のコマンド
-
-```bash
-# Turboフィルターを使用
-turbo dev --filter=@repo/web
-turbo build --filter=@repo/native
-turbo dev --filter=@repo/api
-
-# Native特有のコマンド
-expo start --ios      # iOS開発
-expo start --android  # Android開発
-
-# API特有のコマンド
-cd apps/api && wrangler dev     # API開発サーバー起動
-cd apps/api && wrangler build   # APIビルド
-
-# API環境変数の設定
-cp apps/api/.dev.vars.example apps/api/.dev.vars  # 秘密情報設定
-```
 
 ## Claude Code設定
 
 ### 自動品質チェック（Hooks）
-
-コード変更時に自動実行される処理：
+コード変更時に自動実行：
 1. `pnpm fix` - コード自動修正
 2. `pnpm check-types` - 型チェック
 
-### MCP (Model Context Protocol)
-
-Playwright（ブラウザ自動化）とContext 7（最新ドキュメント参照）が利用可能です。
-
-詳細は [MCP設定ガイド](./docs/MCP.md) を参照してください。
-
 ### 権限設定
-
 - ✅ 許可: Git操作、pnpm/npmコマンド、ファイル読み書き
 - ❌ 禁止: sudo、rm -rf、機密ファイルへのアクセス
 
-## 開発のベストプラクティス
+### MCP (Model Context Protocol)
+Playwright（ブラウザ自動化）とContext 7（最新ドキュメント参照）が利用可能
 
-### 1. 新機能の追加
-- 共有コンポーネント → `packages/ui/src/`
-- アプリ固有コード → 各アプリの`src/`
+## 開発ルール
+
+### コード配置
+- 共有UI → `packages/ui/src/` (Tamaguiコンポーネント)
+- アプリ固有 → 各アプリの`src/`
 - 型定義 → 適切なパッケージの`types/`
 
-### 2. コミット前のチェックリスト
-- [ ] `pnpm fix`を実行
-- [ ] `pnpm check-types`でエラーがない
-- [ ] 不要なconsole.logを削除
-- [ ] コミットメッセージが規約に従っている
+### 依存関係管理
+- 最新バージョンを調べてからバージョン固定でインストール
+- エラー回避のためのバージョンダウンや削除は禁止
+- ファイル削除時はユーザーに確認必須
 
-### 3. 依存関係の追加
-```bash
-# ワークスペースのルート
-pnpm add -w <package>
+### コミット前チェックリスト
+- [ ] `pnpm fix` 実行
+- [ ] `pnpm check-types` でエラーなし
+- [ ] 不要なconsole.log削除
 
-# 特定のアプリ/パッケージ
-pnpm add <package> --filter=@repo/web
-```
-
-### 4. 依存関係管理とファイル操作のルール
-- ライブラリをインストールする際は、最新バージョンを調べてからバージョンを固定してインストールする
-- ファイルを削除する際は、必ずユーザーに確認を求める
-- エラー回避のために勝手にバージョンを下げたり、ライブラリを削除したりしない
-
-## トラブルシューティング
-
-### よくある問題と解決方法
-
-| 問題 | 解決方法 |
-|------|----------|
-| 型エラー | `pnpm check-types`で詳細確認 |
-| 依存関係の競合 | `pnpm install --force` |
-| キャッシュの問題 | `turbo daemon clean` |
-| Expoの問題 | `expo doctor`で環境チェック |
-| APIの問題 | `cd apps/api && wrangler dev`で詳細確認 |
-
-## API環境変数管理
-
-### 基本方針
-- **非秘密情報**: `wrangler.toml`に記載（Gitコミット対象）
-- **秘密情報**: `.dev.vars`で管理（Gitignore対象）
-
-### ローカル開発での設定
-```bash
-# 1. 設定ファイルをコピー
-cp apps/api/.dev.vars.example apps/api/.dev.vars
-
-# 2. 実際の値を設定
-# apps/api/.dev.vars を編集
-```
-
-### 環境変数の種類
-
-| 変数名 | 設定場所 | 用途 |
-|--------|----------|------|
-| `CORS_ORIGINS` | `wrangler.toml` | CORS許可オリジン |
-| `API_SECRET_KEY` | `.dev.vars` | API認証キー |
-| `DATABASE_URL` | `.dev.vars` | データベース接続文字列 |
-
-### 本番環境での設定
-```bash
-# Cloudflare Dashboard または wrangler secret コマンドを使用
-wrangler secret put API_SECRET_KEY
-wrangler secret put DATABASE_URL
-```
 
 ## 詳細ドキュメント
 
 - 📘 [開発ガイド](./docs/DEVELOPMENT.md) - アーキテクチャとパッケージの詳細
 - 📗 [Git/GitHubワークフロー](./docs/GIT_WORKFLOW.md) - ブランチルールとPR作成手順
-- 📙 [Claude設定詳細](./.claude/README.md) - Hooks設定とカスタマイズ
 - 🔧 [MCP設定ガイド](./docs/MCP.md) - MCPサーバーとContext 7の使用方法
+- 📙 [コマンドリファレンス](./docs/COMMANDS.md) - 詳細なコマンド一覧
+- 🔍 [トラブルシューティング](./docs/TROUBLESHOOTING.md) - よくある問題と解決方法
+- 🔑 [API設定ガイド](./docs/API.md) - 環境変数とAPI設定
 
 ---
 
