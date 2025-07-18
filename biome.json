@@ -14,7 +14,8 @@
       "!**/build",
       "!**/.expo",
       "!**/.turbo",
-      "!**/.tamagui"
+      "!**/.tamagui",
+      "!**/.wrangler"
     ]
   },
   "formatter": {
