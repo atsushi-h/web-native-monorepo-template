@@ -12,11 +12,6 @@ const nextConfig = {
       'react-native$': 'react-native-web',
     }
     
-    // Add polyfill for unmountComponentAtNode
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-    }
-    
     return config
   },
 }
