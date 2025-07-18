@@ -12,14 +12,15 @@
 
 ## プロジェクト概要
 
-**Next.js + Expo モノレポテンプレート**
+**Next.js + Expo + Hono モノレポテンプレート**
 - Turborepo + pnpmによるモノレポ管理
 - TypeScript + Biome（コード品質）
-- Web（Next.js）とNative（Expo）の同時開発
+- Web（Next.js）、Native（Expo）、API（Hono）の同時開発
 
 ### 構成
 - `apps/web` - Next.js Webアプリ（ポート3000）
 - `apps/native` - Expo React Nativeアプリ
+- `apps/api` - Hono APIアプリ（Cloudflare Workers、ポート8787）
 - `packages/ui` - 共有UIコンポーネント
 - `packages/typescript-config` - 共有TypeScript設定
 
@@ -33,6 +34,7 @@ pnpm install
 pnpm dev          # すべてのアプリ
 pnpm dev:web      # Webのみ
 pnpm dev:native   # Nativeのみ
+pnpm dev:api      # APIのみ
 
 # コード品質チェック
 pnpm fix          # 自動修正
@@ -46,6 +48,7 @@ pnpm check        # 包括的チェック
 | `pnpm dev` | すべてのアプリを開発モードで起動 | 通常の開発時 |
 | `pnpm dev:web` | Webアプリのみ起動 | Web開発に集中したい時 |
 | `pnpm dev:native` | Nativeアプリのみ起動 | Native開発に集中したい時 |
+| `pnpm dev:api` | APIアプリのみ起動 | API開発に集中したい時 |
 | `pnpm build` | すべてのアプリをビルド | 本番デプロイ前 |
 | `pnpm fix` | コードの自動修正とフォーマット | コミット前（必須） |
 | `pnpm check` | lint + format + 型チェック | PR作成前（必須） |
@@ -57,10 +60,15 @@ pnpm check        # 包括的チェック
 # Turboフィルターを使用
 turbo dev --filter=@repo/web
 turbo build --filter=@repo/native
+turbo dev --filter=@repo/api
 
 # Native特有のコマンド
 expo start --ios      # iOS開発
 expo start --android  # Android開発
+
+# API特有のコマンド
+cd apps/api && wrangler dev     # API開発サーバー起動
+cd apps/api && wrangler build   # APIビルド
 ```
 
 ## Claude Code設定
@@ -119,6 +127,7 @@ pnpm add <package> --filter=@repo/web
 | 依存関係の競合 | `pnpm install --force` |
 | キャッシュの問題 | `turbo daemon clean` |
 | Expoの問題 | `expo doctor`で環境チェック |
+| APIの問題 | `cd apps/api && wrangler dev`で詳細確認 |
 
 ## 詳細ドキュメント
 

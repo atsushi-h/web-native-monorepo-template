@@ -6,6 +6,7 @@
     "dev": "turbo run dev",
     "dev:web": "turbo dev --filter=@repo/web",
     "dev:native": "turbo dev --filter=@repo/native",
+    "dev:api": "turbo dev --filter=@repo/api",
     "check": "turbo run check",
     "fix": "turbo run fix",
     "lint": "turbo run lint",
