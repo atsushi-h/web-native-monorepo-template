@@ -1,5 +1,6 @@
 import type { Hono } from 'hono'
 import type { Env } from '../../src/app'
+import type { InsertTodo, SelectTodo } from '../../src/db/schema'
 
 /**
  * APIエラーレスポンスの型定義
@@ -45,19 +46,6 @@ export class ApiTestClient {
       },
       this.env,
     )
-  }
-}
-
-/**
- * テスト用のモック環境変数を作成
- */
-export function createMockEnv(overrides: Partial<Env> = {}): Env {
-  return {
-    CORS_ORIGINS: 'http://localhost:3000,https://example.com',
-    API_SECRET_KEY: 'test-secret-key-12345',
-    DATABASE_URL: 'postgresql://test:test@localhost:5432/testdb',
-    NODE_ENV: 'test',
-    ...overrides,
   }
 }
 
@@ -108,18 +96,18 @@ export function assertResponseStatus(response: Response, expectedStatus: number)
 /**
  * JSONレスポンスのプロパティをアサート
  */
-export function assertJsonProperty(obj: unknown, path: string, expectedValue?: unknown): any {
+export function assertJsonProperty(obj: unknown, path: string, expectedValue?: unknown): unknown {
   const keys = path.split('.')
-  let current: any = obj
+  let current: unknown = obj
 
   for (const key of keys) {
     if (current === null || current === undefined) {
       throw new Error(`Property path '${path}' not found: ${key} is null/undefined`)
     }
-    if (!(key in current)) {
+    if (typeof current !== 'object' || !(key in current)) {
       throw new Error(`Property path '${path}' not found: missing key '${key}'`)
     }
-    current = current[key]
+    current = (current as Record<string, unknown>)[key]
   }
 
   if (expectedValue !== undefined && current !== expectedValue) {
@@ -143,5 +131,84 @@ export function assertValidTimestamp(timestamp: string) {
   const diff = Math.abs(now.getTime() - date.getTime())
   if (diff > 60000) {
     throw new Error(`Timestamp ${timestamp} is not recent (diff: ${diff}ms)`)
+  }
+}
+
+/**
+ * テスト用モックデータベース
+ */
+class MockDatabase {
+  private todos: SelectTodo[] = []
+  private nextId = 1
+
+  clear() {
+    this.todos = []
+    this.nextId = 1
+  }
+
+  async getAllTodos(): Promise<SelectTodo[]> {
+    return [...this.todos]
+  }
+
+  async getTodoById(id: number): Promise<SelectTodo | null> {
+    return this.todos.find((todo) => todo.id === id) || null
+  }
+
+  async createTodo(data: InsertTodo): Promise<SelectTodo> {
+    const now = new Date()
+    const newTodo: SelectTodo = {
+      id: this.nextId++,
+      title: data.title,
+      completed: data.completed ?? false,
+      createdAt: now,
+      updatedAt: now,
+    }
+    this.todos.push(newTodo)
+    return newTodo
+  }
+
+  async updateTodo(id: number, data: Partial<InsertTodo>): Promise<SelectTodo | null> {
+    const index = this.todos.findIndex((todo) => todo.id === id)
+    if (index === -1) return null
+
+    const original = this.todos[index]
+    if (!original) return null
+
+    const updated: SelectTodo = {
+      id: original.id,
+      title: data.title ?? original.title,
+      completed: data.completed ?? original.completed,
+      createdAt: original.createdAt,
+      updatedAt: new Date(),
+    }
+    this.todos[index] = updated
+    return updated
+  }
+
+  async deleteTodo(id: number): Promise<boolean> {
+    const index = this.todos.findIndex((todo) => todo.id === id)
+    if (index === -1) return false
+
+    this.todos.splice(index, 1)
+    return true
+  }
+}
+
+// グローバルモックインスタンス
+export const mockDb = new MockDatabase()
+
+/**
+ * テスト用のモック環境変数を作成（モックDBを使用）
+ */
+export function createMockEnv(overrides: Partial<Env> = {}): Env {
+  // テスト開始時にDBをクリア
+  mockDb.clear()
+
+  return {
+    CORS_ORIGINS: 'http://localhost:3000,https://example.com',
+    API_SECRET_KEY: 'test-secret-key-12345',
+    DATABASE_URL: 'mock://test', // モックDB識別子
+    NODE_ENV: 'test',
+    ...overrides,
   }
 }

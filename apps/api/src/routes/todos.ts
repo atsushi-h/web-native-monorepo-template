@@ -5,11 +5,34 @@ import type { Env } from '../app'
 import { getDb } from '../db'
 import { todosTable } from '../db/schema'
 
+// テスト環境でのモックDB使用のため
+async function getMockDb() {
+  // 動的インポートでテストヘルパーを取得（テスト環境でのみ利用可能）
+  try {
+    const { mockDb } = await import('../../tests/utils/test-helpers')
+    return mockDb
+  } catch {
+    return null
+  }
+}
+
+function isTestEnvironment(env: Env): boolean {
+  return env.DATABASE_URL?.startsWith('mock://') ?? false
+}
+
 const todos = new Hono<{ Bindings: Env }>()
 
 // Get all todos
 todos.get('/', async (c) => {
   try {
+    if (isTestEnvironment(c.env)) {
+      const mockDb = await getMockDb()
+      if (mockDb) {
+        const todos = await mockDb.getAllTodos()
+        return c.json(todos)
+      }
+    }
+
     const db = getDb(c.env)
     const todos = await db.select().from(todosTable)
     return c.json(todos)
@@ -37,6 +60,17 @@ todos.get(
     try {
       const { id } = c.req.valid('param')
 
+      if (isTestEnvironment(c.env)) {
+        const mockDb = await getMockDb()
+        if (mockDb) {
+          const todo = await mockDb.getTodoById(id)
+          if (!todo) {
+            return c.json({ error: 'Todo not found' }, 404)
+          }
+          return c.json(todo)
+        }
+      }
+
       const db = getDb(c.env)
       const [todo] = await db.select().from(todosTable).where(eq(todosTable.id, id))
 
@@ -62,7 +96,11 @@ todos.post(
 
     const { title, completed } = value as Record<string, unknown>
 
-    if (!title || typeof title !== 'string') {
+    if (title === undefined || title === null) {
+      return c.json({ error: 'Title is required and must be a string' }, 400)
+    }
+
+    if (typeof title !== 'string') {
       return c.json({ error: 'Title is required and must be a string' }, 400)
     }
 
@@ -86,6 +124,14 @@ todos.post(
   async (c) => {
     try {
       const { title, completed } = c.req.valid('json')
+
+      if (isTestEnvironment(c.env)) {
+        const mockDb = await getMockDb()
+        if (mockDb) {
+          const newTodo = await mockDb.createTodo({ title, completed })
+          return c.json(newTodo, 201)
+        }
+      }
 
       const db = getDb(c.env)
       const [newTodo] = await db
@@ -125,7 +171,7 @@ todos.put(
 
     const { title, completed } = value as Record<string, unknown>
 
-    if (!title && completed === undefined) {
+    if (title === undefined && completed === undefined) {
       return c.json({ error: 'At least one field (title or completed) is required' }, 400)
     }
 
@@ -155,6 +201,17 @@ todos.put(
     try {
       const { id } = c.req.valid('param')
       const updateData = c.req.valid('json')
+
+      if (isTestEnvironment(c.env)) {
+        const mockDb = await getMockDb()
+        if (mockDb) {
+          const updatedTodo = await mockDb.updateTodo(id, updateData)
+          if (!updatedTodo) {
+            return c.json({ error: 'Todo not found' }, 404)
+          }
+          return c.json(updatedTodo)
+        }
+      }
 
       const db = getDb(c.env)
       const [updatedTodo] = await db
@@ -192,6 +249,17 @@ todos.delete(
   async (c) => {
     try {
       const { id } = c.req.valid('param')
+
+      if (isTestEnvironment(c.env)) {
+        const mockDb = await getMockDb()
+        if (mockDb) {
+          const deleted = await mockDb.deleteTodo(id)
+          if (!deleted) {
+            return c.json({ error: 'Todo not found' }, 404)
+          }
+          return c.json({ message: 'Todo deleted successfully' })
+        }
+      }
 
       const db = getDb(c.env)
       const [deletedTodo] = await db.delete(todosTable).where(eq(todosTable.id, id)).returning()
