@@ -27,6 +27,10 @@ out/
 build
 dist
 
+# Wrangler (Cloudflare Workers)
+.wrangler/
+**/.dev.vars
+
 
 # Debug
 npm-debug.log*

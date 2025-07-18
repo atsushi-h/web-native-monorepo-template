@@ -1,0 +1,5 @@
+# ローカル開発用の秘密情報の例
+# このファイルをコピーして .dev.vars を作成してください
+
+API_SECRET_KEY=your-secret-key-here
+DATABASE_URL=postgresql://localhost:5432/yourdb
