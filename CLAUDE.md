@@ -73,14 +73,9 @@ expo start --android  # Android開発
 
 ### MCP (Model Context Protocol)
 
-Playwright MCPを使用したブラウザ自動化が可能です。
+Playwright（ブラウザ自動化）とContext 7（最新ドキュメント参照）が利用可能です。
 
-```bash
-# 初回使用時は承認が必要
-/mcp
-
-# 使用例: "Use playwright mcp to open https://example.com"
-```
+詳細は [MCP設定ガイド](./docs/MCP.md) を参照してください。
 
 ### 権限設定
 
@@ -125,6 +120,7 @@ pnpm add <package> --filter=@repo/web
 - 📘 [開発ガイド](./docs/DEVELOPMENT.md) - アーキテクチャとパッケージの詳細
 - 📗 [Git/GitHubワークフロー](./docs/GIT_WORKFLOW.md) - ブランチルールとPR作成手順
 - 📙 [Claude設定詳細](./.claude/README.md) - Hooks設定とカスタマイズ
+- 🔧 [MCP設定ガイド](./docs/MCP.md) - MCPサーバーとContext 7の使用方法
 
 ---
 
