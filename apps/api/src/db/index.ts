@@ -11,6 +11,13 @@ export function getDb(env: Env) {
     throw new Error('DATABASE_URL is not set')
   }
 
+  // テスト環境ではモックDBを使用
+  if (connectionString.startsWith('mock://')) {
+    // モックDB用の空のドライバーを返す
+    // 実際のクエリはルート層でモックされる
+    return null as any
+  }
+
   // Supabase connection pooler requires prepare: false
   // Cloudflare Workersでは接続プールは自動的に管理される
   const queryClient = postgres(connectionString, {
