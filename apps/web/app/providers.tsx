@@ -15,7 +15,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
     <div role='alert' style={{ padding: '20px', textAlign: 'center' }}>
       <h2>UIコンポーネントでエラーが発生しました</h2>
       <pre style={{ color: 'red', fontSize: '12px' }}>{error.message}</pre>
-      <button onClick={resetErrorBoundary} style={{ marginTop: '10px' }}>
+      <button type='button' onClick={resetErrorBoundary} style={{ marginTop: '10px' }}>
         再試行
       </button>
     </div>

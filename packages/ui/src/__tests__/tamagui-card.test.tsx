@@ -1,26 +1,21 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
 import { TamaguiProvider } from 'tamagui'
-import { TamaguiCard } from '../tamagui-card'
+import { describe, expect, it } from 'vitest'
 import tamaguiConfig from '../tamagui.config'
+import { TamaguiCard } from '../tamagui-card'
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
-  <TamaguiProvider config={tamaguiConfig}>
-    {children}
-  </TamaguiProvider>
+  <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
 )
 
 describe('TamaguiCard', () => {
   it('renders with title and description', () => {
     render(
       <TestWrapper>
-        <TamaguiCard
-          title="Test Title"
-          description="Test Description"
-        />
-      </TestWrapper>
+        <TamaguiCard title='Test Title' description='Test Description' />
+      </TestWrapper>,
     )
-    
+
     expect(screen.getByText('Test Title')).toBeInTheDocument()
     expect(screen.getByText('Test Description')).toBeInTheDocument()
   })
@@ -31,21 +26,19 @@ describe('TamaguiCard', () => {
         <TamaguiCard>
           <div>Child Content</div>
         </TamaguiCard>
-      </TestWrapper>
+      </TestWrapper>,
     )
-    
+
     expect(screen.getByText('Child Content')).toBeInTheDocument()
   })
 
   it('renders footer when provided', () => {
     render(
       <TestWrapper>
-        <TamaguiCard
-          footer={<div>Footer Content</div>}
-        />
-      </TestWrapper>
+        <TamaguiCard footer={<div>Footer Content</div>} />
+      </TestWrapper>,
     )
-    
+
     expect(screen.getByText('Footer Content')).toBeInTheDocument()
   })
 
@@ -55,9 +48,9 @@ describe('TamaguiCard', () => {
         <TamaguiCard>
           <div>Only Child Content</div>
         </TamaguiCard>
-      </TestWrapper>
+      </TestWrapper>,
     )
-    
+
     expect(screen.getByText('Only Child Content')).toBeInTheDocument()
     expect(container.querySelector('h2')).not.toBeInTheDocument()
   })
@@ -66,15 +59,15 @@ describe('TamaguiCard', () => {
     render(
       <TestWrapper>
         <TamaguiCard
-          title="Complete Card"
-          description="This card has everything"
-          footer={<button type="button">Action</button>}
+          title='Complete Card'
+          description='This card has everything'
+          footer={<button type='button'>Action</button>}
         >
           <p>Main content area</p>
         </TamaguiCard>
-      </TestWrapper>
+      </TestWrapper>,
     )
-    
+
     expect(screen.getByText('Complete Card')).toBeInTheDocument()
     expect(screen.getByText('This card has everything')).toBeInTheDocument()
     expect(screen.getByText('Main content area')).toBeInTheDocument()
@@ -84,14 +77,12 @@ describe('TamaguiCard', () => {
   it('passes through additional props', () => {
     render(
       <TestWrapper>
-        <TamaguiCard
-          data-testid="custom-card"
-        >
+        <TamaguiCard data-testid='custom-card'>
           <div>Content</div>
         </TamaguiCard>
-      </TestWrapper>
+      </TestWrapper>,
     )
-    
+
     expect(screen.getByTestId('custom-card')).toBeInTheDocument()
   })
 })

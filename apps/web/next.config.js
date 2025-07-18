@@ -11,7 +11,7 @@ const nextConfig = {
       ...config.resolve.alias,
       'react-native$': 'react-native-web',
     }
-    
+
     return config
   },
 }

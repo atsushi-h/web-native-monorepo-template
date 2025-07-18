@@ -13,7 +13,8 @@
       "!**/.next",
       "!**/build",
       "!**/.expo",
-      "!**/.turbo"
+      "!**/.turbo",
+      "!**/.tamagui"
     ]
   },
   "formatter": {
