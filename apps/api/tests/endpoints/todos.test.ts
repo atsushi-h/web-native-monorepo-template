@@ -97,11 +97,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: 'Test todo' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 201)
 
@@ -125,11 +129,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: 'Completed todo', completed: true }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 201)
 
@@ -143,11 +151,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: '  Trimmed title  ' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 201)
 
@@ -160,11 +172,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { completed: false }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -177,11 +193,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: 123 }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -194,11 +214,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: '' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -211,11 +235,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: '   ' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -229,11 +257,15 @@ describe('/api/todos', () => {
       const longTitle = 'a'.repeat(256)
       const todoData = { title: longTitle }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -247,11 +279,15 @@ describe('/api/todos', () => {
       const maxLengthTitle = 'a'.repeat(255)
       const todoData = { title: maxLengthTitle }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 201)
 
@@ -265,11 +301,15 @@ describe('/api/todos', () => {
       const unicodeTitle = 'Todo with 日本語 and 🎉 emoji'
       const todoData = { title: unicodeTitle }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 201)
 
@@ -283,11 +323,15 @@ describe('/api/todos', () => {
       const specialCharsTitle = 'Todo with <>&"\'`\n\t special chars'
       const todoData = { title: specialCharsTitle }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 201)
 
@@ -300,11 +344,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: 'Test todo', completed: 'true' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -316,11 +364,15 @@ describe('/api/todos', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: 'invalid-json',
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: 'invalid-json',
+        },
+        env,
+      )
 
       assertResponseStatus(response, 500)
     })
@@ -329,11 +381,15 @@ describe('/api/todos', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify('string'),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify('string'),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -346,10 +402,14 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: 'Test todo' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
     })
@@ -359,11 +419,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const todoData = { title: 'Test todo' }
 
-      const response = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(todoData),
-      }, env)
+      const response = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(todoData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
     })
@@ -375,11 +439,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const updateData = { title: 'Updated title' }
 
-      const response = await app.request('/api/todos/invalid', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/invalid',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -392,11 +460,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const updateData = { title: 'Updated title' }
 
-      const response = await app.request('/api/todos/999999', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/999999',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 404)
 
@@ -409,11 +481,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const updateData = {}
 
-      const response = await app.request('/api/todos/1', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/1',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -426,11 +502,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const updateData = { title: 123 }
 
-      const response = await app.request('/api/todos/1', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/1',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -443,11 +523,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const updateData = { title: '' }
 
-      const response = await app.request('/api/todos/1', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/1',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -461,11 +545,15 @@ describe('/api/todos', () => {
       const longTitle = 'a'.repeat(256)
       const updateData = { title: longTitle }
 
-      const response = await app.request('/api/todos/1', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/1',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -478,11 +566,15 @@ describe('/api/todos', () => {
       const env = createMockEnv()
       const updateData = { completed: 'true' }
 
-      const response = await app.request('/api/todos/1', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const response = await app.request(
+        '/api/todos/1',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -494,11 +586,15 @@ describe('/api/todos', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/todos/1', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: 'invalid-json',
-      }, env)
+      const response = await app.request(
+        '/api/todos/1',
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: 'invalid-json',
+        },
+        env,
+      )
 
       assertResponseStatus(response, 500)
     })
@@ -509,9 +605,13 @@ describe('/api/todos', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/todos/invalid', {
-        method: 'DELETE',
-      }, env)
+      const response = await app.request(
+        '/api/todos/invalid',
+        {
+          method: 'DELETE',
+        },
+        env,
+      )
 
       assertResponseStatus(response, 400)
 
@@ -523,9 +623,13 @@ describe('/api/todos', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/todos/999999', {
-        method: 'DELETE',
-      }, env)
+      const response = await app.request(
+        '/api/todos/999999',
+        {
+          method: 'DELETE',
+        },
+        env,
+      )
 
       assertResponseStatus(response, 404)
 
@@ -541,11 +645,15 @@ describe('/api/todos', () => {
 
       // Create a todo
       const createData = { title: 'Integration test todo', completed: false }
-      const createResponse = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(createData),
-      }, env)
+      const createResponse = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(createData),
+        },
+        env,
+      )
 
       assertResponseStatus(createResponse, 201)
       const createdTodo = await parseJsonResponse(createResponse)
@@ -560,11 +668,15 @@ describe('/api/todos', () => {
 
       // Update the todo
       const updateData = { title: 'Updated integration todo', completed: true }
-      const updateResponse = await app.request(`/api/todos/${todoId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const updateResponse = await app.request(
+        `/api/todos/${todoId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(updateResponse, 200)
       const updatedTodo = await parseJsonResponse(updateResponse)
@@ -572,9 +684,13 @@ describe('/api/todos', () => {
       assertJsonProperty(updatedTodo, 'completed', true)
 
       // Delete the todo
-      const deleteResponse = await app.request(`/api/todos/${todoId}`, {
-        method: 'DELETE',
-      }, env)
+      const deleteResponse = await app.request(
+        `/api/todos/${todoId}`,
+        {
+          method: 'DELETE',
+        },
+        env,
+      )
 
       assertResponseStatus(deleteResponse, 200)
       const deleteResult = await parseJsonResponse(deleteResponse)
@@ -591,11 +707,15 @@ describe('/api/todos', () => {
 
       // Create a todo
       const createData = { title: 'Partial update test', completed: false }
-      const createResponse = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(createData),
-      }, env)
+      const createResponse = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(createData),
+        },
+        env,
+      )
 
       assertResponseStatus(createResponse, 201)
       const createdTodo = await parseJsonResponse(createResponse)
@@ -603,11 +723,15 @@ describe('/api/todos', () => {
 
       // Update only completed status
       const updateData = { completed: true }
-      const updateResponse = await app.request(`/api/todos/${todoId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const updateResponse = await app.request(
+        `/api/todos/${todoId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(updateResponse, 200)
       const updatedTodo = await parseJsonResponse(updateResponse)
@@ -616,11 +740,15 @@ describe('/api/todos', () => {
 
       // Update only title
       const updateTitleData = { title: 'Updated title only' }
-      const updateTitleResponse = await app.request(`/api/todos/${todoId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateTitleData),
-      }, env)
+      const updateTitleResponse = await app.request(
+        `/api/todos/${todoId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateTitleData),
+        },
+        env,
+      )
 
       assertResponseStatus(updateTitleResponse, 200)
       const finalTodo = await parseJsonResponse(updateTitleResponse)
@@ -634,11 +762,15 @@ describe('/api/todos', () => {
 
       // Create a todo
       const createData = { title: 'Timestamp test todo' }
-      const createResponse = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(createData),
-      }, env)
+      const createResponse = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(createData),
+        },
+        env,
+      )
 
       assertResponseStatus(createResponse, 201)
       const createdTodo = await parseJsonResponse(createResponse)
@@ -646,15 +778,19 @@ describe('/api/todos', () => {
       const originalUpdatedAt = assertJsonProperty(createdTodo, 'updatedAt')
 
       // Wait a moment to ensure different timestamp
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await new Promise((resolve) => setTimeout(resolve, 10))
 
       // Update the todo
       const updateData = { title: 'Updated timestamp test' }
-      const updateResponse = await app.request(`/api/todos/${todoId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const updateResponse = await app.request(
+        `/api/todos/${todoId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(updateResponse, 200)
       const updatedTodo = await parseJsonResponse(updateResponse)
@@ -662,7 +798,9 @@ describe('/api/todos', () => {
 
       // Verify updatedAt was changed
       expect(newUpdatedAt).not.toBe(originalUpdatedAt)
-      expect(new Date(newUpdatedAt).getTime()).toBeGreaterThan(new Date(originalUpdatedAt).getTime())
+      expect(new Date(newUpdatedAt).getTime()).toBeGreaterThan(
+        new Date(originalUpdatedAt).getTime(),
+      )
     })
 
     it('should maintain createdAt when todo is updated', async () => {
@@ -671,11 +809,15 @@ describe('/api/todos', () => {
 
       // Create a todo
       const createData = { title: 'CreatedAt consistency test' }
-      const createResponse = await app.request('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(createData),
-      }, env)
+      const createResponse = await app.request(
+        '/api/todos',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(createData),
+        },
+        env,
+      )
 
       assertResponseStatus(createResponse, 201)
       const createdTodo = await parseJsonResponse(createResponse)
@@ -684,11 +826,15 @@ describe('/api/todos', () => {
 
       // Update the todo
       const updateData = { completed: true }
-      const updateResponse = await app.request(`/api/todos/${todoId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      }, env)
+      const updateResponse = await app.request(
+        `/api/todos/${todoId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData),
+        },
+        env,
+      )
 
       assertResponseStatus(updateResponse, 200)
       const updatedTodo = await parseJsonResponse(updateResponse)

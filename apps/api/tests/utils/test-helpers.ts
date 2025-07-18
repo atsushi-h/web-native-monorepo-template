@@ -1,6 +1,6 @@
 import type { Hono } from 'hono'
 import type { Env } from '../../src/app'
-import type { SelectTodo, InsertTodo } from '../../src/db/schema'
+import type { InsertTodo, SelectTodo } from '../../src/db/schema'
 
 /**
  * APIエラーレスポンスの型定義
@@ -48,7 +48,6 @@ export class ApiTestClient {
     )
   }
 }
-
 
 /**
  * テスト用のリクエストヘッダーを作成
@@ -152,7 +151,7 @@ class MockDatabase {
   }
 
   async getTodoById(id: number): Promise<SelectTodo | null> {
-    return this.todos.find(todo => todo.id === id) || null
+    return this.todos.find((todo) => todo.id === id) || null
   }
 
   async createTodo(data: InsertTodo): Promise<SelectTodo> {
@@ -169,12 +168,12 @@ class MockDatabase {
   }
 
   async updateTodo(id: number, data: Partial<InsertTodo>): Promise<SelectTodo | null> {
-    const index = this.todos.findIndex(todo => todo.id === id)
+    const index = this.todos.findIndex((todo) => todo.id === id)
     if (index === -1) return null
 
     const original = this.todos[index]
     if (!original) return null
-    
+
     const updated: SelectTodo = {
       id: original.id,
       title: data.title ?? original.title,
@@ -187,7 +186,7 @@ class MockDatabase {
   }
 
   async deleteTodo(id: number): Promise<boolean> {
-    const index = this.todos.findIndex(todo => todo.id === id)
+    const index = this.todos.findIndex((todo) => todo.id === id)
     if (index === -1) return false
 
     this.todos.splice(index, 1)
@@ -204,7 +203,7 @@ export const mockDb = new MockDatabase()
 export function createMockEnv(overrides: Partial<Env> = {}): Env {
   // テスト開始時にDBをクリア
   mockDb.clear()
-  
+
   return {
     CORS_ORIGINS: 'http://localhost:3000,https://example.com',
     API_SECRET_KEY: 'test-secret-key-12345',

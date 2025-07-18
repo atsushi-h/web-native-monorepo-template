@@ -32,7 +32,7 @@ todos.get('/', async (c) => {
         return c.json(todos)
       }
     }
-    
+
     const db = getDb(c.env)
     const todos = await db.select().from(todosTable)
     return c.json(todos)
