@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { TamaguiProvider } from 'tamagui'
 import { describe, expect, it } from 'vitest'
+import { TamaguiCard } from '../card'
 import tamaguiConfig from '../tamagui.config'
-import { TamaguiCard } from '../tamagui-card'
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
