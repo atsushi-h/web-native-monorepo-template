@@ -31,12 +31,18 @@ pnpm dev
 | `GET /api/env` | 環境変数確認（開発用） |
 | `GET /api/protected` | 認証が必要なエンドポイント |
 | `GET/POST /api/test` | テスト用エンドポイント |
+| `GET /api/test-error` | エラーハンドリングテスト（開発用） |
 
-## 認証テスト
+## セキュリティテスト
 
 ```bash
-# API_SECRET_KEYを使った認証テスト
+# API認証テスト
 curl -H "X-API-Key: dev-secret-key-12345" http://localhost:8787/api/protected
+
+# エラーハンドリングテスト（開発環境）
+curl http://localhost:8787/api/test-error
+# 開発環境: 詳細なエラー情報が表示される
+# 本番環境: "Something went wrong" のみ表示される
 ```
 
 ## ファイル説明
