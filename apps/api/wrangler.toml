@@ -1,0 +1,9 @@
+name = "nextjs-expo-monorepo-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+[env.development]
+name = "nextjs-expo-monorepo-api-dev"
+
+[env.production]
+name = "nextjs-expo-monorepo-api-prod"
