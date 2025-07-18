@@ -1,11 +1,12 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import todos from './routes/todos'
 
 export interface Env {
   CORS_ORIGINS?: string
   API_SECRET_KEY?: string
-  DATABASE_URL?: string
-  NODE_ENV?: string
+  DATABASE_URL: string
+  NODE_ENV?: 'development' | 'dev' | 'production' | 'test'
 }
 
 export function createApp() {
@@ -109,6 +110,9 @@ export function createApp() {
     })
   })
 
+  // Todoルートをマウント
+  app.route('/api/todos', todos)
+
   // 404ハンドラー
   app.notFound((c) => {
     return c.json({ error: 'Not Found', path: c.req.path }, 404)
@@ -134,3 +138,5 @@ export function createApp() {
 
   return app
 }
+
+export type AppType = ReturnType<typeof createApp>
