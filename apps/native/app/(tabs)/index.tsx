@@ -1,5 +1,5 @@
-import { TamaguiButton } from '@repo/ui/tamagui-button'
-import { TamaguiCard } from '@repo/ui/tamagui-card'
+import { TamaguiButton } from '@repo/ui/button'
+import { TamaguiCard } from '@repo/ui/card'
 import { StyleSheet } from 'react-native'
 import { YStack } from 'tamagui'
 

@@ -54,8 +54,8 @@ A card component with title, description, and footer support.
 
 ### Web (Next.js)
 ```tsx
-import { TamaguiButton } from '@repo/ui/tamagui-button'
-import { TamaguiCard } from '@repo/ui/tamagui-card'
+import { TamaguiButton } from '@repo/ui/button'
+import { TamaguiCard } from '@repo/ui/card'
 import { YStack } from 'tamagui'
 
 export default function Page() {
@@ -72,8 +72,8 @@ export default function Page() {
 ### Native (Expo)
 The same components work identically in React Native:
 ```tsx
-import { TamaguiButton } from '@repo/ui/tamagui-button'
-import { TamaguiCard } from '@repo/ui/tamagui-card'
+import { TamaguiButton } from '@repo/ui/button'
+import { TamaguiCard } from '@repo/ui/card'
 
 // Use exactly the same way as on web!
 ```
