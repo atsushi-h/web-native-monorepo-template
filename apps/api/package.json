@@ -11,15 +11,23 @@
     "fix": "biome check --write .",
     "lint": "biome lint .",
     "format": "biome format --write .",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism"
   },
   "dependencies": {
     "hono": "4.8.5"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "0.8.55",
     "@cloudflare/workers-types": "4.20250718.0",
     "@repo/typescript-config": "workspace:*",
+    "@types/node": "22.15.3",
     "typescript": "5.8.2",
+    "vitest": "3.2.4",
     "wrangler": "4.25.0"
   }
 }
