@@ -60,6 +60,13 @@ pnpm check-types   # TypeScript型チェック
 pnpm check         # 包括的チェック
 ```
 
+**重要**: いずれかの品質チェックが失敗した場合は、PR作成を中止してください。
+- `pnpm fix`が失敗した場合 → 修正が必要なエラーを報告し、処理を停止
+- `pnpm check-types`が失敗した場合 → TypeScript型エラーを報告し、処理を停止  
+- `pnpm check`が失敗した場合 → lintエラーを報告し、処理を停止
+
+エラーが発生した場合は、ユーザーにエラー内容を説明し、手動で修正するよう促してください。
+
 ### 5. プッシュとPR作成
 ```bash
 git push -u origin <branch-name>  # 新規ブランチの場合
