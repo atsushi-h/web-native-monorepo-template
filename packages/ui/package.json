@@ -3,26 +3,41 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    ".": "./src/index.ts",
+    "./*": "./src/*.tsx",
+    "./tamagui.config": "./src/tamagui.config.ts"
   },
+  "main": "./src/index.ts",
   "scripts": {
     "check": "biome check .",
     "fix": "biome check --write .",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.3.0",
     "@turbo/gen": "2.5.0",
     "@types/node": "22.15.3",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.1.6",
-    "typescript": "5.8.2"
+    "@vitejs/plugin-react": "4.6.0",
+    "jsdom": "26.1.0",
+    "typescript": "5.8.2",
+    "vitest": "3.2.4"
   },
   "dependencies": {
+    "@tamagui/animations-react-native": "1.132.7",
+    "@tamagui/config": "1.132.7",
+    "@tamagui/core": "1.132.7",
+    "@tamagui/font-inter": "1.132.7",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "tamagui": "1.132.7"
   }
 }
