@@ -29,6 +29,7 @@ dist
 
 # Wrangler (Cloudflare Workers)
 .wrangler/
+**/.dev.vars
 
 
 # Debug

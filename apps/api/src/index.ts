@@ -1,17 +1,27 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
-const app = new Hono()
+interface Env {
+  CORS_ORIGINS?: string
+  API_SECRET_KEY?: string
+  DATABASE_URL?: string
+}
+
+const app = new Hono<{ Bindings: Env }>()
 
 // CORS設定
-app.use(
-  '*',
-  cors({
-    origin: ['http://localhost:3000', 'http://localhost:8081'],
+app.use('*', (c, next) => {
+  const corsOrigins = c.env?.CORS_ORIGINS?.split(',').map(origin => origin.trim()) || []
+  
+  // 本番環境では明示的なオリジン指定を強制
+  const origins = corsOrigins.length > 0 ? corsOrigins : ['http://localhost:3000']
+  
+  return cors({
+    origin: origins,
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
-  }),
-)
+  })(c, next)
+})
 
 // ルートエンドポイント
 app.get('/', (c) => {
@@ -19,6 +29,7 @@ app.get('/', (c) => {
     message: 'Hello from Hono API!',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
+    cors_origins: c.env?.CORS_ORIGINS ? c.env.CORS_ORIGINS.split(',') : 'not configured',
   })
 })
 
@@ -38,6 +49,40 @@ app.get('/api/test', (c) => {
     method: c.req.method,
     url: c.req.url,
     headers: Object.fromEntries(c.req.raw.headers.entries()),
+  })
+})
+
+// 環境変数確認エンドポイント（開発用）
+app.get('/api/env', (c) => {
+  return c.json({
+    message: 'Environment variables check',
+    cors_origins: c.env?.CORS_ORIGINS || 'not set',
+    cors_origins_array: c.env?.CORS_ORIGINS?.split(',') || [],
+    has_env: !!c.env,
+    // 秘密情報は存在確認のみ（値は表示しない）
+    has_api_secret: !!c.env?.API_SECRET_KEY,
+    has_database_url: !!c.env?.DATABASE_URL,
+  })
+})
+
+// 秘密情報が必要なエンドポイント（テスト用）
+app.get('/api/protected', (c) => {
+  const apiKey = c.env?.API_SECRET_KEY
+  
+  if (!apiKey) {
+    return c.json({ error: 'API_SECRET_KEY not configured' }, 500)
+  }
+  
+  // 実際の認証ロジック例
+  const providedKey = c.req.header('X-API-Key')
+  if (providedKey !== apiKey) {
+    return c.json({ error: 'Invalid API key' }, 401)
+  }
+  
+  return c.json({
+    message: 'Access granted to protected resource',
+    database_connected: !!c.env?.DATABASE_URL,
+    timestamp: new Date().toISOString(),
   })
 })
 
