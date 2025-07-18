@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { TamaguiProvider } from 'tamagui'
 import { describe, expect, it, vi } from 'vitest'
+import { TamaguiButton } from '../button'
 import tamaguiConfig from '../tamagui.config'
-import { TamaguiButton } from '../tamagui-button'
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
