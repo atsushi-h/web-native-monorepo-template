@@ -111,9 +111,9 @@ vi.mock('@react-navigation/native', () => ({
 }))
 
 // Enhanced react-native-reanimated mock
-vi.mock('react-native-reanimated', () => {
-  const _React = require('react')
-  const { View, Text, ScrollView } = require('react-native')
+vi.mock('react-native-reanimated', async () => {
+  const _React = await import('react')
+  const { View, Text, ScrollView } = await import('react-native')
 
   return {
     default: {

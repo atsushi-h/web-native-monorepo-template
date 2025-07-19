@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom'
+import type React from 'react'
 import { vi } from 'vitest'
 
 // Mock window.matchMedia for Tamagui
@@ -74,16 +75,32 @@ vi.mock('next/navigation', () => ({
 
 // Mock Next.js image component
 vi.mock('next/image', () => ({
-  default: vi.fn(({ src, alt, ...props }) => {
-    return { src, alt, ...props }
-  }),
+  default: vi
+    .fn()
+    .mockImplementation(
+      ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => {
+        return { src, alt, ...props }
+      },
+    ),
 }))
 
 // Mock Next.js link component
 vi.mock('next/link', () => ({
-  default: vi.fn(({ children, href, ...props }) => {
-    return { children, href, ...props }
-  }),
+  default: vi
+    .fn()
+    .mockImplementation(
+      ({
+        children,
+        href,
+        ...props
+      }: {
+        children: React.ReactNode
+        href: string
+        [key: string]: unknown
+      }) => {
+        return { children, href, ...props }
+      },
+    ),
 }))
 
 // Mock process.env
