@@ -111,15 +111,12 @@ vi.mock('@react-navigation/native', () => ({
 }))
 
 // Enhanced react-native-reanimated mock
-vi.mock('react-native-reanimated', async () => {
-  const _React = await import('react')
-  const { View, Text, ScrollView } = await import('react-native')
-
+vi.mock('react-native-reanimated', () => {
   return {
     default: {
-      View,
-      Text,
-      ScrollView,
+      View: 'View',
+      Text: 'Text',
+      ScrollView: 'ScrollView',
       createAnimatedComponent: (component) => component,
       interpolate: () => 0,
       Extrapolate: { CLAMP: 'clamp', EXTEND: 'extend', IDENTITY: 'identity' },
