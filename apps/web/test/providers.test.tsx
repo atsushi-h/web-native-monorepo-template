@@ -7,19 +7,19 @@ describe('ClientProviders', () => {
     render(
       <ClientProviders>
         <div>Test Content</div>
-      </ClientProviders>
+      </ClientProviders>,
     )
-    
+
     expect(screen.getByText('Test Content')).toBeInTheDocument()
   })
 
   it('provides Tamagui context to children', () => {
     render(
       <ClientProviders>
-        <div data-testid="child">Child Component</div>
-      </ClientProviders>
+        <div data-testid='child'>Child Component</div>
+      </ClientProviders>,
     )
-    
+
     const child = screen.getByTestId('child')
     expect(child).toBeInTheDocument()
   })

@@ -89,7 +89,7 @@ vi.mock('next/link', () => ({
 // Mock process.env
 Object.defineProperty(process, 'env', {
   value: {
-    NODE_ENV: 'test',
     ...process.env,
+    NODE_ENV: 'test',
   },
 })

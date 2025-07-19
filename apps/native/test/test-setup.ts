@@ -86,7 +86,7 @@ vi.mock('expo-haptics', () => ({
 }))
 
 vi.mock('expo-status-bar', () => ({
-  StatusBar: ({ children, ...props }) => children,
+  StatusBar: ({ children }: { children?: React.ReactNode }) => children,
   setStatusBarStyle: vi.fn(),
   setStatusBarBackgroundColor: vi.fn(),
 }))
@@ -112,9 +112,9 @@ vi.mock('@react-navigation/native', () => ({
 
 // Enhanced react-native-reanimated mock
 vi.mock('react-native-reanimated', () => {
-  const React = require('react')
+  const _React = require('react')
   const { View, Text, ScrollView } = require('react-native')
-  
+
   return {
     default: {
       View,
@@ -130,7 +130,7 @@ vi.mock('react-native-reanimated', () => {
     withSpring: (value) => value,
     withRepeat: (value) => value,
     withSequence: (value) => value,
-    withDelay: (delay, value) => value,
+    withDelay: (_delay, value) => value,
     runOnJS: (fn) => fn,
     runOnUI: (fn) => fn,
     useAnimatedRef: () => ({ current: null }),
