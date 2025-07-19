@@ -1,9 +1,132 @@
+import { zValidator } from '@hono/zod-validator'
 import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
-import { validator } from 'hono/validator'
+import { z } from 'zod'
 import type { Env } from '../app'
 import { getDb } from '../db'
 import { todosTable } from '../db/schema'
+
+// Zod schemas for validation
+const ParamSchema = z.object({
+  id: z
+    .string()
+    .regex(/^\d+$/, 'Invalid ID format')
+    .transform((val) => Number.parseInt(val, 10))
+    .refine((val) => val > 0, 'ID must be positive'),
+})
+
+const CreateTodoSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, 'Title cannot be empty')
+    .max(255, 'Title must be 255 characters or less'),
+  completed: z.boolean().default(false),
+})
+
+const UpdateTodoSchema = z
+  .object({
+    title: z
+      .string()
+      .trim()
+      .min(1, 'Title cannot be empty')
+      .max(255, 'Title must be 255 characters or less')
+      .optional(),
+    completed: z.boolean().optional(),
+  })
+  .refine(
+    (data) => data.title !== undefined || data.completed !== undefined,
+    'At least one field (title or completed) is required',
+  )
+
+// Custom error handlers for backward compatibility with tests
+// Using explicit function declarations to avoid complex type constraints
+// biome-ignore lint/suspicious/noExplicitAny: zValidator Hook type is complex
+function handleParamValidationError(result: any, c: any) {
+  if (!result.success) {
+    return c.json({ error: 'Invalid ID' }, 400)
+  }
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: zValidator Hook type is complex
+function handleCreateTodoError(result: any, c: any) {
+  if (!result.success) {
+    const issues = result.error?.issues || []
+    const firstIssue = issues[0]
+
+    if (!firstIssue) {
+      return c.json({ error: 'Invalid JSON' }, 400)
+    }
+
+    // Handle missing required field (title)
+    if (
+      firstIssue.code === 'invalid_type' &&
+      firstIssue.expected === 'string' &&
+      firstIssue.received === 'undefined' &&
+      firstIssue.path?.[0] === 'title'
+    ) {
+      return c.json({ error: 'Title is required and must be a string' }, 400)
+    }
+
+    // Handle wrong type for title
+    if (
+      firstIssue.code === 'invalid_type' &&
+      firstIssue.expected === 'string' &&
+      firstIssue.path?.[0] === 'title'
+    ) {
+      return c.json({ error: 'Title is required and must be a string' }, 400)
+    }
+
+    // Handle title validation errors
+    if (firstIssue?.path?.[0] === 'title') {
+      if (firstIssue.code === 'too_small') {
+        return c.json({ error: 'Title cannot be empty' }, 400)
+      }
+      if (firstIssue.code === 'too_big') {
+        return c.json({ error: 'Title must be 255 characters or less' }, 400)
+      }
+    }
+
+    // Handle completed field errors
+    if (firstIssue?.path?.[0] === 'completed' && firstIssue.code === 'invalid_type') {
+      return c.json({ error: 'Completed must be a boolean' }, 400)
+    }
+
+    return c.json({ error: 'Invalid JSON' }, 400)
+  }
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: zValidator Hook type is complex
+function handleUpdateTodoError(result: any, c: any) {
+  if (!result.success) {
+    const issues = result.error?.issues || []
+    const firstIssue = issues[0]
+
+    if (!firstIssue) {
+      return c.json({ error: 'Validation failed' }, 400)
+    }
+
+    if (firstIssue?.message === 'At least one field (title or completed) is required') {
+      return c.json({ error: 'At least one field (title or completed) is required' }, 400)
+    }
+    if (firstIssue?.path?.[0] === 'title') {
+      if (firstIssue.code === 'too_small') {
+        return c.json({ error: 'Title cannot be empty' }, 400)
+      }
+      if (firstIssue.code === 'too_big') {
+        return c.json({ error: 'Title must be 255 characters or less' }, 400)
+      }
+      if (firstIssue.code === 'invalid_type') {
+        return c.json({ error: 'Title must be a string' }, 400)
+      }
+      return c.json({ error: 'Title must be a string' }, 400)
+    }
+    if (firstIssue?.path?.[0] === 'completed') {
+      return c.json({ error: 'Completed must be a boolean' }, 400)
+    }
+    return c.json({ error: 'Validation failed' }, 400)
+  }
+}
 
 // テスト環境でのモックDB使用のため
 async function getMockDb() {
@@ -43,160 +166,69 @@ todos.get('/', async (c) => {
 })
 
 // Get a single todo by ID
-todos.get(
-  '/:id',
-  validator('param', (value, c) => {
-    const idParam = (value as Record<string, string>).id
-    if (!idParam) {
-      return c.json({ error: 'ID parameter is required' }, 400)
-    }
-    const id = Number.parseInt(idParam)
-    if (Number.isNaN(id) || id <= 0) {
-      return c.json({ error: 'Invalid ID' }, 400)
-    }
-    return { id }
-  }),
-  async (c) => {
-    try {
-      const { id } = c.req.valid('param')
+todos.get('/:id', zValidator('param', ParamSchema, handleParamValidationError), async (c) => {
+  try {
+    const { id } = c.req.valid('param')
 
-      if (isTestEnvironment(c.env)) {
-        const mockDb = await getMockDb()
-        if (mockDb) {
-          const todo = await mockDb.getTodoById(id)
-          if (!todo) {
-            return c.json({ error: 'Todo not found' }, 404)
-          }
-          return c.json(todo)
+    if (isTestEnvironment(c.env)) {
+      const mockDb = await getMockDb()
+      if (mockDb) {
+        const todo = await mockDb.getTodoById(id)
+        if (!todo) {
+          return c.json({ error: 'Todo not found' }, 404)
         }
+        return c.json(todo)
       }
-
-      const db = getDb(c.env)
-      const [todo] = await db.select().from(todosTable).where(eq(todosTable.id, id))
-
-      if (!todo) {
-        return c.json({ error: 'Todo not found' }, 404)
-      }
-
-      return c.json(todo)
-    } catch (error) {
-      console.error('Error fetching todo:', error)
-      return c.json({ error: 'Failed to fetch todo' }, 500)
     }
-  },
-)
+
+    const db = getDb(c.env)
+    const [todo] = await db.select().from(todosTable).where(eq(todosTable.id, id))
+
+    if (!todo) {
+      return c.json({ error: 'Todo not found' }, 404)
+    }
+
+    return c.json(todo)
+  } catch (error) {
+    console.error('Error fetching todo:', error)
+    return c.json({ error: 'Failed to fetch todo' }, 500)
+  }
+})
 
 // Create a new todo
-todos.post(
-  '/',
-  validator('json', (value, c) => {
-    if (!value || typeof value !== 'object') {
-      return c.json({ error: 'Invalid JSON' }, 400)
-    }
+todos.post('/', zValidator('json', CreateTodoSchema, handleCreateTodoError), async (c) => {
+  try {
+    const { title, completed } = c.req.valid('json')
 
-    const { title, completed } = value as Record<string, unknown>
-
-    if (title === undefined || title === null) {
-      return c.json({ error: 'Title is required and must be a string' }, 400)
-    }
-
-    if (typeof title !== 'string') {
-      return c.json({ error: 'Title is required and must be a string' }, 400)
-    }
-
-    if (title.trim().length === 0) {
-      return c.json({ error: 'Title cannot be empty' }, 400)
-    }
-
-    if (title.length > 255) {
-      return c.json({ error: 'Title must be 255 characters or less' }, 400)
-    }
-
-    if (completed !== undefined && typeof completed !== 'boolean') {
-      return c.json({ error: 'Completed must be a boolean' }, 400)
-    }
-
-    return {
-      title: title.trim(),
-      completed: completed ?? false,
-    }
-  }),
-  async (c) => {
-    try {
-      const { title, completed } = c.req.valid('json')
-
-      if (isTestEnvironment(c.env)) {
-        const mockDb = await getMockDb()
-        if (mockDb) {
-          const newTodo = await mockDb.createTodo({ title, completed })
-          return c.json(newTodo, 201)
-        }
+    if (isTestEnvironment(c.env)) {
+      const mockDb = await getMockDb()
+      if (mockDb) {
+        const newTodo = await mockDb.createTodo({ title, completed })
+        return c.json(newTodo, 201)
       }
-
-      const db = getDb(c.env)
-      const [newTodo] = await db
-        .insert(todosTable)
-        .values({
-          title,
-          completed,
-        })
-        .returning()
-
-      return c.json(newTodo, 201)
-    } catch (error) {
-      console.error('Error creating todo:', error)
-      return c.json({ error: 'Failed to create todo' }, 500)
     }
-  },
-)
+
+    const db = getDb(c.env)
+    const [newTodo] = await db
+      .insert(todosTable)
+      .values({
+        title,
+        completed,
+      })
+      .returning()
+
+    return c.json(newTodo, 201)
+  } catch (error) {
+    console.error('Error creating todo:', error)
+    return c.json({ error: 'Failed to create todo' }, 500)
+  }
+})
 
 // Update a todo
 todos.put(
   '/:id',
-  validator('param', (value, c) => {
-    const idParam = (value as Record<string, string>).id
-    if (!idParam) {
-      return c.json({ error: 'ID parameter is required' }, 400)
-    }
-    const id = Number.parseInt(idParam)
-    if (Number.isNaN(id) || id <= 0) {
-      return c.json({ error: 'Invalid ID' }, 400)
-    }
-    return { id }
-  }),
-  validator('json', (value, c) => {
-    if (!value || typeof value !== 'object') {
-      return c.json({ error: 'Invalid JSON' }, 400)
-    }
-
-    const { title, completed } = value as Record<string, unknown>
-
-    if (title === undefined && completed === undefined) {
-      return c.json({ error: 'At least one field (title or completed) is required' }, 400)
-    }
-
-    if (title !== undefined) {
-      if (typeof title !== 'string') {
-        return c.json({ error: 'Title must be a string' }, 400)
-      }
-      if (title.trim().length === 0) {
-        return c.json({ error: 'Title cannot be empty' }, 400)
-      }
-      if (title.length > 255) {
-        return c.json({ error: 'Title must be 255 characters or less' }, 400)
-      }
-    }
-
-    if (completed !== undefined && typeof completed !== 'boolean') {
-      return c.json({ error: 'Completed must be a boolean' }, 400)
-    }
-
-    const updateData: { title?: string; completed?: boolean } = {}
-    if (title !== undefined) updateData.title = title.trim()
-    if (completed !== undefined) updateData.completed = completed
-
-    return updateData
-  }),
+  zValidator('param', ParamSchema, handleParamValidationError),
+  zValidator('json', UpdateTodoSchema, handleUpdateTodoError),
   async (c) => {
     try {
       const { id } = c.req.valid('param')
@@ -233,48 +265,34 @@ todos.put(
 )
 
 // Delete a todo
-todos.delete(
-  '/:id',
-  validator('param', (value, c) => {
-    const idParam = (value as Record<string, string>).id
-    if (!idParam) {
-      return c.json({ error: 'ID parameter is required' }, 400)
-    }
-    const id = Number.parseInt(idParam)
-    if (Number.isNaN(id) || id <= 0) {
-      return c.json({ error: 'Invalid ID' }, 400)
-    }
-    return { id }
-  }),
-  async (c) => {
-    try {
-      const { id } = c.req.valid('param')
+todos.delete('/:id', zValidator('param', ParamSchema, handleParamValidationError), async (c) => {
+  try {
+    const { id } = c.req.valid('param')
 
-      if (isTestEnvironment(c.env)) {
-        const mockDb = await getMockDb()
-        if (mockDb) {
-          const deleted = await mockDb.deleteTodo(id)
-          if (!deleted) {
-            return c.json({ error: 'Todo not found' }, 404)
-          }
-          return c.json({ message: 'Todo deleted successfully' })
+    if (isTestEnvironment(c.env)) {
+      const mockDb = await getMockDb()
+      if (mockDb) {
+        const deleted = await mockDb.deleteTodo(id)
+        if (!deleted) {
+          return c.json({ error: 'Todo not found' }, 404)
         }
+        return c.json({ message: 'Todo deleted successfully' })
       }
-
-      const db = getDb(c.env)
-      const [deletedTodo] = await db.delete(todosTable).where(eq(todosTable.id, id)).returning()
-
-      if (!deletedTodo) {
-        return c.json({ error: 'Todo not found' }, 404)
-      }
-
-      return c.json({ message: 'Todo deleted successfully', todo: deletedTodo })
-    } catch (error) {
-      console.error('Error deleting todo:', error)
-      return c.json({ error: 'Failed to delete todo' }, 500)
     }
-  },
-)
+
+    const db = getDb(c.env)
+    const [deletedTodo] = await db.delete(todosTable).where(eq(todosTable.id, id)).returning()
+
+    if (!deletedTodo) {
+      return c.json({ error: 'Todo not found' }, 404)
+    }
+
+    return c.json({ message: 'Todo deleted successfully', todo: deletedTodo })
+  } catch (error) {
+    console.error('Error deleting todo:', error)
+    return c.json({ error: 'Failed to delete todo' }, 500)
+  }
+})
 
 export default todos
 export type TodosApp = typeof todos
