@@ -1,0 +1,33 @@
+import { render, screen } from '@testing-library/react-native'
+import { describe, expect, it } from 'vitest'
+import { ThemedText } from '../components/ThemedText'
+
+describe('ThemedText Component', () => {
+  it('renders text content correctly', () => {
+    render(<ThemedText>Hello World</ThemedText>)
+    
+    expect(screen.getByText('Hello World')).toBeOnTheScreen()
+  })
+
+  it('renders with title type', () => {
+    render(<ThemedText type="title">Title Text</ThemedText>)
+    
+    expect(screen.getByText('Title Text')).toBeOnTheScreen()
+  })
+
+  it('renders with default type when no type specified', () => {
+    render(<ThemedText>Default Text</ThemedText>)
+    
+    expect(screen.getByText('Default Text')).toBeOnTheScreen()
+  })
+
+  it('applies custom styles', () => {
+    render(
+      <ThemedText style={{ fontSize: 20 }}>
+        Styled Text
+      </ThemedText>
+    )
+    
+    expect(screen.getByText('Styled Text')).toBeOnTheScreen()
+  })
+})

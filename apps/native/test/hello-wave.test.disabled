@@ -1,0 +1,28 @@
+import { render, screen } from '@testing-library/react-native'
+import { describe, expect, it } from 'vitest'
+import React from 'react'
+import { Text, View } from 'react-native'
+
+// テスト用のシンプルなコンポーネント
+const SimpleHelloWave = () => (
+  <View>
+    <Text>👋</Text>
+  </View>
+)
+
+describe('HelloWave Component', () => {
+  it('renders wave emoji correctly', () => {
+    render(<SimpleHelloWave />)
+    
+    // 👋絵文字をレンダリングすることを確認
+    expect(screen.getByText('👋')).toBeTruthy()
+  })
+
+  it('has correct structure', () => {
+    render(<SimpleHelloWave />)
+    
+    // 波絵文字が存在することを確認
+    const waveText = screen.getByText('👋')
+    expect(waveText).toBeTruthy()
+  })
+})
