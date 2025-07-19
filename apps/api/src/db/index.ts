@@ -15,6 +15,7 @@ export function getDb(env: Env) {
   if (connectionString.startsWith('mock://')) {
     // モックDB用の空のドライバーを返す
     // 実際のクエリはルート層でモックされる
+    // biome-ignore lint/suspicious/noExplicitAny: Mock DB placeholder for testing
     return null as any
   }
 
