@@ -1,0 +1,177 @@
+import { render, screen, userEvent } from '@testing-library/react-native'
+import { describe, expect, it, vi } from 'vitest'
+import { TamaguiProvider } from 'tamagui'
+import { TamaguiButton } from '@repo/ui/button'
+import { TamaguiCard } from '@repo/ui/card'
+import { tamaguiConfig } from '@repo/ui'
+
+// テスト用のラッパーコンポーネント
+const TestWrapper = ({ children }: { children: React.ReactNode }) => (
+  <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
+)
+
+describe('Tamagui Integration Tests', () => {
+  describe('TamaguiButton', () => {
+    it('renders button with text', () => {
+      render(
+        <TestWrapper>
+          <TamaguiButton>Test Button</TamaguiButton>
+        </TestWrapper>
+      )
+      
+      expect(screen.getByText('Test Button')).toBeOnTheScreen()
+    })
+
+    it('handles press events', async () => {
+      const handlePress = vi.fn()
+      const user = userEvent.setup()
+      
+      render(
+        <TestWrapper>
+          <TamaguiButton onPress={handlePress}>Clickable Button</TamaguiButton>
+        </TestWrapper>
+      )
+      
+      await user.press(screen.getByText('Clickable Button'))
+      expect(handlePress).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders with different variants', () => {
+      render(
+        <TestWrapper>
+          <TamaguiButton variant="primary">Primary</TamaguiButton>
+          <TamaguiButton variant="secondary">Secondary</TamaguiButton>
+          <TamaguiButton variant="ghost">Ghost</TamaguiButton>
+        </TestWrapper>
+      )
+      
+      expect(screen.getByText('Primary')).toBeOnTheScreen()
+      expect(screen.getByText('Secondary')).toBeOnTheScreen()
+      expect(screen.getByText('Ghost')).toBeOnTheScreen()
+    })
+
+    it('respects disabled state', async () => {
+      const handlePress = vi.fn()
+      const user = userEvent.setup()
+      
+      render(
+        <TestWrapper>
+          <TamaguiButton onPress={handlePress} disabled>
+            Disabled Button
+          </TamaguiButton>
+        </TestWrapper>
+      )
+      
+      const button = screen.getByText('Disabled Button')
+      await user.press(button)
+      
+      // 無効化されたボタンはクリックされない
+      expect(handlePress).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('TamaguiCard', () => {
+    it('renders card with title and description', () => {
+      render(
+        <TestWrapper>
+          <TamaguiCard
+            title="Test Card"
+            description="This is a test card description"
+          >
+            <TamaguiButton>Card Button</TamaguiButton>
+          </TamaguiCard>
+        </TestWrapper>
+      )
+      
+      expect(screen.getByText('Test Card')).toBeOnTheScreen()
+      expect(screen.getByText('This is a test card description')).toBeOnTheScreen()
+      expect(screen.getByText('Card Button')).toBeOnTheScreen()
+    })
+
+    it('renders card with footer', () => {
+      const footer = (
+        <TamaguiButton variant="primary">Footer Button</TamaguiButton>
+      )
+      
+      render(
+        <TestWrapper>
+          <TamaguiCard
+            title="Card with Footer"
+            description="This card has a footer"
+            footer={footer}
+          >
+            Card content
+          </TamaguiCard>
+        </TestWrapper>
+      )
+      
+      expect(screen.getByText('Card with Footer')).toBeOnTheScreen()
+      expect(screen.getByText('This card has a footer')).toBeOnTheScreen()
+      expect(screen.getByText('Card content')).toBeOnTheScreen()
+      expect(screen.getByText('Footer Button')).toBeOnTheScreen()
+    })
+
+    it('handles interactions within card', async () => {
+      const handleButtonPress = vi.fn()
+      const user = userEvent.setup()
+      
+      render(
+        <TestWrapper>
+          <TamaguiCard title="Interactive Card" description="Click the button">
+            <TamaguiButton onPress={handleButtonPress}>
+              Interactive Button
+            </TamaguiButton>
+          </TamaguiCard>
+        </TestWrapper>
+      )
+      
+      await user.press(screen.getByText('Interactive Button'))
+      expect(handleButtonPress).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('Complex Component Integration', () => {
+    it('renders multiple Tamagui components together', async () => {
+      const handlePrimaryPress = vi.fn()
+      const handleSecondaryPress = vi.fn()
+      const user = userEvent.setup()
+      
+      render(
+        <TestWrapper>
+          <TamaguiCard
+            title="Complex Integration"
+            description="Testing multiple components"
+            footer={
+              <TamaguiButton
+                onPress={handlePrimaryPress}
+                variant="primary"
+              >
+                Primary Action
+              </TamaguiButton>
+            }
+          >
+            <TamaguiButton
+              onPress={handleSecondaryPress}
+              variant="secondary"
+            >
+              Secondary Action
+            </TamaguiButton>
+          </TamaguiCard>
+        </TestWrapper>
+      )
+      
+      // 全ての要素が表示されることを確認
+      expect(screen.getByText('Complex Integration')).toBeOnTheScreen()
+      expect(screen.getByText('Testing multiple components')).toBeOnTheScreen()
+      expect(screen.getByText('Primary Action')).toBeOnTheScreen()
+      expect(screen.getByText('Secondary Action')).toBeOnTheScreen()
+      
+      // それぞれのボタンが動作することを確認
+      await user.press(screen.getByText('Primary Action'))
+      expect(handlePrimaryPress).toHaveBeenCalledTimes(1)
+      
+      await user.press(screen.getByText('Secondary Action'))
+      expect(handleSecondaryPress).toHaveBeenCalledTimes(1)
+    })
+  })
+})

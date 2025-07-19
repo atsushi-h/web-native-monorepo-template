@@ -1,0 +1,118 @@
+import { render, screen, fireEvent } from '@testing-library/react-native'
+import { describe, expect, it, vi } from 'vitest'
+import React from 'react'
+import { Text, View, Pressable, TextInput } from 'react-native'
+
+// 基本的なReact Nativeコンポーネントのテスト
+describe('Basic React Native Components', () => {
+  describe('Text Component', () => {
+    it('renders text content', () => {
+      render(<Text>Hello World</Text>)
+      expect(screen.getByText('Hello World')).toBeTruthy()
+    })
+
+    it('renders with testID', () => {
+      render(<Text testID="my-text">Test Text</Text>)
+      expect(screen.getByTestId('my-text')).toBeTruthy()
+    })
+  })
+
+  describe('View Component', () => {
+    it('renders child components', () => {
+      render(
+        <View testID="container">
+          <Text>Child Text</Text>
+        </View>
+      )
+      
+      expect(screen.getByTestId('container')).toBeTruthy()
+      expect(screen.getByText('Child Text')).toBeTruthy()
+    })
+  })
+
+  describe('Pressable Component', () => {
+    it('handles press events', () => {
+      const handlePress = vi.fn()
+      
+      render(
+        <Pressable onPress={handlePress} testID="pressable">
+          <Text>Press Me</Text>
+        </Pressable>
+      )
+      
+      fireEvent.press(screen.getByTestId('pressable'))
+      expect(handlePress).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders with accessibility role', () => {
+      render(
+        <Pressable accessibilityRole="button">
+          <Text>Button Text</Text>
+        </Pressable>
+      )
+      
+      expect(screen.getByRole('button')).toBeTruthy()
+    })
+  })
+
+  describe('TextInput Component', () => {
+    it('handles text input changes', () => {
+      const handleChangeText = vi.fn()
+      
+      render(
+        <TextInput
+          value=""
+          onChangeText={handleChangeText}
+          placeholder="Enter text"
+          testID="text-input"
+        />
+      )
+      
+      fireEvent.changeText(screen.getByTestId('text-input'), 'Hello')
+      expect(handleChangeText).toHaveBeenCalledWith('Hello')
+    })
+
+    it('can be found by placeholder', () => {
+      render(
+        <TextInput placeholder="Search..." />
+      )
+      
+      expect(screen.getByPlaceholderText('Search...')).toBeTruthy()
+    })
+  })
+
+  describe('Complex Component Integration', () => {
+    it('renders and handles form-like interaction', () => {
+      const handleSubmit = vi.fn()
+      const handleTextChange = vi.fn()
+      
+      const FormComponent = () => (
+        <View testID="form">
+          <Text>Simple Form</Text>
+          <TextInput
+            placeholder="Username"
+            onChangeText={handleTextChange}
+            testID="username-input"
+          />
+          <Pressable onPress={handleSubmit} testID="submit-button">
+            <Text>Submit</Text>
+          </Pressable>
+        </View>
+      )
+      
+      render(<FormComponent />)
+      
+      // フォームが正しくレンダリングされることを確認
+      expect(screen.getByText('Simple Form')).toBeTruthy()
+      expect(screen.getByPlaceholderText('Username')).toBeTruthy()
+      expect(screen.getByText('Submit')).toBeTruthy()
+      
+      // インタラクションをテスト
+      fireEvent.changeText(screen.getByTestId('username-input'), 'testuser')
+      expect(handleTextChange).toHaveBeenCalledWith('testuser')
+      
+      fireEvent.press(screen.getByTestId('submit-button'))
+      expect(handleSubmit).toHaveBeenCalledTimes(1)
+    })
+  })
+})
