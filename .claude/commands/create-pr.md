@@ -9,8 +9,8 @@ argument-hint: "[PR説明] - PR作成時の追加説明（オプション）"
 現在の変更から包括的なPR作成ワークフローを実行します：
 
 1. **ブランチ管理**: mainブランチにいる場合は適切なブランチを作成
-2. **コミット処理**: 変更内容を分析して意味のある単位でコミットを分割
-3. **品質チェック**: pnpm fix、pnpm check-types、pnpm checkを実行
+2. **品質チェック**: pnpm fix、pnpm check-types、pnpm checkを実行
+3. **コミット処理**: 品質チェック通過後、変更内容を分析して意味のある単位でコミットを分割
 4. **プッシュ**: ブランチをリモートにプッシュ
 5. **PR作成**: プロジェクトのテンプレートに従ってPRを作成
 
@@ -44,28 +44,28 @@ mainブランチにいる場合、変更内容を分析して適切なブラン�
 - テスト: `test/description`
 - その他: `chore/description`
 
-### 3. 変更の分析とコミット
-変更されたファイルを分析し、論理的な単位でコミットを分割：
-```bash
-git add <related-files>
-git commit -m "feat: 機能A実装"
-git add <other-files>
-git commit -m "style: コードフォーマット調整"
-```
-
-### 4. 品質チェック
+### 3. 品質チェック
 ```bash
 pnpm fix           # コード自動修正
 pnpm check-types   # TypeScript型チェック
 pnpm check         # 包括的チェック
 ```
 
-**重要**: いずれかの品質チェックが失敗した場合は、PR作成を中止してください。
+**重要**: いずれかの品質チェックが失敗した場合は、コミットを行わずにPR作成を中止してください。
 - `pnpm fix`が失敗した場合 → 修正が必要なエラーを報告し、処理を停止
 - `pnpm check-types`が失敗した場合 → TypeScript型エラーを報告し、処理を停止  
 - `pnpm check`が失敗した場合 → lintエラーを報告し、処理を停止
 
 エラーが発生した場合は、ユーザーにエラー内容を説明し、手動で修正するよう促してください。
+
+### 4. 変更の分析とコミット
+品質チェック通過後、変更されたファイルを分析し、論理的な単位でコミットを分割：
+```bash
+git add <related-files>
+git commit -m "feat: 機能A実装"
+git add <other-files>
+git commit -m "style: コードフォーマット調整"
+```
 
 ### 5. プッシュとPR作成
 ```bash
@@ -85,7 +85,7 @@ gh pr create --title "<title>" --body "<body>" --base main
   - `packages/ui` → 共有UIコンポーネント
   - `packages/typescript-config` → TypeScript設定
 - **変更の種類**: ブランチ名から自動判定
-- **技術的チェックリスト**: 品質チェック実行後に自動チェック
+- **技術的チェックリスト**: 品質チェック通過後に自動チェック
 
 ## 引数の使用
 
