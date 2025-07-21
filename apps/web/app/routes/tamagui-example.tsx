@@ -1,5 +1,3 @@
-'use client'
-
 import { TamaguiButton } from '@repo/ui/button'
 import { TamaguiCard } from '@repo/ui/card'
 import { useState } from 'react'
@@ -9,7 +7,6 @@ export default function TamaguiExample() {
 
   const handleButtonPress = (buttonType: string) => {
     setMessage(`${buttonType} button was pressed!`)
-    // 本番環境ではalertの代わりにtoast通知などを使用
     if (process.env.NODE_ENV === 'development') {
       console.log(`${buttonType} button pressed`)
     }
@@ -60,4 +57,11 @@ export default function TamaguiExample() {
       </TamaguiCard>
     </div>
   )
+}
+
+export function meta() {
+  return [
+    { title: 'Tamagui Example' },
+    { name: 'description', content: 'Tamagui cross-platform UI components example' },
+  ]
 }

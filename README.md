@@ -1,134 +1,190 @@
-# Turborepo starter
+# React Router v7 + Expo + Hono モノレポテンプレート
 
-This Turborepo starter is maintained by the Turborepo core team.
+モダンなフルスタック開発のためのTurborepoベースのモノレポテンプレートです。
 
-## Using this example
+## 🚀 特徴
 
-Run the following command:
+- **React Router v7 SPA** - 高性能なWebアプリケーション
+- **Expo SDK 53** - クロスプラットフォームモバイルアプリ
+- **Hono API** - Cloudflare Workers対応の高速API
+- **Tamagui** - Web/Native共通UIコンポーネント
+- **TypeScript** - 完全な型安全性
+- **Turborepo** - 効率的なモノレポ管理
+- **Biome** - 高速なlint & フォーマット
 
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 📁 プロジェクト構成
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+web-native-monorepo-template/
+├── apps/
+│   ├── web/                    # React Router v7 Webアプリ (SPA)
+│   ├── native/                 # Expo React Nativeアプリ
+│   └── api/                    # Hono APIアプリ (Cloudflare Workers)
+├── packages/
+│   ├── ui/                     # Tamagui共有UIコンポーネント
+│   └── typescript-config/      # 共有TypeScript設定
+└── docs/                       # プロジェクトドキュメント
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 🛠️ 技術スタック
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### Web App (`apps/web`)
+- **React Router v7** - SPA Mode
+- **Tamagui** - クロスプラットフォームUI
+- **React Native Web** - React Nativeコンポーネント対応
+- **Vite** - 高速ビルドツール
+- **Vitest** - 高速テストランナー
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+### Native App (`apps/native`)
+- **Expo SDK 53** - React Nativeフレームワーク
+- **Expo Router** - ファイルベースルーティング
+- **Tamagui** - ネイティブUI対応
 
-### Develop
+### API (`apps/api`)
+- **Hono** - 高速Webフレームワーク
+- **Cloudflare Workers** - エッジランタイム
+- **TypeScript** - 型安全なAPI開発
 
-To develop all apps and packages, run the following command:
+### パッケージ
+- **@repo/ui** - Tamagui共有コンポーネント
+- **@repo/typescript-config** - 共有TypeScript設定
 
-```
-cd my-turborepo
+## 🚀 開発開始
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+### 前提条件
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+- Node.js >= 24
+- pnpm 10.12.4 (自動インストール)
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### セットアップ
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+```bash
+# リポジトリをクローン
+git clone <repository-url>
+cd web-native-monorepo-template
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+# 依存関係をインストール
+pnpm install
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+# 全アプリの開発サーバーを起動
+pnpm dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### 個別アプリの起動
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+```bash
+# Webアプリのみ (http://localhost:3000)
+pnpm dev:web
 
+# Nativeアプリのみ
+pnpm dev:native
+
+# APIのみ (http://localhost:8787)
+pnpm dev:api
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+## 🧪 テスト
+
+```bash
+# 全プロジェクトのテスト実行
+pnpm test
+
+# Webアプリのテストのみ
+pnpm --filter web test
+
+# テストをウォッチモードで実行
+pnpm --filter web test:watch
 ```
 
-## Useful Links
+## 🏗️ ビルド
 
-Learn more about the power of Turborepo:
+```bash
+# 全プロジェクトをビルド
+pnpm build
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+# 特定のアプリのみビルド
+pnpm --filter web build
+pnpm --filter native build
+pnpm --filter api build
+```
+
+## 🔧 コード品質
+
+```bash
+# コードフォーマット & Lint (自動修正)
+pnpm fix
+
+# コード品質チェック
+pnpm check
+
+# 型チェック
+pnpm check-types
+```
+
+## 📱 主な機能
+
+### Web App
+- **React Router v7** によるSPAルーティング
+- **Tamagui** によるレスポンシブUI
+- **React Native Web** によるネイティブライクな操作感
+- **包括的なテストスイート** (Vitest + Testing Library)
+
+### Native App
+- **Expo Router** によるファイルベースルーティング
+- **プラットフォーム固有の最適化**
+- **ハプティックフィードバック**
+- **テーマ対応コンポーネント**
+
+### Shared UI Package
+- **Tamagui** ベースのコンポーネントライブラリ
+- **Web/Native両対応**
+- **型安全なプロパティ**
+- **カスタマイズ可能なテーマ**
+
+## 📚 ドキュメント
+
+- 📘 [開発ガイド](./docs/DEVELOPMENT.md) - 詳細なアーキテクチャとAPI
+- 📗 [Git/GitHubワークフロー](./docs/GIT_WORKFLOW.md) - ブランチルールとPR作成
+- 🔧 [MCP設定ガイド](./docs/MCP.md) - Claude Code設定
+- 📙 [コマンドリファレンス](./docs/COMMANDS.md) - 利用可能なコマンド
+- 🔍 [トラブルシューティング](./docs/TROUBLESHOOTING.md) - よくある問題と解決方法
+- 🔑 [API設定ガイド](./docs/API.md) - 環境変数とAPI設定
+
+## 🤝 開発ワークフロー
+
+1. **新機能開発**
+   ```bash
+   # ブランチ作成
+   git checkout -b feature/new-feature
+   
+   # コード作成
+   # ...
+   
+   # コード品質チェック
+   pnpm fix && pnpm check-types
+   
+   # コミット
+   git commit -m "feat: add new feature"
+   ```
+
+2. **共有コンポーネント作成**
+   - `packages/ui/src/` にコンポーネント作成
+   - Web/Native両対応の実装
+   - 適切なexportを `packages/ui/src/index.ts` に追加
+
+3. **テスト作成**
+   - コンポーネントとページのテストを必ず作成
+   - Tamagui コンポーネントはProviderでラップしてテスト
+
+## 📄 ライセンス
+
+MIT License
+
+## 🙏 貢献
+
+プルリクエストやイシューの報告を歓迎します！
+
+---
+
+**Claude Code** での開発を想定した設定済みテンプレートです。
+詳細は [CLAUDE.md](./CLAUDE.md) を参照してください。

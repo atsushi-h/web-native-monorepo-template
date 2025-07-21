@@ -4,13 +4,13 @@
 
 ## プロジェクト概要
 
-**Next.js + Expo + Hono モノレポテンプレート**
+**React Router v7 + Expo + Hono モノレポテンプレート**
 - Turborepo + pnpmによるモノレポ管理
 - TypeScript + Biome（コード品質）+ Tamagui（クロスプラットフォームUI）
-- Web（Next.js）、Native（Expo）、API（Hono）の同時開発
+- Web（React Router v7 SPA）、Native（Expo）、API（Hono）の同時開発
 
 ### 構成
-- `apps/web` - Next.js Webアプリ（ポート3000）
+- `apps/web` - React Router v7 Webアプリ（SPA、ポート3000）
 - `apps/native` - Expo React Nativeアプリ  
 - `apps/api` - Hono APIアプリ（Cloudflare Workers、ポート8787）
 - `packages/ui` - Tamagui共有UIコンポーネント

@@ -22,10 +22,11 @@ coverage
 .vercel
 
 # Build Outputs
-.next/
-out/
 build
 dist
+
+# React Router
+.react-router/
 
 # Wrangler (Cloudflare Workers)
 .wrangler/

@@ -46,13 +46,13 @@
 | CORSエラー | `wrangler.toml`のCORS設定を確認 |
 | デプロイエラー | Cloudflareアカウント設定を確認 |
 
-### Web（Next.js）の問題
+### Web（React Router v7）の問題
 
 | 問題 | 解決方法 |
 |------|----------|
-| Next.jsビルドエラー | `cd apps/web && pnpm build`で詳細確認 |
-| SSRエラー | `use client`の使用を検討 |
-| 画像の最適化エラー | `next.config.js`の設定を確認 |
+| React Router v7ビルドエラー | `cd apps/web && pnpm build`で詳細確認 |
+| SSRエラー | `react-router.config.ts`でSSRを無効化 |
+| ハイドレーションエラー | `ssr: false`の設定を確認 |
 
 ### Tamagui（UI）の問題
 
@@ -82,7 +82,7 @@ pnpm install --force
 
 ### 2. アプリ別のデバッグ
 
-#### Web（Next.js）
+#### Web（React Router v7）
 ```bash
 cd apps/web
 pnpm dev --verbose
