@@ -7,7 +7,7 @@
 ### ディレクトリ構造
 
 ```
-nextjs-expo-monorepo-template/
+web-native-monorepo-template/
 ├── .claude/                    # Claude Code設定
 ├── .vscode/                    # VS Code設定
 ├── apps/

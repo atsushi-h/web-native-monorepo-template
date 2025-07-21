@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-expo-monorepo-template",
+  "name": "web-native-monorepo-template",
   "private": true,
   "scripts": {
     "build": "turbo run build",
