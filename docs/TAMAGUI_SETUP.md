@@ -1,6 +1,6 @@
 # Tamagui Setup Guide
 
-This monorepo has been configured with Tamagui for cross-platform UI components that work seamlessly across Next.js (web) and Expo (native) applications.
+This monorepo has been configured with Tamagui for cross-platform UI components that work seamlessly across React Router v7 (web) and Expo (native) applications.
 
 ## 📦 Installed Packages
 
@@ -12,7 +12,7 @@ This monorepo has been configured with Tamagui for cross-platform UI components 
 - **`@tamagui/font-inter`** - Inter font package
 
 ### Platform-Specific
-- **Next.js**: `@tamagui/next-plugin`, `@tamagui/next-theme`
+- **React Router v7**: `react-native-web` with proper aliases
 - **Expo**: `@tamagui/babel-plugin`, `expo-font`
 
 ## 🏗️ Configuration Files
@@ -26,15 +26,21 @@ const tamaguiConfig = createTamagui(defaultConfig)
 export default tamaguiConfig
 ```
 
-### 2. Next.js Configuration (`apps/web/next.config.js`)
-```javascript
-import { withTamagui } from '@tamagui/next-plugin'
-
-const tamaguiPlugin = withTamagui({
-  config: '../../packages/ui/src/tamagui.config.ts',
-  components: ['tamagui', '@repo/ui'],
-  useReactNativeWebLite: false, // React 19互換性のためfalseに設定
-  disableExtraction: true, // React 19互換性のためextractionを無効化
+### 2. React Router v7 Configuration (`apps/web/vite.config.ts`)
+```typescript
+export default defineConfig({
+  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+  resolve: {
+    alias: {
+      'react-native': 'react-native-web',
+      'react-native-svg': '@tamagui/react-native-svg',
+    },
+  },
+  define: {
+    DEV: process.env.NODE_ENV === 'development' ? 'true' : 'false',
+    TAMAGUI_TARGET: '"web"',
+    'process.env.TAMAGUI_TARGET': '"web"',
+  },
 })
 ```
 
@@ -52,7 +58,7 @@ A card component with title, description, and footer support.
 
 ## 🚀 Usage Examples
 
-### Web (Next.js)
+### Web (React Router v7)
 ```tsx
 import { TamaguiButton } from '@repo/ui/button'
 import { TamaguiCard } from '@repo/ui/card'
@@ -86,7 +92,7 @@ import { TamaguiCard } from '@repo/ui/card'
 
 2. **Theme Support**: Both apps are configured with automatic theme switching based on system preferences.
 
-3. **SSR Support**: The Next.js app includes proper CSS injection for server-side rendering.
+3. **SPA Mode**: The React Router v7 app is configured in SPA mode with SSR disabled for optimal performance.
 
 4. **Type Safety**: Full TypeScript support with proper type exports.
 

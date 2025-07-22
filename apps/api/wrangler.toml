@@ -1,4 +1,4 @@
-name = "nextjs-expo-monorepo-api"
+name = "web-native-monorepo-template-api"
 main = "src/index.ts"
 compatibility_date = "2025-07-18"
 compatibility_flags = ["nodejs_compat"]
@@ -10,13 +10,13 @@ NODE_ENV = "development"
 # DATABASE_URLは.dev.varsまたはwrangler secretで設定
 
 [env.development]
-name = "nextjs-expo-monorepo-api-dev"
+name = "web-native-monorepo-template-api-dev"
 [env.development.vars]
 CORS_ORIGINS = "http://localhost:3000,http://localhost:8081,http://localhost:19006"
 NODE_ENV = "development"
 
 [env.production]
-name = "nextjs-expo-monorepo-api-prod"
+name = "web-native-monorepo-template-api-prod"
 [env.production.vars]
 CORS_ORIGINS = "https://yourapp.com,https://www.yourapp.com"
 NODE_ENV = "production"

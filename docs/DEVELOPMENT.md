@@ -11,10 +11,11 @@ web-native-monorepo-template/
 ├── .claude/                    # Claude Code設定
 ├── .vscode/                    # VS Code設定
 ├── apps/
+│   ├── api/                    # Hono APIアプリ
 │   ├── native/                 # React Native (Expo)アプリ
-│   └── web/                    # Next.js Webアプリ
+│   └── web/                    # React Router v7 Webアプリ (SPA)
 ├── packages/
-│   ├── ui/                     # 共有UIコンポーネント
+│   ├── ui/                     # Tamagui共有UIコンポーネント
 │   └── typescript-config/      # TypeScript設定
 ├── docs/                       # プロジェクトドキュメント
 ├── CLAUDE.md                   # Claude Code用ガイド
@@ -51,17 +52,32 @@ Turborepoのタスク設定とパイプライン定義
 
 ### Web App (`apps/web`)
 
-Next.js 15を使用したWebアプリケーション
+React Router v7を使用したSPAアプリケーション
 
 **主な機能:**
-- App Router
-- Server Components
-- Tailwind CSS
-- 共有UIコンポーネントの使用
+- React Router v7（SPA Mode）
+- Tamagui UI コンポーネント
+- React Native Web対応
+- Vite + TypeScript
+- Vitest テスト環境
+
+**主要ファイル:**
+- `app/root.tsx` - アプリケーションのルートレイアウト
+- `app/routes.ts` - ルート定義
+- `app/routes/home.tsx` - ホームページ
+- `app/routes/tamagui-example.tsx` - Tamagui コンポーネントデモ
+- `react-router.config.ts` - React Router設定（SSR無効）
+- `vite.config.ts` - Vite設定（React Native Web対応）
 
 **開発サーバー:**
 ```bash
 pnpm dev:web  # http://localhost:3000
+```
+
+**テスト:**
+```bash
+pnpm test     # テスト実行
+pnpm test:watch  # ウォッチモード
 ```
 
 ### Native App (`apps/native`)
@@ -97,17 +113,28 @@ npm run reset-project
 
 ### UI Package (`packages/ui`)
 
-共有UIコンポーネントライブラリ
+Tamagui共有UIコンポーネントライブラリ
 
 **特徴:**
 - React 19対応
 - TypeScript
 - Web/Native両対応コンポーネント
+- Tamagui設定とコンポーネント
+- クロスプラットフォーム対応
+
+**主要コンポーネント:**
+- `TamaguiButton` - ボタンコンポーネント（variant対応）
+- `TamaguiCard` - カードコンポーネント（title, description, footer対応）
 
 **使用方法:**
 ```typescript
-import { Button, Card } from '@repo/ui';
+import { TamaguiButton, TamaguiCard } from '@repo/ui/button';
+import { tamaguiConfig } from '@repo/ui';
 ```
+
+**設定:**
+- `config.ts` - Tamagui設定
+- `index.ts` - エクスポート定義
 
 ### TypeScript Config (`packages/typescript-config`)
 
@@ -115,8 +142,20 @@ import { Button, Card } from '@repo/ui';
 
 **提供される設定:**
 - `base.json` - 基本設定
-- `nextjs.json` - Next.js用設定
 - `react-library.json` - Reactライブラリ用設定
+
+**使用例:**
+```json
+// apps/web/tsconfig.json
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx"
+  }
+}
+```
 
 ## 依存関係管理
 

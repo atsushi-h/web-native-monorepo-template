@@ -10,12 +10,12 @@
       "**/*.{js,jsx,ts,tsx,json,css}",
       "!**/node_modules",
       "!**/dist",
-      "!**/.next",
       "!**/build",
       "!**/.expo",
       "!**/.turbo",
       "!**/.tamagui",
-      "!**/.wrangler"
+      "!**/.wrangler",
+      "!**/.react-router"
     ]
   },
   "formatter": {
