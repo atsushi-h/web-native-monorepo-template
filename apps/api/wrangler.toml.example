@@ -1,0 +1,29 @@
+name = "web-native-monorepo-template-api"
+main = "src/index.ts"
+compatibility_date = "2025-07-18"
+compatibility_flags = ["nodejs_compat"]
+
+[env.development]
+name = "web-native-monorepo-template-api-dev"
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "web-native-db-dev"
+database_id = "your-dev-database-id"
+preview_database_id = "your-dev-database-id"
+migrations_dir = "drizzle/migrations"
+[env.development.vars]
+CORS_ORIGINS = "http://localhost:3000,http://localhost:8081,http://localhost:19006"
+NODE_ENV = "development"
+
+[env.production]
+name = "web-native-monorepo-template-api-prod"
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "web-native-db-prd"
+database_id = "your-prd-database-id"
+preview_database_id = "your-prd-database-id"
+migrations_dir = "drizzle/migrations"
+[env.production.vars]
+CORS_ORIGINS = "https://yourapp.com,https://www.yourapp.com"
+NODE_ENV = "production"
+# 本番環境の秘密情報は wrangler secret で設定

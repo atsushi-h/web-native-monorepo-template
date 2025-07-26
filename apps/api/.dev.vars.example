@@ -2,4 +2,7 @@
 # このファイルをコピーして .dev.vars を作成してください
 
 API_SECRET_KEY=your-secret-key-here
-DATABASE_URL=postgresql://localhost:5432/yourdb
+
+# D1 Database IDs (セキュリティのため環境変数で管理)
+D1_DATABASE_ID_DEV=your-dev-database-id-here
+D1_DATABASE_ID_PRD=your-prd-database-id-here

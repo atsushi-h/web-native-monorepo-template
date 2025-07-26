@@ -8,6 +8,14 @@ Hono + Cloudflare D1 APIアプリケーション
 # 依存関係インストール
 pnpm install
 
+# 初回セットアップ：wrangler.toml設定
+cp wrangler.toml.example wrangler.toml
+# エディタでdatabase_idを実際の値に更新
+
+# 初回セットアップ：環境変数設定
+cp .dev.vars.example .dev.vars
+# エディタで実際の値に更新
+
 # 開発サーバー起動（ローカルDB）
 pnpm dev:local
 ```

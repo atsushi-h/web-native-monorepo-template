@@ -32,23 +32,39 @@ npx wrangler d1 create web-native-db-prd
 
 ### 3. データベースIDの設定
 
-作成されたデータベースのIDを`.env`に追加：
+**セキュリティのため、データベースIDは環境変数で管理します：**
 
 ```bash
+# .dev.vars に追加（ローカル開発用）
 D1_DATABASE_ID_DEV=your-dev-db-id
 D1_DATABASE_ID_PRD=your-prd-db-id
+
+# 本番環境では wrangler secret で設定
+npx wrangler secret put D1_DATABASE_ID_PRD
 ```
 
-### 4. wrangler.tomlの更新
+### 4. wrangler.tomlの設定
 
-`wrangler.toml`のD1設定を更新：
+**セキュリティのため、wrangler.tomlはGitで管理されません。**
+
+```bash
+# wrangler.toml.exampleをコピーして実際の設定ファイルを作成
+cp wrangler.toml.example wrangler.toml
+
+# 実際のdatabase_idに更新
+# エディタで wrangler.toml を編集し、your-dev-database-id と your-prd-database-id を
+# 実際に作成されたデータベースのIDに置き換えてください
+```
 
 ```toml
-[[d1_databases]]
+# wrangler.toml の例
+[env.development]
+name = "web-native-monorepo-template-api-dev"
+[[env.development.d1_databases]]
 binding = "DB"
 database_name = "web-native-db-dev"
-database_id = "your-dev-db-id"
-preview_database_id = "your-dev-db-id"
+database_id = "your-actual-dev-database-id"  # 実際のIDに置き換え
+preview_database_id = "your-actual-dev-database-id"
 migrations_dir = "drizzle/migrations"
 ```
 
@@ -206,6 +222,8 @@ pnpm db:generate
 
 ## 注意事項
 
+- **セキュリティ**：`wrangler.toml`はGitで管理されません（`.gitignore`で除外済み）
+- **初回セットアップ**：`wrangler.toml.example`をコピーしてdatabase_idを実際の値に更新
 - **開発効率重視**：日常開発では `pnpm dev:local` を使用
 - **本番確認**：デプロイ前は `pnpm dev:remote` で最終確認
 - **データ同期**：ローカルとリモートのデータは自動同期されません
