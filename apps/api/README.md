@@ -1,52 +1,39 @@
 # API App
 
-Hono + Cloudflare Workers APIアプリケーション
+Hono + Cloudflare D1 APIアプリケーション
 
-## 開発環境セットアップ
+## 🚀 開発開始
 
-### 1. 依存関係のインストール
 ```bash
+# 依存関係インストール
 pnpm install
+
+# 開発サーバー起動（ローカルDB）
+pnpm dev:local
 ```
 
-### 2. 環境変数の設定
-```bash
-# 秘密情報用の設定ファイルを作成
-cp .dev.vars.example .dev.vars
+## 📋 主なコマンド
 
-# .dev.vars を編集して実際の値を設定
-```
+| コマンド | 説明 |
+|----------|------|
+| `pnpm dev:local` | ローカルDB使用 |
+| `pnpm dev:remote` | リモートDB使用 |
+| `pnpm test` | テスト実行 |
+| `pnpm build` | ビルド |
 
-### 3. 開発サーバー起動
-```bash
-pnpm dev
-```
+## 📚 詳細ドキュメント
 
-## APIエンドポイント
+- **[API設定ガイド](../../docs/API.md)** - 環境設定・開発ワークフロー
+- **[D1データベース設定](../../docs/D1_SETUP.md)** - Cloudflare D1セットアップ
+- **[開発ガイド](../../docs/DEVELOPMENT.md)** - アーキテクチャ詳細
+- **[トラブルシューティング](../../docs/TROUBLESHOOTING.md)** - 問題解決
+
+## 🔗 APIエンドポイント
 
 | エンドポイント | 説明 |
 |----------------|------|
-| `GET /` | Hello World + 設定確認 |
+| `GET /api/todos` | Todo一覧 |
+| `POST /api/todos` | Todo作成 |
 | `GET /api/health` | ヘルスチェック |
-| `GET /api/env` | 環境変数確認（開発用） |
-| `GET /api/protected` | 認証が必要なエンドポイント |
-| `GET/POST /api/test` | テスト用エンドポイント |
-| `GET /api/test-error` | エラーハンドリングテスト（開発用） |
 
-## セキュリティテスト
-
-```bash
-# API認証テスト
-curl -H "X-API-Key: dev-secret-key-12345" http://localhost:8787/api/protected
-
-# エラーハンドリングテスト（開発環境）
-curl http://localhost:8787/api/test-error
-# 開発環境: 詳細なエラー情報が表示される
-# 本番環境: "Something went wrong" のみ表示される
-```
-
-## ファイル説明
-
-- `wrangler.toml` - 基本設定（コミット対象）
-- `.dev.vars` - ローカル開発用秘密情報（Gitignore、各自作成）
-- `.dev.vars.example` - 設定例（コミット対象）
+詳細は [API設定ガイド](../../docs/API.md) を参照

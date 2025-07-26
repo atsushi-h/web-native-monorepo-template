@@ -42,6 +42,8 @@ web-native-monorepo-template/
 
 ### API (`apps/api`)
 - **Hono** - 高速Webフレームワーク
+- **Drizzle ORM** - 型安全なORM
+- **Cloudflare D1** - サーバーレスSQLデータベース
 - **Cloudflare Workers** - エッジランタイム
 - **TypeScript** - 型安全なAPI開発
 
@@ -143,12 +145,22 @@ pnpm check-types
 
 ## 📚 ドキュメント
 
+### 全体設計・ワークフロー
 - 📘 [開発ガイド](./docs/DEVELOPMENT.md) - 詳細なアーキテクチャとAPI
 - 📗 [Git/GitHubワークフロー](./docs/GIT_WORKFLOW.md) - ブランチルールとPR作成
-- 🔧 [MCP設定ガイド](./docs/MCP.md) - Claude Code設定
 - 📙 [コマンドリファレンス](./docs/COMMANDS.md) - 利用可能なコマンド
 - 🔍 [トラブルシューティング](./docs/TROUBLESHOOTING.md) - よくある問題と解決方法
-- 🔑 [API設定ガイド](./docs/API.md) - 環境変数とAPI設定
+
+### API・データベース
+- 🔑 [API設定ガイド](./docs/API.md) - 環境設定・開発ワークフロー
+- 🗄️ [D1データベース設定](./docs/D1_SETUP.md) - Cloudflare D1セットアップ
+
+### 開発ツール
+- 🔧 [MCP設定ガイド](./docs/MCP.md) - Claude Code設定
+- 🎨 [Tamagui設定ガイド](./docs/TAMAGUI_SETUP.md) - UI コンポーネント
+
+### アプリ個別
+各アプリの詳細な使い方は、apps/*/README.md を参照（最低限の情報のみ）
 
 ## 🤝 開発ワークフロー
 
