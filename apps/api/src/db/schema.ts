@@ -1,13 +1,14 @@
-import { boolean, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { sql } from 'drizzle-orm'
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-export const todosTable = pgTable('todos', {
-  id: serial('id').primaryKey(),
+export const todosTable = sqliteTable('todos', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   title: text('title').notNull(),
-  completed: boolean('completed').default(false).notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at')
+  completed: integer('completed', { mode: 'boolean' }).default(false).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
-    .defaultNow()
+    .default(sql`(unixepoch())`)
     .$onUpdate(() => new Date()),
 })
 
