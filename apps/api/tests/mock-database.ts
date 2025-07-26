@@ -14,5 +14,5 @@ export async function getMockDb(): Promise<any> {
 }
 
 export function isTestEnvironment(env: Env): boolean {
-  return env.DATABASE_URL?.startsWith('mock://') ?? false
+  return env.NODE_ENV === 'test'
 }
