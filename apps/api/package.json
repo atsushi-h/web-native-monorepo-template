@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
+    "dev:local": "wrangler dev --local",
+    "dev:remote": "wrangler dev",
     "build": "wrangler build",
     "start": "wrangler dev",
     "check": "biome check .",
@@ -25,7 +27,6 @@
     "@hono/zod-validator": "0.7.1",
     "drizzle-orm": "0.44.3",
     "hono": "4.8.5",
-    "postgres": "3.4.7",
     "zod": "4.0.5"
   },
   "devDependencies": {
@@ -33,7 +34,6 @@
     "@cloudflare/workers-types": "4.20250718.0",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "22.15.3",
-    "@types/pg": "8.15.4",
     "dotenv": "17.2.0",
     "drizzle-kit": "0.31.4",
     "typescript": "5.8.2",

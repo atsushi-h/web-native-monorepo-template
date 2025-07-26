@@ -3,6 +3,14 @@ main = "src/index.ts"
 compatibility_date = "2025-07-18"
 compatibility_flags = ["nodejs_compat"]
 
+# D1 Database binding (開発環境用)
+[[d1_databases]]
+binding = "DB"
+database_name = "web-native-db-dev"
+database_id = "18a0c581-b5bd-4076-9848-e11f29a8abf3"
+preview_database_id = "18a0c581-b5bd-4076-9848-e11f29a8abf3"
+migrations_dir = "drizzle/migrations"
+
 # ローカル開発用の環境変数
 [vars]
 CORS_ORIGINS = "http://localhost:3000,http://localhost:8081,http://localhost:19006"
