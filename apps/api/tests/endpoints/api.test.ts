@@ -166,7 +166,7 @@ describe('Basic API endpoints', () => {
 
       assertJsonProperty(data, 'has_env', true)
       assertJsonProperty(data, 'has_api_secret', true)
-      assertJsonProperty(data, 'has_database_url', true)
+      assertJsonProperty(data, 'has_database_binding', true)
     })
 
     it('should handle missing environment variables', async () => {
@@ -174,7 +174,8 @@ describe('Basic API endpoints', () => {
       const env = createMockEnv({
         CORS_ORIGINS: undefined,
         API_SECRET_KEY: undefined,
-        DATABASE_URL: undefined,
+        // biome-ignore lint/suspicious/noExplicitAny: Mock empty DB for testing
+        DB: undefined as any,
       })
 
       const response = await app.request('/api/env', {}, env)
@@ -187,7 +188,7 @@ describe('Basic API endpoints', () => {
       const corsOriginsArray = assertJsonProperty(data, 'cors_origins_array')
       expect(corsOriginsArray).toEqual([])
       assertJsonProperty(data, 'has_api_secret', false)
-      assertJsonProperty(data, 'has_database_url', false)
+      assertJsonProperty(data, 'has_database_binding', false)
     })
   })
 

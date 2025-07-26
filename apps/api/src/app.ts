@@ -9,8 +9,9 @@ import todos from './routes/todos/index'
 export interface Env {
   CORS_ORIGINS?: string
   API_SECRET_KEY?: string
-  DATABASE_URL: string
   NODE_ENV?: 'development' | 'dev' | 'production' | 'test'
+  // D1 Database binding
+  DB: D1Database
 }
 
 export function createApp() {

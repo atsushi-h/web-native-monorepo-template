@@ -10,7 +10,7 @@ const env = new Hono<{ Bindings: Env }>()
       has_env: !!c.env,
       // 秘密情報は存在確認のみ（値は表示しない）
       has_api_secret: !!c.env?.API_SECRET_KEY,
-      has_database_url: !!c.env?.DATABASE_URL,
+      has_database_binding: !!c.env?.DB,
     })
   })
   .get('/protected', (c) => {
@@ -28,7 +28,7 @@ const env = new Hono<{ Bindings: Env }>()
 
     return c.json({
       message: 'Access granted to protected resource',
-      database_connected: !!c.env?.DATABASE_URL,
+      database_connected: !!c.env?.DB,
       timestamp: new Date().toISOString(),
     })
   })

@@ -52,7 +52,7 @@ describe('/api/protected', () => {
       assertResponseStatus(response, 200)
 
       const data = await parseJsonResponse(response)
-      assertJsonProperty(data, 'database_connected', false)
+      assertJsonProperty(data, 'database_connected', true)
     })
   })
 
