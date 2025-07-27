@@ -208,7 +208,35 @@ Biomeによる自動フォーマット：
 
 ### テスト戦略
 
-（プロジェクトのテスト戦略に応じて追加）
+#### Web App（React Router v7）
+- **テストフレームワーク**: Vitest + React Testing Library
+- **テストファイルの配置**: `src/__tests__/`または各コンポーネントと同じディレクトリ
+- **テスト実行**:
+  ```bash
+  pnpm --filter web test        # 単発実行
+  pnpm --filter web test:watch  # ウォッチモード
+  ```
+
+#### Native App（Expo）
+- **テストフレームワーク**: Jest + React Native Testing Library
+- **テスト実行**:
+  ```bash
+  pnpm --filter native test
+  ```
+
+#### API（Hono）
+- **テストフレームワーク**: Vitest
+- **統合テスト**: Hono Testing Helper使用
+- **テスト実行**:
+  ```bash
+  pnpm --filter api test
+  ```
+
+#### 共通のテスト方針
+1. **ユニットテスト**: 全ての重要なロジックをカバー
+2. **統合テスト**: APIエンドポイントとデータベース操作
+3. **E2Eテスト**: Playwright MCPを使用した重要なユーザーフロー
+4. **カバレッジ目標**: 80%以上（重要な機能は100%）
 
 ## トラブルシューティング
 
