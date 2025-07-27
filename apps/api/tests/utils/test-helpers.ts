@@ -206,7 +206,6 @@ export function createMockEnv(overrides: Partial<Env> = {}): Env {
 
   return {
     CORS_ORIGINS: 'http://localhost:3000,https://example.com',
-    API_SECRET_KEY: 'test-secret-key-12345',
     NODE_ENV: 'test',
     // biome-ignore lint/suspicious/noExplicitAny: Mock D1 Database for testing
     DB: {} as any, // テスト環境ではモックDBを使用

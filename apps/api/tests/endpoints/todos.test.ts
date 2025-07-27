@@ -3,6 +3,7 @@ import { createApp } from '../../src/app'
 import {
   assertJsonProperty,
   assertResponseStatus,
+  createHeaders,
   createMockEnv,
   parseJsonResponse,
 } from '../utils/test-helpers'
@@ -29,6 +30,42 @@ describe('/api/todos', () => {
       const response = await app.request('/api/todos', {}, env)
 
       expect(response.headers.get('content-type')).toContain('application/json')
+    })
+
+    it('should include CORS headers for allowed origins', async () => {
+      const app = createApp()
+      const env = createMockEnv({
+        CORS_ORIGINS: 'http://localhost:3000,https://example.com',
+      })
+
+      const response = await app.request(
+        '/api/todos',
+        {
+          headers: createHeaders({
+            Origin: 'http://localhost:3000',
+          }),
+        },
+        env,
+      )
+
+      assertResponseStatus(response, 200)
+
+      // CORS ヘッダーの確認
+      expect(response.headers.get('access-control-allow-origin')).toBe('http://localhost:3000')
+      const allowMethods = response.headers.get('access-control-allow-methods')
+      const allowHeaders = response.headers.get('access-control-allow-headers')
+
+      if (allowMethods) {
+        expect(allowMethods).toContain('GET')
+        expect(allowMethods).toContain('POST')
+        expect(allowMethods).toContain('PUT')
+        expect(allowMethods).toContain('DELETE')
+        expect(allowMethods).toContain('OPTIONS')
+      }
+
+      if (allowHeaders) {
+        expect(allowHeaders).toContain('Content-Type')
+      }
     })
   })
 
@@ -119,9 +156,11 @@ describe('/api/todos', () => {
       const updatedAt = assertJsonProperty(data, 'updatedAt')
       expect(createdAt).toBeDefined()
       expect(updatedAt).toBeDefined()
-      expect(new Date(createdAt)).toBeInstanceOf(Date)
-      expect(new Date(updatedAt)).toBeInstanceOf(Date)
-      expect(new Date(createdAt).getTime()).toBeLessThanOrEqual(new Date(updatedAt).getTime())
+      expect(new Date(createdAt as string)).toBeInstanceOf(Date)
+      expect(new Date(updatedAt as string)).toBeInstanceOf(Date)
+      expect(new Date(createdAt as string).getTime()).toBeLessThanOrEqual(
+        new Date(updatedAt as string).getTime(),
+      )
     })
 
     it('should create a new todo with completed status', async () => {
@@ -798,8 +837,8 @@ describe('/api/todos', () => {
 
       // Verify updatedAt was changed
       expect(newUpdatedAt).not.toBe(originalUpdatedAt)
-      expect(new Date(newUpdatedAt).getTime()).toBeGreaterThan(
-        new Date(originalUpdatedAt).getTime(),
+      expect(new Date(newUpdatedAt as string).getTime()).toBeGreaterThan(
+        new Date(originalUpdatedAt as string).getTime(),
       )
     })
 
