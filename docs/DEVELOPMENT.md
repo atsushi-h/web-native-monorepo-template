@@ -109,6 +109,31 @@ expo start --web
 npm run reset-project
 ```
 
+### API App (`apps/api`)
+
+Hono + Cloudflare D1を使用したAPIサーバー
+
+**主な機能:**
+- Hono フレームワーク（軽量・高速）
+- Cloudflare D1データベース（SQLite）
+- Drizzle ORM（型安全なデータベース操作）
+- Zodによるバリデーション
+- OpenAPI仕様書自動生成
+
+**環境変数管理:**
+- すべての環境変数を`.dev.vars`ファイルで一元管理
+- Cloudflare認証情報（ACCOUNT_ID、API_TOKEN）
+- APIシークレット
+- D1データベースID
+
+**開発コマンド:**
+```bash
+pnpm dev:api      # ローカル開発（デフォルト）
+pnpm dev:remote   # Cloudflare環境で開発
+```
+
+詳細は[API設定ガイド](./API.md)を参照
+
 ## パッケージ
 
 ### UI Package (`packages/ui`)
@@ -195,7 +220,9 @@ import { tamaguiConfig } from '@repo/ui';
 
 3. **設定の追加**
    - TypeScript設定: `packages/typescript-config/`
-   - 環境変数: 各アプリの`.env`ファイル
+   - 環境変数: 
+     - Web/Native: 各アプリの`.env`ファイル
+     - API: `.dev.vars`ファイル（すべての環境変数を一元管理）
 
 ### コードスタイル
 

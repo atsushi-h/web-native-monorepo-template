@@ -20,11 +20,15 @@ pnpm install
 ### 2. 環境設定
 ```bash
 # 環境変数ファイルを作成
-cp apps/api/.env.example apps/api/.env
 cp apps/api/.dev.vars.example apps/api/.dev.vars
 
+# .dev.varsファイルを編集して以下の値を設定：
+# - CLOUDFLARE_ACCOUNT_ID: CloudflareアカウントID
+# - CLOUDFLARE_API_TOKEN: Cloudflare APIトークン（Drizzle Kit用）
+# - API_SECRET_KEY: API認証用シークレットキー
+# - D1_DATABASE_ID_DEV/PRD: D1データベースID
+
 # Cloudflare D1セットアップ（詳細はD1_SETUP.mdを参照）
-# 必要な環境変数を設定
 ```
 
 ### 3. 開発サーバー起動
@@ -42,7 +46,7 @@ pnpm --filter api dev:remote
 
 ### 基本方針
 - **非秘密情報**: `wrangler.toml`に記載（Gitコミット対象）
-- **秘密情報**: `.dev.vars`で管理（Gitignore対象）
+- **秘密情報**: `.dev.vars`で一元管理（Gitignore対象）
 - **D1データベース**: バインディング設定
 
 ### 環境変数一覧
@@ -50,11 +54,12 @@ pnpm --filter api dev:remote
 | 変数名 | 設定場所 | 用途 |
 |--------|----------|------|
 | `CORS_ORIGINS` | `wrangler.toml` | CORS許可オリジン |
+| `NODE_ENV` | `wrangler.toml` | 実行環境（development/production） |
 | `API_SECRET_KEY` | `.dev.vars` | API認証キー |
-| `CLOUDFLARE_ACCOUNT_ID` | `.env` | CloudflareアカウントID |
-| `CLOUDFLARE_API_TOKEN` | `.env` | Cloudflare APIトークン |
-| `D1_DATABASE_ID_DEV` | `.env` | 開発用D1データベースID |
-| `D1_DATABASE_ID_PRD` | `.env` | 本番用D1データベースID |
+| `CLOUDFLARE_ACCOUNT_ID` | `.dev.vars` | CloudflareアカウントID（Drizzle Kit用） |
+| `CLOUDFLARE_API_TOKEN` | `.dev.vars` | Cloudflare APIトークン（Drizzle Kit用） |
+| `D1_DATABASE_ID_DEV` | `.dev.vars` | 開発用D1データベースID |
+| `D1_DATABASE_ID_PRD` | `.dev.vars` | 本番用D1データベースID |
 
 ### D1データベース設定
 
@@ -84,12 +89,12 @@ npx wrangler secret put OTHER_SECRET_KEY
 ### 基本コマンド（推奨）
 
 ```bash
-# 開発サーバー起動（ローカルDB使用）
+# 開発サーバー起動（ローカルDB使用、推奨）
 pnpm dev:api
 # または
-pnpm --filter api dev:local
+pnpm --filter api dev
 
-# リモートDB使用
+# リモートDB使用（Cloudflare環境でテスト）
 pnpm --filter api dev:remote
 
 # ビルド
@@ -105,17 +110,17 @@ pnpm --filter api openapi:generate
 ### Wrangler直接使用
 
 ```bash
-# 開発サーバー起動
-cd apps/api && wrangler dev
+# 開発サーバー起動（development環境）
+cd apps/api && wrangler dev --env development --local
 
 # ビルド
 cd apps/api && wrangler build
 
-# デプロイ
-cd apps/api && wrangler deploy
+# デプロイ（development環境）
+cd apps/api && wrangler deploy --env development
 
-# 環境変数の設定
-cp apps/api/.dev.vars.example apps/api/.dev.vars
+# デプロイ（production環境）
+cd apps/api && wrangler deploy --env production
 ```
 
 ## Cloudflare Workers 固有の設定
@@ -126,7 +131,10 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 - ルーティング設定
 
 ### .dev.vars
-- 開発用の秘密情報
+- 開発用の秘密情報を一元管理
+- Cloudflare認証情報（Drizzle Kit用）
+- APIシークレット
+- D1データベースID
 - `.gitignore`で除外される
 - 本番では Cloudflare Dashboard で設定
 
