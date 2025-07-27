@@ -1,0 +1,42 @@
+{
+  "name": "@repo/api-client",
+  "version": "0.1.0",
+  "description": "Shared API client for Web and Native apps",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "generate": "rm -rf src/generated && orval",
+    "clean": "rm -rf dist",
+    "check-types": "tsc --noEmit",
+    "check": "biome check .",
+    "fix": "biome check --write .",
+    "lint": "biome lint .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5.83.0",
+    "axios": "1.11.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "20.19.9",
+    "orval": "7.10.0",
+    "tsup": "8.5.0"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "private": true
+}
