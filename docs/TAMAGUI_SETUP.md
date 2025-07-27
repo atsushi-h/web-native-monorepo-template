@@ -1,23 +1,23 @@
-# Tamagui Setup Guide
+# Tamaguiセットアップガイド
 
-This monorepo has been configured with Tamagui for cross-platform UI components that work seamlessly across React Router v7 (web) and Expo (native) applications.
+このモノレポは、React Router v7（Web）とExpo（Native）アプリケーション間でシームレスに動作するクロスプラットフォームUIコンポーネントのためにTamaguiで構成されています。
 
-## 📦 Installed Packages
+## 📦 インストール済みパッケージ
 
-### Core Dependencies
-- **`tamagui`** (v1.132.7) - Main Tamagui package
-- **`@tamagui/core`** (v1.132.7) - Core functionality
-- **`@tamagui/config`** (v1.132.7) - Default configuration
-- **`@tamagui/animations-react-native`** - Animation support
-- **`@tamagui/font-inter`** - Inter font package
+### コア依存関係
+- **`tamagui`** (v1.132.7) - メインTamaguiパッケージ
+- **`@tamagui/core`** (v1.132.7) - コア機能
+- **`@tamagui/config`** (v1.132.7) - デフォルト設定
+- **`@tamagui/animations-react-native`** - アニメーションサポート
+- **`@tamagui/font-inter`** - Interフォントパッケージ
 
-### Platform-Specific
-- **React Router v7**: `react-native-web` with proper aliases
-- **Expo**: `@tamagui/babel-plugin`, `expo-font`
+### プラットフォーム固有
+- **React Router v7**: 適切なエイリアスを持つ`react-native-web`
+- **Expo**: `@tamagui/babel-plugin`、`expo-font`
 
-## 🏗️ Configuration Files
+## 🏗️ 設定ファイル
 
-### 1. Shared Configuration (`packages/ui/src/tamagui.config.ts`)
+### 1. 共有設定（`packages/ui/src/tamagui.config.ts`）
 ```typescript
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui'
@@ -26,7 +26,7 @@ const tamaguiConfig = createTamagui(defaultConfig)
 export default tamaguiConfig
 ```
 
-### 2. React Router v7 Configuration (`apps/web/vite.config.ts`)
+### 2. React Router v7設定（`apps/web/vite.config.ts`）
 ```typescript
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
@@ -44,21 +44,21 @@ export default defineConfig({
 })
 ```
 
-### 3. Expo Configuration
-- **Babel** (`apps/native/babel.config.js`): Configured with Tamagui babel plugin
-- **Metro** (`apps/native/metro.config.js`): Set up for monorepo support
+### 3. Expo設定
+- **Babel** (`apps/native/babel.config.js`): Tamagui babelプラグインで設定
+- **Metro** (`apps/native/metro.config.js`): モノレポサポート用にセットアップ
 
-## 🎨 Example Components
+## 🎨 サンプルコンポーネント
 
-### 1. Tamagui Button (`packages/ui/src/tamagui-button.tsx`)
-A styled button component with variants (primary, secondary, ghost) and sizes (small, medium, large).
+### 1. Tamaguiボタン（`packages/ui/src/tamagui-button.tsx`）
+バリアント（primary、secondary、ghost）とサイズ（small、medium、large）を持つスタイル付きボタンコンポーネント。
 
-### 2. Tamagui Card (`packages/ui/src/tamagui-card.tsx`)
-A card component with title, description, and footer support.
+### 2. Tamaguiカード（`packages/ui/src/tamagui-card.tsx`）
+タイトル、説明、フッターサポートを持つカードコンポーネント。
 
-## 🚀 Usage Examples
+## 🚀 使用例
 
-### Web (React Router v7)
+### Web（React Router v7）
 ```tsx
 import { TamaguiButton } from '@repo/ui/button'
 import { TamaguiCard } from '@repo/ui/card'
@@ -67,44 +67,44 @@ import { YStack } from 'tamagui'
 export default function Page() {
   return (
     <YStack space="$4" p="$4">
-      <TamaguiCard title="Welcome" description="Cross-platform UI">
-        <TamaguiButton>Click me!</TamaguiButton>
+      <TamaguiCard title="Welcome" description="クロスプラットフォームUI">
+        <TamaguiButton>クリックしてください！</TamaguiButton>
       </TamaguiCard>
     </YStack>
   )
 }
 ```
 
-### Native (Expo)
-The same components work identically in React Native:
+### Native（Expo）
+同じコンポーネントがReact Nativeでも同じように動作します：
 ```tsx
 import { TamaguiButton } from '@repo/ui/button'
 import { TamaguiCard } from '@repo/ui/card'
 
-// Use exactly the same way as on web!
+// Webと全く同じ方法で使用できます！
 ```
 
-## 📝 Important Notes
+## 📝 重要事項
 
-1. **Clear Cache**: When first running the apps after setup, clear the cache:
+1. **キャッシュクリア**: セットアップ後、初めてアプリを実行する際はキャッシュをクリアしてください：
    - Web: `pnpm dev:web`
    - Native: `npx expo start -c`
 
-2. **Theme Support**: Both apps are configured with automatic theme switching based on system preferences.
+2. **テーマサポート**: 両方のアプリはシステム設定に基づく自動テーマ切り替えで構成されています。
 
-3. **SPA Mode**: The React Router v7 app is configured in SPA mode with SSR disabled for optimal performance.
+3. **SPAモード**: React Router v7アプリは、最適なパフォーマンスのためSSRを無効にしたSPAモードで構成されています。
 
-4. **Type Safety**: Full TypeScript support with proper type exports.
+4. **型安全性**: 適切な型エクスポートを含む完全なTypeScriptサポート。
 
-## 🔧 Development Tips
+## 🔧 開発のヒント
 
-1. Create new Tamagui components in `packages/ui/src/`
-2. Use Tamagui tokens (e.g., `$space`, `$color`) for consistent styling
-3. Components automatically work on both platforms without changes
-4. Use the default config tokens or extend the config for custom design systems
+1. 新しいTamaguiコンポーネントは`packages/ui/src/`に作成
+2. 一貫したスタイリングのためにTamaguiトークン（例：`$space`、`$color`）を使用
+3. コンポーネントは変更なしで両プラットフォームで自動的に動作
+4. デフォルトの設定トークンを使用するか、カスタムデザインシステム用に設定を拡張
 
-## 📚 Resources
+## 📚 リソース
 
-- [Tamagui Documentation](https://tamagui.dev)
-- [Configuration Guide](https://tamagui.dev/docs/core/configuration)
-- [Component Library](https://tamagui.dev/ui/intro)
+- [Tamaguiドキュメント](https://tamagui.dev)
+- [設定ガイド](https://tamagui.dev/docs/core/configuration)
+- [コンポーネントライブラリ](https://tamagui.dev/ui/intro)
