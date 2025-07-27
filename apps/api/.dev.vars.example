@@ -5,9 +5,6 @@
 CLOUDFLARE_ACCOUNT_ID=your-account-id
 CLOUDFLARE_API_TOKEN=your-api-token
 
-# API設定
-API_SECRET_KEY=your-secret-key-here
-
 # D1 Database IDs (セキュリティのため環境変数で管理)
 D1_DATABASE_ID_DEV=your-dev-database-id-here
 D1_DATABASE_ID_PRD=your-prd-database-id-here

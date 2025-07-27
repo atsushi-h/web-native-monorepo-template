@@ -17,7 +17,6 @@ cp .dev.vars.example .dev.vars
 # エディタで以下の値を更新：
 # - CLOUDFLARE_ACCOUNT_ID: CloudflareアカウントID
 # - CLOUDFLARE_API_TOKEN: Cloudflare APIトークン（Drizzle Kit用）
-# - API_SECRET_KEY: API認証用シークレットキー
 # - D1_DATABASE_ID_DEV/PRD: D1データベースID
 
 # 開発サーバー起動（ローカルDB）
@@ -46,8 +45,10 @@ pnpm dev
 | エンドポイント | 説明 |
 |----------------|------|
 | `GET /api/todos` | Todo一覧 |
+| `GET /api/todos/:id` | Todo詳細 |
 | `POST /api/todos` | Todo作成 |
-| `GET /api/health` | ヘルスチェック |
+| `PUT /api/todos/:id` | Todo更新 |
+| `DELETE /api/todos/:id` | Todo削除 |
 
 詳細は [API設定ガイド](../../docs/API.md) を参照
 
