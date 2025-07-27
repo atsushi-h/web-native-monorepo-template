@@ -19,14 +19,21 @@ const databaseId =
     ? databaseIdPrd || process.env.D1_DATABASE_ID_PRD
     : databaseIdDev || process.env.D1_DATABASE_ID_DEV
 
+const requireEnv = (value: string | undefined, name: string): string => {
+  if (!value) {
+    throw new Error(`${name} is required`)
+  }
+  return value
+}
+
 export default defineConfig({
   schema: './src/db/schema.ts',
   out: './drizzle/migrations',
   dialect: 'sqlite',
   driver: 'd1-http',
   dbCredentials: {
-    accountId: accountId || '',
-    databaseId: databaseId || '',
-    token: token || '',
+    accountId: requireEnv(accountId, 'CLOUDFLARE_ACCOUNT_ID'),
+    databaseId: requireEnv(databaseId, 'Database ID'),
+    token: requireEnv(token, 'CLOUDFLARE_API_TOKEN'),
   },
 })
