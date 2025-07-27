@@ -21,23 +21,29 @@
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "openapi:generate": "tsx openapi/generate-openapi.ts"
   },
   "dependencies": {
-    "@hono/zod-validator": "0.7.1",
+    "@hono/zod-validator": "0.4.3",
     "drizzle-orm": "0.44.3",
     "hono": "4.8.5",
-    "zod": "4.0.5"
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.8.55",
     "@cloudflare/workers-types": "4.20250718.0",
     "@repo/typescript-config": "workspace:*",
+    "@types/js-yaml": "4.0.9",
     "@types/node": "22.15.3",
     "dotenv": "17.2.0",
     "drizzle-kit": "0.31.4",
+    "hono-openapi": "0.4.8",
+    "js-yaml": "4.1.0",
+    "tsx": "4.20.3",
     "typescript": "5.8.2",
     "vitest": "3.2.4",
-    "wrangler": "4.25.0"
+    "wrangler": "4.25.0",
+    "zod-openapi": "4.2.4"
   }
 }
