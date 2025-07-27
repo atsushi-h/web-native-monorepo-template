@@ -97,6 +97,9 @@ pnpm --filter api build
 
 # デプロイ
 pnpm --filter api deploy
+
+# OpenAPI仕様書生成
+pnpm --filter api openapi:generate
 ```
 
 ### Wrangler直接使用
@@ -126,3 +129,40 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 - 開発用の秘密情報
 - `.gitignore`で除外される
 - 本番では Cloudflare Dashboard で設定
+
+## 📖 OpenAPI仕様書
+
+### 自動生成
+
+APIの型定義からOpenAPI 3.1.0仕様書を自動生成できます：
+
+```bash
+# OpenAPI仕様書を生成
+pnpm --filter api openapi:generate
+```
+
+### 生成されるファイル
+
+```
+apps/api/openapi/
+├── generate-openapi.ts     # 生成スクリプト
+└── generated/             # 生成されたファイル（.gitignore対象）
+    ├── openapi.yaml       # YAML形式
+    └── openapi.json       # JSON形式
+```
+
+**注意**: `generated/`ディレクトリは`.gitignore`に含まれています。各開発者は必要に応じてローカルで生成してください。
+
+### 特徴
+
+- **バージョン自動同期**: `package.json`のバージョンと自動同期
+- **型安全**: Zodスキーマから自動生成
+- **完全なAPI文書**: 全エンドポイント、スキーマ、認証情報を含む
+- **開発者フレンドリー**: 例とバリデーションルールを含む
+
+### 活用方法
+
+- **APIクライアント生成**: OpenAPI CodegenやSwagger Codegenで自動生成
+- **ドキュメント**: Swagger UIやRedocでインタラクティブなドキュメント
+- **テスト**: APIテストツールでの仕様検証
+- **チーム連携**: フロントエンド・バックエンド間のAPI仕様共有

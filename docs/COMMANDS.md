@@ -62,6 +62,11 @@ cd apps/api && wrangler deploy
 
 # 環境変数設定
 cp apps/api/.dev.vars.example apps/api/.dev.vars
+
+# OpenAPI仕様書生成
+pnpm --filter api openapi:generate
+# または
+cd apps/api && pnpm openapi:generate
 ```
 
 ### Web（React Router v7）
