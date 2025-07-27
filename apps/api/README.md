@@ -14,7 +14,11 @@ cp wrangler.toml.example wrangler.toml
 
 # 初回セットアップ：環境変数設定
 cp .dev.vars.example .dev.vars
-# エディタで実際の値に更新
+# エディタで以下の値を更新：
+# - CLOUDFLARE_ACCOUNT_ID: CloudflareアカウントID
+# - CLOUDFLARE_API_TOKEN: Cloudflare APIトークン（Drizzle Kit用）
+# - API_SECRET_KEY: API認証用シークレットキー
+# - D1_DATABASE_ID_DEV/PRD: D1データベースID
 
 # 開発サーバー起動（ローカルDB）
 pnpm dev:local
