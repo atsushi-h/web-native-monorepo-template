@@ -64,7 +64,7 @@ cd apps/api && wrangler deploy
 cp apps/api/.dev.vars.example apps/api/.dev.vars
 ```
 
-### Web（Next.js）
+### Web（React Router v7）
 
 ```bash
 # 開発サーバー起動
@@ -73,8 +73,14 @@ cd apps/web && pnpm dev
 # ビルド
 cd apps/web && pnpm build
 
-# 本番サーバー起動
-cd apps/web && pnpm start
+# プレビューサーバー起動
+cd apps/web && pnpm preview
+
+# テスト実行
+cd apps/web && pnpm test
+
+# テストウォッチモード
+cd apps/web && pnpm test:watch
 ```
 
 ## 依存関係管理

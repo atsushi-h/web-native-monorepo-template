@@ -30,6 +30,8 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 ### 3. 開発サーバー起動
 ```bash
 # ローカルDB使用（推奨）
+pnpm dev:api
+# または
 pnpm --filter api dev:local
 
 # リモートDB使用（検証用）
@@ -71,20 +73,45 @@ migrations_dir = "drizzle/migrations"
 
 ```bash
 # Cloudflare Dashboard または wrangler secret コマンドを使用
-wrangler secret put API_SECRET_KEY
-wrangler secret put DATABASE_URL
+npx wrangler secret put API_SECRET_KEY
+
+# その他の秘密情報も同様に設定
+npx wrangler secret put OTHER_SECRET_KEY
 ```
 
 ## API開発コマンド
 
+### 基本コマンド（推奨）
+
 ```bash
-# API開発サーバー起動
+# 開発サーバー起動（ローカルDB使用）
+pnpm dev:api
+# または
+pnpm --filter api dev:local
+
+# リモートDB使用
+pnpm --filter api dev:remote
+
+# ビルド
+pnpm --filter api build
+
+# デプロイ
+pnpm --filter api deploy
+```
+
+### Wrangler直接使用
+
+```bash
+# 開発サーバー起動
 cd apps/api && wrangler dev
 
-# APIビルド
+# ビルド
 cd apps/api && wrangler build
 
-# API環境変数の設定
+# デプロイ
+cd apps/api && wrangler deploy
+
+# 環境変数の設定
 cp apps/api/.dev.vars.example apps/api/.dev.vars
 ```
 
