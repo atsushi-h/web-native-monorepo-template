@@ -1,7 +1,7 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'drizzle-kit'
 
-config({ path: '.env' })
+config({ path: '.dev.vars' })
 
 // 環境変数の取得
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID

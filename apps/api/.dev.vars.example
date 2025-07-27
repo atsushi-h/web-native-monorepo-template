@@ -1,6 +1,11 @@
 # ローカル開発用の秘密情報の例
 # このファイルをコピーして .dev.vars を作成してください
 
+# Cloudflare認証情報（Drizzle Kit用）
+CLOUDFLARE_ACCOUNT_ID=your-account-id
+CLOUDFLARE_API_TOKEN=your-api-token
+
+# API設定
 API_SECRET_KEY=your-secret-key-here
 
 # D1 Database IDs (セキュリティのため環境変数で管理)
