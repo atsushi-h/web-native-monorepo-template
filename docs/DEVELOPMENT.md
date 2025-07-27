@@ -119,11 +119,11 @@ Hono + Cloudflare D1を使用したAPIサーバー
 - Drizzle ORM（型安全なデータベース操作）
 - Zodによるバリデーション
 - OpenAPI仕様書自動生成
+- Todo管理API（CRUD操作）
 
 **環境変数管理:**
 - すべての環境変数を`.dev.vars`ファイルで一元管理
 - Cloudflare認証情報（ACCOUNT_ID、API_TOKEN）
-- APIシークレット
 - D1データベースID
 
 **開発コマンド:**

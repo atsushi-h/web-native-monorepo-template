@@ -8,7 +8,7 @@
 - **データベース**: Cloudflare D1 (SQLite)
 - **ORM**: Drizzle ORM
 - **ランタイム**: Cloudflare Workers
-- **認証**: APIキー認証
+- **API**: Todo管理のRESTful API
 
 ## 🚀 クイックスタート
 
@@ -25,7 +25,6 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 # .dev.varsファイルを編集して以下の値を設定：
 # - CLOUDFLARE_ACCOUNT_ID: CloudflareアカウントID
 # - CLOUDFLARE_API_TOKEN: Cloudflare APIトークン（Drizzle Kit用）
-# - API_SECRET_KEY: API認証用シークレットキー
 # - D1_DATABASE_ID_DEV/PRD: D1データベースID
 
 # Cloudflare D1セットアップ（詳細はD1_SETUP.mdを参照）
@@ -55,7 +54,6 @@ pnpm --filter api dev:remote
 |--------|----------|------|
 | `CORS_ORIGINS` | `wrangler.toml` | CORS許可オリジン |
 | `NODE_ENV` | `wrangler.toml` | 実行環境（development/production） |
-| `API_SECRET_KEY` | `.dev.vars` | API認証キー |
 | `CLOUDFLARE_ACCOUNT_ID` | `.dev.vars` | CloudflareアカウントID（Drizzle Kit用） |
 | `CLOUDFLARE_API_TOKEN` | `.dev.vars` | Cloudflare APIトークン（Drizzle Kit用） |
 | `D1_DATABASE_ID_DEV` | `.dev.vars` | 開発用D1データベースID |
@@ -77,11 +75,8 @@ migrations_dir = "drizzle/migrations"
 ## 本番環境での設定
 
 ```bash
-# Cloudflare Dashboard または wrangler secret コマンドを使用
-npx wrangler secret put API_SECRET_KEY
-
-# その他の秘密情報も同様に設定
-npx wrangler secret put OTHER_SECRET_KEY
+# 必要に応じてCloudflare Dashboard または wrangler secret コマンドで秘密情報を設定
+# 現在のAPIでは認証機能を使用していないため、追加の秘密情報は不要
 ```
 
 ## API開発コマンド

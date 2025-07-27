@@ -8,7 +8,7 @@ describe('Security', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/health', {}, env)
+      const response = await app.request('/api/todos', {}, env)
 
       assertResponseStatus(response, 200)
 
@@ -38,7 +38,7 @@ describe('Security', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const endpoints = ['/', '/api/health', '/api/test', '/api/env']
+      const endpoints = ['/api/todos']
 
       for (const endpoint of endpoints) {
         const response = await app.request(endpoint, {}, env)
@@ -56,7 +56,7 @@ describe('Security', () => {
       const app = createApp()
       const env = createMockEnv()
 
-      const response = await app.request('/api/health', {}, env)
+      const response = await app.request('/api/todos', {}, env)
 
       assertResponseStatus(response, 200)
       expect(response.headers.get('content-type')).toContain('application/json')
@@ -68,7 +68,7 @@ describe('Security', () => {
 
       // text/plain のリクエスト
       const response = await app.request(
-        '/api/test',
+        '/api/todos',
         {
           method: 'POST',
           headers: {
@@ -79,7 +79,7 @@ describe('Security', () => {
         env,
       )
 
-      assertResponseStatus(response, 200)
+      assertResponseStatus(response, 400)
       expect(response.headers.get('content-type')).toContain('application/json')
     })
   })
