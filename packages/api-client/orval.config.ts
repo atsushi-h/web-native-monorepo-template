@@ -1,4 +1,5 @@
 import { defineConfig } from 'orval'
+import { CACHE_CONFIG } from './src/constants'
 
 export default defineConfig({
   'todo-api': {
@@ -22,7 +23,7 @@ export default defineConfig({
           useInfinite: false,
           signal: true,
           options: {
-            staleTime: 5 * 60 * 1000, // 5分
+            staleTime: CACHE_CONFIG.STALE_TIME,
           },
         },
       },
