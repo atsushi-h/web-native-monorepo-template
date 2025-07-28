@@ -202,8 +202,8 @@ import { tamaguiConfig } from '@repo/ui';
 
 ### エンジン要件
 
-- Node.js: >= 24
-- pnpm: 10.12.4（packageManagerで定義）
+- Node.js: >= 24.4.1
+- pnpm: 10.13.1（packageManagerで定義）
 
 ## 開発ワークフロー
 
