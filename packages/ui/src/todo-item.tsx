@@ -1,0 +1,115 @@
+import { Check, Edit3, Trash2, X } from 'lucide-react'
+import { useState } from 'react'
+import type { GetProps } from 'tamagui'
+import { Button, Checkbox, Input, ListItem, styled, XStack, YStack } from 'tamagui'
+
+export interface TodoItemProps {
+  id: number
+  title: string
+  completed: boolean
+  onToggle: (id: number) => void
+  onUpdate: (id: number, title: string) => void
+  onDelete: (id: number) => void
+}
+
+const StyledListItem = styled(ListItem, {
+  name: 'TodoListItem',
+  bg: '$background',
+  px: '$3',
+  py: '$3',
+  my: '$2',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  hoverStyle: {
+    bg: '$backgroundHover',
+  },
+  pressStyle: {
+    bg: '$backgroundPress',
+  },
+})
+
+const ActionButton = styled(Button, {
+  name: 'TodoActionButton',
+  size: '$3',
+  circular: true,
+  chromeless: true,
+  p: '$2',
+})
+
+export function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }: TodoItemProps) {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState(title)
+
+  const handleUpdate = () => {
+    if (editValue.trim() && editValue !== title) {
+      onUpdate(id, editValue.trim())
+    }
+    setIsEditing(false)
+  }
+
+  const handleCancel = () => {
+    setEditValue(title)
+    setIsEditing(false)
+  }
+
+  const handleKeyPress = (e: { nativeEvent?: { key?: string }; key?: string }) => {
+    if (e.nativeEvent?.key === 'Enter' || e.key === 'Enter') {
+      handleUpdate()
+    } else if (e.nativeEvent?.key === 'Escape' || e.key === 'Escape') {
+      handleCancel()
+    }
+  }
+
+  return (
+    <StyledListItem>
+      <XStack gap='$3' flex={1}>
+        <Checkbox checked={completed} onCheckedChange={() => onToggle(id)} size='$4' circular>
+          <Checkbox.Indicator>
+            <Check />
+          </Checkbox.Indicator>
+        </Checkbox>
+
+        {isEditing ? (
+          <XStack flex={1} gap='$2'>
+            <Input
+              value={editValue}
+              onChangeText={setEditValue}
+              onKeyPress={handleKeyPress}
+              flex={1}
+              autoFocus
+              size='$3'
+            />
+            <ActionButton onPress={handleUpdate} theme='green'>
+              <Check size={16} />
+            </ActionButton>
+            <ActionButton onPress={handleCancel} theme='red'>
+              <X size={16} />
+            </ActionButton>
+          </XStack>
+        ) : (
+          <XStack flex={1}>
+            <YStack flex={1}>
+              <ListItem.Text
+                textDecorationLine={completed ? 'line-through' : 'none'}
+                opacity={completed ? 0.6 : 1}
+                fontSize='$4'
+              >
+                {title}
+              </ListItem.Text>
+            </YStack>
+            <XStack gap='$2'>
+              <ActionButton onPress={() => setIsEditing(true)} theme='blue'>
+                <Edit3 size={16} />
+              </ActionButton>
+              <ActionButton onPress={() => onDelete(id)} theme='red'>
+                <Trash2 size={16} />
+              </ActionButton>
+            </XStack>
+          </XStack>
+        )}
+      </XStack>
+    </StyledListItem>
+  )
+}
+
+export type TodoItemComponentProps = GetProps<typeof TodoItem>

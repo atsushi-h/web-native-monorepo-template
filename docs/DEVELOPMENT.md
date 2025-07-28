@@ -147,19 +147,47 @@ Tamagui共有UIコンポーネントライブラリ
 - Tamagui設定とコンポーネント
 - クロスプラットフォーム対応
 
-**主要コンポーネント:**
-- `TamaguiButton` - ボタンコンポーネント（variant対応）
-- `TamaguiCard` - カードコンポーネント（title, description, footer対応）
+**構成:**
+- `components/` - 再利用可能なUIコンポーネント
+  - `TamaguiButton` - ボタンコンポーネント（variant対応）
+  - `TamaguiCard` - カードコンポーネント（title, description, footer対応）
+  - `TodoItem`, `TodoForm`, `TodoList` - Todo関連UIコンポーネント
+- `screens/` - 画面単位のプレゼンテーション層
+  - `TodosScreen` - Todoアプリの画面UI
 
 **使用方法:**
 ```typescript
-import { TamaguiButton, TamaguiCard } from '@repo/ui/button';
+// UIコンポーネント
+import { TamaguiButton, TodoForm, TodosScreen } from '@repo/ui';
 import { tamaguiConfig } from '@repo/ui';
 ```
 
-**設定:**
-- `config.ts` - Tamagui設定
-- `index.ts` - エクスポート定義
+### Features Package (`packages/features`)
+
+ビジネスロジックとカスタムフック集
+
+**特徴:**
+- Web/Native共通のビジネスロジック
+- TanStack Query統合
+- 型安全なAPI操作
+- 関心の分離（UI層から分離）
+
+**構成:**
+- `todos/` - Todo機能
+  - `hooks/use-todos.ts` - Todoロジックのカスタムフック
+  - `types.ts` - Todo画面の型定義
+
+**使用方法:**
+```typescript
+// ビジネスロジック
+import { useTodos, type TodoFeatureProps } from '@repo/features';
+
+function TodoPage() {
+  const todosProps = useTodos(); // ビジネスロジック
+  return <TodosScreen {...todosProps} />; // プレゼンテーション
+}
+```
+
 
 ### TypeScript Config (`packages/typescript-config`)
 

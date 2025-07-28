@@ -1,0 +1,24 @@
+{
+  "name": "@repo/features",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "biome check .",
+    "fix": "biome check --write .",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/api-client": "workspace:*",
+    "@tanstack/react-query": "5.83.0",
+    "react": "19.0.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*"
+  }
+}
