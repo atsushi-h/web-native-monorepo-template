@@ -1,0 +1,22 @@
+# Build outputs
+dist/
+
+# Generated code (do not edit manually)
+src/generated/
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,5 +1,9 @@
+import { createApiQueryClient } from '@repo/api-client'
 import { tamaguiConfig } from '@repo/ui'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import type { ReactNode } from 'react'
+import { useState } from 'react'
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary'
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { TamaguiProvider } from 'tamagui'
@@ -38,14 +42,21 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
 }
 
 function ClientProviders({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(() => createApiQueryClient())
+
   return (
     <ReactErrorBoundary
       FallbackComponent={ErrorFallback}
       onError={(error) => {
-        console.error('Tamagui Provider Error:', error)
+        console.error('Provider Error:', error)
       }}
     >
-      <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
+      <QueryClientProvider client={queryClient}>
+        <TamaguiProvider config={tamaguiConfig}>
+          {children}
+          {import.meta.env.DEV && <ReactQueryDevtools />}
+        </TamaguiProvider>
+      </QueryClientProvider>
     </ReactErrorBoundary>
   )
 }

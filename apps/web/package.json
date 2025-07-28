@@ -18,6 +18,7 @@
   "dependencies": {
     "@react-router/node": "7.7.0",
     "@react-router/serve": "7.7.0",
+    "@repo/api-client": "workspace:*",
     "@repo/ui": "workspace:*",
     "isbot": "5.1.27",
     "react": "19.1.0",
@@ -31,6 +32,7 @@
     "@react-router/dev": "7.7.0",
     "@repo/typescript-config": "workspace:*",
     "@tailwindcss/vite": "4.1.4",
+    "@tanstack/react-query-devtools": "5.83.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",

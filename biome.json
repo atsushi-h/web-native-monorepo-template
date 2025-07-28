@@ -15,7 +15,8 @@
       "!**/.turbo",
       "!**/.tamagui",
       "!**/.wrangler",
-      "!**/.react-router"
+      "!**/.react-router",
+      "!**/src/generated"
     ]
   },
   "formatter": {
