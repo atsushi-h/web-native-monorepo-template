@@ -237,6 +237,9 @@ importers:
       '@repo/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@repo/features':
+        specifier: workspace:*
+        version: link:../../packages/features
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -339,10 +342,29 @@ importers:
         specifier: 8.5.0
         version: 8.5.0(jiti@2.4.2)(postcss@8.5.6)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0)
 
+  packages/features:
+    dependencies:
+      '@repo/api-client':
+        specifier: workspace:*
+        version: link:../api-client
+      '@tanstack/react-query':
+        specifier: 5.83.0
+        version: 5.83.0(react@19.0.0)
+      react:
+        specifier: 19.0.0
+        version: 19.0.0
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
   packages/typescript-config: {}
 
   packages/ui:
     dependencies:
+      '@repo/features':
+        specifier: workspace:*
+        version: link:../features
       '@tamagui/animations-react-native':
         specifier: 1.132.7
         version: 1.132.7(react-dom@19.0.0(react@19.0.0))(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.0.10)(react@19.0.0))(react@19.0.0)
@@ -355,6 +377,9 @@ importers:
       '@tamagui/font-inter':
         specifier: 1.132.7
         version: 1.132.7(react-dom@19.0.0(react@19.0.0))(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.0.10)(react@19.0.0))(react@19.0.0)
+      lucide-react:
+        specifier: 0.532.0
+        version: 0.532.0(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -388,7 +413,7 @@ importers:
         version: 19.1.6(@types/react@19.0.10)
       '@vitejs/plugin-react':
         specifier: 4.6.0
-        version: 4.6.0(vite@7.0.5(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))
+        version: 4.6.0(vite@6.3.5(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))
       jsdom:
         specifier: 26.1.0
         version: 26.1.0
@@ -5743,6 +5768,11 @@ packages:
   lru-cache@7.18.3:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
+
+  lucide-react@0.532.0:
+    resolution: {integrity: sha512-HwmXOIZwuZ21wryFq0ZrwkjAMxI77+jLxLdNzWCiUa/Kf5ozkTFCWT6C1/yapP68uKgj8wlxxqnNCH1xo9NEpg==}
+    peerDependencies:
+      react: 19.0.0
 
   lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
@@ -11866,6 +11896,18 @@ snapshots:
       '@urql/core': 5.2.0
       wonka: 6.3.5
 
+  '@vitejs/plugin-react@4.6.0(vite@6.3.5(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))':
+    dependencies:
+      '@babel/core': 7.28.0
+      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.0)
+      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.0)
+      '@rolldown/pluginutils': 1.0.0-beta.19
+      '@types/babel__core': 7.20.5
+      react-refresh: 0.17.0
+      vite: 6.3.5(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitejs/plugin-react@4.6.0(vite@7.0.5(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))':
     dependencies:
       '@babel/core': 7.28.0
@@ -14695,6 +14737,10 @@ snapshots:
       yallist: 3.1.1
 
   lru-cache@7.18.3: {}
+
+  lucide-react@0.532.0(react@19.0.0):
+    dependencies:
+      react: 19.0.0
 
   lunr@2.3.9: {}
 

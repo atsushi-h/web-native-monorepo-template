@@ -8,7 +8,6 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-native': 'react-native-web',
-      'react-native-svg': '@tamagui/react-native-svg',
     },
   },
   define: {
