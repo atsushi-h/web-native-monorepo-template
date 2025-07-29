@@ -60,9 +60,7 @@ export function useTodos(): TodoFeatureProps {
   }
 
   const handleDeleteTodo = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this todo?')) {
-      deleteMutation.mutate({ id: id.toString() })
-    }
+    deleteMutation.mutate({ id: id.toString() })
   }
 
   const todos = data || []
