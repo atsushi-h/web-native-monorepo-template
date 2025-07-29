@@ -34,14 +34,11 @@
     "@cloudflare/workers-types": "4.20250718.0",
     "@repo/typescript-config": "workspace:*",
     "@types/js-yaml": "4.0.9",
-    "@types/node": "22.15.3",
     "dotenv": "17.2.0",
     "drizzle-kit": "0.31.4",
     "hono-openapi": "0.4.8",
     "js-yaml": "4.1.0",
     "tsx": "4.20.3",
-    "typescript": "5.8.2",
-    "vitest": "3.2.4",
     "wrangler": "4.25.0",
     "zod-openapi": "4.2.4"
   }
