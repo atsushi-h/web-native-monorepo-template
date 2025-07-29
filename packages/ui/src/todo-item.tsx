@@ -36,7 +36,14 @@ const ActionButton = styled(Button, {
   p: '$2',
 })
 
-export const TodoItem = memo(function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }: TodoItemProps) {
+export const TodoItem = memo(function TodoItem({
+  id,
+  title,
+  completed,
+  onToggle,
+  onUpdate,
+  onDelete,
+}: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState(title)
 
@@ -63,10 +70,10 @@ export const TodoItem = memo(function TodoItem({ id, title, completed, onToggle,
   return (
     <StyledListItem>
       <XStack gap='$3' flex={1}>
-        <Checkbox 
-          checked={completed} 
-          onCheckedChange={() => onToggle(id)} 
-          size='$4' 
+        <Checkbox
+          checked={completed}
+          onCheckedChange={() => onToggle(id)}
+          size='$4'
           circular
           aria-label={`Mark "${title}" as ${completed ? 'incomplete' : 'complete'}`}
         >
@@ -105,10 +112,18 @@ export const TodoItem = memo(function TodoItem({ id, title, completed, onToggle,
               </ListItem.Text>
             </YStack>
             <XStack gap='$2'>
-              <ActionButton onPress={() => setIsEditing(true)} theme='blue' aria-label={`Edit "${title}"`}>
+              <ActionButton
+                onPress={() => setIsEditing(true)}
+                theme='blue'
+                aria-label={`Edit "${title}"`}
+              >
                 <Edit3 size={16} />
               </ActionButton>
-              <ActionButton onPress={() => onDelete(id)} theme='red' aria-label={`Delete "${title}"`}>
+              <ActionButton
+                onPress={() => onDelete(id)}
+                theme='red'
+                aria-label={`Delete "${title}"`}
+              >
                 <Trash2 size={16} />
               </ActionButton>
             </XStack>
