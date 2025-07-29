@@ -68,7 +68,7 @@ export function useTodos(): TodoFeatureProps {
   return {
     todos,
     isLoading,
-    error: error as Error | null,
+    error: error instanceof Error ? error : error ? new Error('Unknown error occurred') : null,
     isEmpty: todos.length === 0,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,

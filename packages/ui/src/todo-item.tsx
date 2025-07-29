@@ -1,5 +1,5 @@
 import { Check, Edit3, Trash2, X } from 'lucide-react'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import type { GetProps } from 'tamagui'
 import { Button, Checkbox, Input, ListItem, styled, XStack, YStack } from 'tamagui'
 
@@ -36,7 +36,7 @@ const ActionButton = styled(Button, {
   p: '$2',
 })
 
-export function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }: TodoItemProps) {
+export const TodoItem = memo(function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState(title)
 
@@ -63,7 +63,13 @@ export function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }:
   return (
     <StyledListItem>
       <XStack gap='$3' flex={1}>
-        <Checkbox checked={completed} onCheckedChange={() => onToggle(id)} size='$4' circular>
+        <Checkbox 
+          checked={completed} 
+          onCheckedChange={() => onToggle(id)} 
+          size='$4' 
+          circular
+          aria-label={`Mark "${title}" as ${completed ? 'incomplete' : 'complete'}`}
+        >
           <Checkbox.Indicator>
             <Check />
           </Checkbox.Indicator>
@@ -78,11 +84,12 @@ export function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }:
               flex={1}
               autoFocus
               size='$3'
+              aria-label={`Edit todo "${title}"`}
             />
-            <ActionButton onPress={handleUpdate} theme='green'>
+            <ActionButton onPress={handleUpdate} theme='green' aria-label='Save changes'>
               <Check size={16} />
             </ActionButton>
-            <ActionButton onPress={handleCancel} theme='red'>
+            <ActionButton onPress={handleCancel} theme='red' aria-label='Cancel editing'>
               <X size={16} />
             </ActionButton>
           </XStack>
@@ -98,10 +105,10 @@ export function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }:
               </ListItem.Text>
             </YStack>
             <XStack gap='$2'>
-              <ActionButton onPress={() => setIsEditing(true)} theme='blue'>
+              <ActionButton onPress={() => setIsEditing(true)} theme='blue' aria-label={`Edit "${title}"`}>
                 <Edit3 size={16} />
               </ActionButton>
-              <ActionButton onPress={() => onDelete(id)} theme='red'>
+              <ActionButton onPress={() => onDelete(id)} theme='red' aria-label={`Delete "${title}"`}>
                 <Trash2 size={16} />
               </ActionButton>
             </XStack>
@@ -110,6 +117,6 @@ export function TodoItem({ id, title, completed, onToggle, onUpdate, onDelete }:
       </XStack>
     </StyledListItem>
   )
-}
+})
 
 export type TodoItemComponentProps = GetProps<typeof TodoItem>
