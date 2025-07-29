@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "20.19.9",
     "orval": "7.10.0",
     "tsup": "8.5.0"
   },

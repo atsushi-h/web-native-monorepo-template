@@ -20,14 +20,16 @@
     "@playwright/test": "1.54.1",
     "playwright": "1.54.1",
     "turbo": "2.5.4",
-    "typescript": "5.8.2"
-  },
-  "pnpm": {
-    "overrides": {
-      "react": "19.0.0",
-      "react-dom": "19.0.0",
-      "@types/react": "19.0.10"
-    }
+    "typescript": "5.8.3",
+    "@types/react": "19.0.10",
+    "@types/react-dom": "19.1.2",
+    "@types/node": "22.15.3",
+    "vitest": "3.2.4",
+    "@testing-library/react": "16.3.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/user-event": "14.6.1",
+    "jsdom": "26.1.0",
+    "@vitejs/plugin-react": "4.7.0"
   },
   "packageManager": "pnpm@10.13.1",
   "engines": {
