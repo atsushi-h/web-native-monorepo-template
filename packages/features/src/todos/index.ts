@@ -1,2 +1,3 @@
-export * from './hooks/use-todos.js'
-export * from './types.js'
+export type { Todo } from '@repo/api-client'
+export * from './hooks/use-todos'
+export * from './types'
