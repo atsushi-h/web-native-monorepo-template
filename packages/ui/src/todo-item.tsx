@@ -1,7 +1,6 @@
-import { Check, Edit3, Trash2, X } from 'lucide-react'
 import { memo, useState } from 'react'
 import type { GetProps } from 'tamagui'
-import { Button, Checkbox, Input, ListItem, styled, XStack, YStack } from 'tamagui'
+import { Button, Checkbox, Input, ListItem, Paragraph, styled, XStack, YStack } from 'tamagui'
 
 export interface TodoItemProps {
   id: number
@@ -78,7 +77,9 @@ export const TodoItem = memo(function TodoItem({
           aria-label={`Mark "${title}" as ${completed ? 'incomplete' : 'complete'}`}
         >
           <Checkbox.Indicator>
-            <Check />
+            <Paragraph size='$1' color='white'>
+              ✓
+            </Paragraph>
           </Checkbox.Indicator>
         </Checkbox>
 
@@ -94,10 +95,10 @@ export const TodoItem = memo(function TodoItem({
               aria-label={`Edit todo "${title}"`}
             />
             <ActionButton onPress={handleUpdate} theme='green' aria-label='Save changes'>
-              <Check size={16} />
+              <Paragraph size='$3'>✓</Paragraph>
             </ActionButton>
             <ActionButton onPress={handleCancel} theme='red' aria-label='Cancel editing'>
-              <X size={16} />
+              <Paragraph size='$3'>✕</Paragraph>
             </ActionButton>
           </XStack>
         ) : (
@@ -117,14 +118,14 @@ export const TodoItem = memo(function TodoItem({
                 theme='blue'
                 aria-label={`Edit "${title}"`}
               >
-                <Edit3 size={16} />
+                <Paragraph size='$3'>✎</Paragraph>
               </ActionButton>
               <ActionButton
                 onPress={() => onDelete(id)}
                 theme='red'
                 aria-label={`Delete "${title}"`}
               >
-                <Trash2 size={16} />
+                <Paragraph size='$3'>🗑</Paragraph>
               </ActionButton>
             </XStack>
           </XStack>

@@ -1,4 +1,4 @@
-import type { TodoFeatureProps } from '@repo/features'
+import type { Todo, TodoFeatureProps } from '@repo/features'
 import { H1, XStack, YStack } from 'tamagui'
 import { TodoForm, TodoItem, TodoList } from '..'
 
@@ -32,7 +32,7 @@ export function TodosScreen({
 
       <YStack flex={1} width='100%'>
         <TodoList isLoading={isLoading} error={error} isEmpty={isEmpty}>
-          {todos.map((todo) => (
+          {todos.map((todo: Todo) => (
             <TodoItem
               key={todo.id}
               id={todo.id}

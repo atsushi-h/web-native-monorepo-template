@@ -1,7 +1,6 @@
-import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import type { GetProps } from 'tamagui'
-import { H2, Paragraph, ScrollView, Spinner, styled, YStack } from 'tamagui'
+import { Circle, H2, Paragraph, ScrollView, Spinner, styled, YStack } from 'tamagui'
 
 export interface TodoListProps {
   children: ReactNode
@@ -68,7 +67,11 @@ export function TodoList({
     return (
       <Container>
         <ErrorState>
-          <AlertCircle size={48} color='$red10' />
+          <Circle size={48} bg='$red10'>
+            <Paragraph size='$8' color='white' fontWeight='bold'>
+              !
+            </Paragraph>
+          </Circle>
           <H2 size='$6' color='$red10'>
             Error loading todos
           </H2>
@@ -84,7 +87,11 @@ export function TodoList({
     return (
       <Container>
         <EmptyState>
-          <CheckCircle2 size={48} color='$green10' opacity={0.5} />
+          <Circle size={48} bg='$green10' opacity={0.5}>
+            <Paragraph size='$8' color='white' fontWeight='bold'>
+              ✓
+            </Paragraph>
+          </Circle>
           <H2 size='$6' color='$color' opacity={0.6}>
             No todos yet
           </H2>

@@ -5,7 +5,7 @@ import {
   usePutApiTodosById,
 } from '@repo/api-client'
 import { useQueryClient } from '@tanstack/react-query'
-import type { TodoFeatureProps } from '../types.js'
+import type { TodoFeatureProps } from '../types'
 
 export function useTodos(): TodoFeatureProps {
   const queryClient = useQueryClient()
