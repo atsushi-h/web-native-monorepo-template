@@ -1,4 +1,3 @@
-import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import type { GetProps } from 'tamagui'
 import { Button, Form, Input, styled, XStack } from 'tamagui'
@@ -79,12 +78,9 @@ export function TodoForm({
           autoCapitalize='none'
           autoCorrect={false}
         />
-        <SubmitButton
-          onPress={handleSubmit}
-          disabled={!value.trim() || isLoading}
-          circular
-          icon={<Plus size={20} />}
-        />
+        <SubmitButton onPress={handleSubmit} disabled={!value.trim() || isLoading} circular>
+          +
+        </SubmitButton>
       </XStack>
     </StyledForm>
   )
