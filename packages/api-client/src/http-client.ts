@@ -1,10 +1,12 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { API_CONFIG, ERROR_STATUS, getDefaultApiUrl } from './constants'
+import { getStorage } from './storage'
 import type { AuthErrorHandler, CancellablePromise, ServerErrorHandler } from './types'
 
 // セキュアなAPI URL設定（本番環境でHTTP禁止）
-const API_BASE_URL = process.env.VITE_API_BASE_URL || getDefaultApiUrl()
+const API_BASE_URL =
+  process.env.VITE_API_BASE_URL || process.env.EXPO_PUBLIC_API_URL || getDefaultApiUrl()
 
 // URL検証（本番環境でHTTPを禁止）
 if (process.env.NODE_ENV === 'production' && API_BASE_URL.startsWith('http://')) {
@@ -86,18 +88,16 @@ export const customAxiosInstance = <T>(config: AxiosRequestConfig): CancellableP
 // 認証トークン管理（実装例）
 function getAuthToken(): string | null {
   // TODO: 実際の認証トークン取得ロジックを実装
-  // localStorage、sessionStorage、またはクッキーから取得
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('auth_token')
-  }
-  return null
+  const storage = getStorage()
+  const token = storage.getItem('auth_token')
+  // Promiseの場合は同期的に処理できないのでnullを返す
+  return typeof token === 'string' ? token : null
 }
 
 function clearAuthToken(): void {
   // TODO: 認証トークンのクリア処理を実装
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('auth_token')
-  }
+  const storage = getStorage()
+  storage.removeItem('auth_token')
 }
 
 function logServerError(error: unknown): void {
