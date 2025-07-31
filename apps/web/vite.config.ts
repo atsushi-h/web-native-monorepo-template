@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-native': 'react-native-web',
+      'react-native-svg': 'react-native-svg-web',
     },
   },
   define: {
@@ -17,9 +18,16 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
   },
   optimizeDeps: {
-    include: ['react-native-web', '@repo/ui', 'tamagui'],
+    include: [
+      'react-native-web',
+      'react-native-svg-web',
+      '@repo/ui',
+      'tamagui',
+      '@tamagui/lucide-icons',
+    ],
   },
   ssr: {
-    noExternal: [],
+    noExternal: ['@tamagui/*', 'tamagui'],
+    external: ['react-native-svg', 'react-native-svg-web'],
   },
 })
