@@ -1,6 +1,7 @@
 import { memo, useState } from 'react'
 import type { GetProps } from 'tamagui'
-import { Button, Checkbox, Input, ListItem, Paragraph, styled, XStack, YStack } from 'tamagui'
+import { Button, Checkbox, Input, ListItem, styled, XStack, YStack } from 'tamagui'
+import { Icon } from './icon'
 
 export interface TodoItemProps {
   id: number
@@ -77,9 +78,7 @@ export const TodoItem = memo(function TodoItem({
           aria-label={`Mark "${title}" as ${completed ? 'incomplete' : 'complete'}`}
         >
           <Checkbox.Indicator>
-            <Paragraph size='$1' color='white'>
-              ✓
-            </Paragraph>
+            <Icon name='check' size='$0.75' color='white' />
           </Checkbox.Indicator>
         </Checkbox>
 
@@ -95,10 +94,10 @@ export const TodoItem = memo(function TodoItem({
               aria-label={`Edit todo "${title}"`}
             />
             <ActionButton onPress={handleUpdate} theme='green' aria-label='Save changes'>
-              <Paragraph size='$3'>✓</Paragraph>
+              <Icon name='check' size='$1' />
             </ActionButton>
             <ActionButton onPress={handleCancel} theme='red' aria-label='Cancel editing'>
-              <Paragraph size='$3'>✕</Paragraph>
+              <Icon name='x' size='$1' />
             </ActionButton>
           </XStack>
         ) : (
@@ -118,14 +117,14 @@ export const TodoItem = memo(function TodoItem({
                 theme='blue'
                 aria-label={`Edit "${title}"`}
               >
-                <Paragraph size='$3'>✎</Paragraph>
+                <Icon name='edit' size='$1' />
               </ActionButton>
               <ActionButton
                 onPress={() => onDelete(id)}
                 theme='red'
                 aria-label={`Delete "${title}"`}
               >
-                <Paragraph size='$3'>🗑</Paragraph>
+                <Icon name='trash' size='$1' />
               </ActionButton>
             </XStack>
           </XStack>
