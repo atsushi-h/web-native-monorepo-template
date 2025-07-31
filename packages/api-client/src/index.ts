@@ -21,7 +21,15 @@ export {
 // Query Client設定
 export { createApiQueryClient, queryKeys } from './query-client'
 // ストレージ抽象化
-export { type Storage, setStorage } from './storage'
+export {
+  type AsyncStorage,
+  clearAuthTokenAsync,
+  getAuthTokenAsync,
+  type SyncStorage,
+  setAsyncStorage,
+  setAuthTokenAsync,
+  setSyncStorage,
+} from './storage'
 // 型定義
 export type {
   AuthErrorHandler,

@@ -1,7 +1,7 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { API_CONFIG, ERROR_STATUS, getDefaultApiUrl } from './constants'
-import { getStorage } from './storage'
+import { getSyncStorage } from './storage'
 import type { AuthErrorHandler, CancellablePromise, ServerErrorHandler } from './types'
 
 // セキュアなAPI URL設定（本番環境でHTTP禁止）
@@ -88,15 +88,14 @@ export const customAxiosInstance = <T>(config: AxiosRequestConfig): CancellableP
 // 認証トークン管理（実装例）
 function getAuthToken(): string | null {
   // TODO: 実際の認証トークン取得ロジックを実装
-  const storage = getStorage()
-  const token = storage.getItem('auth_token')
-  // Promiseの場合は同期的に処理できないのでnullを返す
-  return typeof token === 'string' ? token : null
+  // 同期ストレージのみ使用（Axiosインターセプターは同期的である必要があるため）
+  const storage = getSyncStorage()
+  return storage.getItem('auth_token')
 }
 
 function clearAuthToken(): void {
   // TODO: 認証トークンのクリア処理を実装
-  const storage = getStorage()
+  const storage = getSyncStorage()
   storage.removeItem('auth_token')
 }
 
