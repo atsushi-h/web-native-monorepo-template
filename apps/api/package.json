@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev --env development --local",
+    "dev": "wrangler dev --env development --local --ip 0.0.0.0",
     "dev:remote": "wrangler dev --env development --remote",
     "build": "wrangler build",
     "start": "wrangler dev",
