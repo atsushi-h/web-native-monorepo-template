@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { GetProps } from 'tamagui'
 import { Button, Form, Input, styled, XStack } from 'tamagui'
+import { Icon } from './icon'
 
 export interface TodoFormProps {
   onSubmit: (title: string) => void
@@ -79,7 +80,7 @@ export function TodoForm({
           autoCorrect={false}
         />
         <SubmitButton onPress={handleSubmit} disabled={!value.trim() || isLoading} circular>
-          +
+          <Icon name='plus' size='$1' />
         </SubmitButton>
       </XStack>
     </StyledForm>
