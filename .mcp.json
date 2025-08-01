@@ -26,6 +26,11 @@
         "."
       ],
       "env": {}
+    },
+    "file-system": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["dlx", "@modelcontextprotocol/server-filesystem", "."]
     }
   }
 }
