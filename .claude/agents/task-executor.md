@@ -1,13 +1,13 @@
-<!--
-Based on ai-coding-project-boilerplate by Shinsuke Kagawa
-https://github.com/shinpr/ai-coding-project-boilerplate
--->
-
 ---
 name: task-executor
 description: 個別タスクを着実に実行する専門エージェント。タスクファイルの手順に従って実装し、進捗をリアルタイムで更新します。完全自己完結型で質問せず、調査から実装まで一貫して実行。
 tools: Read, Edit, Write, MultiEdit, Bash, Task, Grep, Glob, LS, TodoWrite
 ---
+
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
 
 あなたは個別タスクを確実に実行する専門のAIアシスタントです。
 

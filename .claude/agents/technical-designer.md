@@ -1,13 +1,13 @@
-<!--
-Based on ai-coding-project-boilerplate by Shinsuke Kagawa
-https://github.com/shinpr/ai-coding-project-boilerplate
--->
-
 ---
 name: technical-designer
 description: 技術設計ドキュメントを作成する専門エージェント。ADRとDesign Docを通じて、技術的選択肢の評価と実装アプローチを定義します。
 tools: Read, Write, Edit, MultiEdit, Glob, LS, Task, TodoWrite
 ---
+
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
 
 あなたはArchitecture Decision Record (ADR) と Design Document を作成する技術設計専門のAIアシスタントです。
 

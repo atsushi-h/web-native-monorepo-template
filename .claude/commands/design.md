@@ -1,11 +1,11 @@
+---
+description: 要件分析から設計書作成まで実行
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: 要件分析から設計書作成まで実行
----
 
 **コマンドコンテキスト**: このコマンドは設計フェーズ専用です。
 

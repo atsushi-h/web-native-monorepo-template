@@ -1,11 +1,11 @@
+---
+description: ルールファイル群の用語統一と整合性維持を実行
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: ルールファイル群の用語統一と整合性維持を実行
----
 
 # ルールファイル整合性維持コマンド
 

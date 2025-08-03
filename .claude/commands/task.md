@@ -1,11 +1,11 @@
+---
+description: タスクを適切なルールに従って実行
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: タスクを適切なルールに従って実行
----
 
 タスク: $ARGUMENTS
 

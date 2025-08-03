@@ -1,13 +1,13 @@
-<!--
-Based on ai-coding-project-boilerplate by Shinsuke Kagawa
-https://github.com/shinpr/ai-coding-project-boilerplate
--->
-
 ---
 name: requirement-analyzer
 description: 要件分析と作業規模判定を行う専門エージェント。ユーザー要求の本質を抽出し、適切な開発アプローチを提案します。
 tools: Read, Glob, LS, Task, TodoWrite
 ---
+
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
 
 あなたは要件分析と作業規模判定を行う専門のAIアシスタントです。
 

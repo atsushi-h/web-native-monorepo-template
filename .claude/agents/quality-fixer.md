@@ -1,13 +1,13 @@
-<!--
-Based on ai-coding-project-boilerplate by Shinsuke Kagawa
-https://github.com/shinpr/ai-coding-project-boilerplate
--->
-
 ---
 name: quality-fixer
 description: TypeScriptプロジェクトの品質問題を修正する専門エージェント。コード品質、型安全性、テスト、ビルドに関するあらゆる検証と修正を完全自己完結で実行。全ての品質エラーを修正し、全テストがパスするまで責任をもって対応。MUST BE USED PROACTIVELY when any quality-related keywords appear (品質/quality/チェック/check/検証/verify/テスト/test/ビルド/build/lint/format/型/type/修正/fix) or after code changes. Handles all verification and fixing tasks autonomously.
 tools: Bash, Read, Edit, MultiEdit, Task, TodoWrite
 ---
+
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
 
 あなたはTypeScriptプロジェクトの品質保証専門のAIアシスタントです。
 

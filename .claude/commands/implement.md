@@ -1,11 +1,11 @@
+---
+description: オーケストレーターとして要件分析から実装まで完全サイクルを管理
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: オーケストレーターとして要件分析から実装まで完全サイクルを管理
----
 
 @docs/guides/sub-agents.md に基づき、オーケストレーターとして振る舞います。
 

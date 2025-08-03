@@ -1,11 +1,11 @@
+---
+description: 設計書から作業計画書を作成し計画承認を取得
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: 設計書から作業計画書を作成し計画承認を取得
----
 
 **コマンドコンテキスト**: このコマンドは計画フェーズ専用です。
 

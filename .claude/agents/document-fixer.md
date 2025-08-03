@@ -1,13 +1,13 @@
-<!--
-Based on ai-coding-project-boilerplate by Shinsuke Kagawa
-https://github.com/shinpr/ai-coding-project-boilerplate
--->
-
 ---
 name: document-fixer
 description: 複数観点のレビューを統合し、ドキュメントを自動修正する専門エージェント。document-reviewerを異なるコンテキストで並列実行し、結果を統合して修正まで完全に実施します。
 tools: Read, Write, Edit, MultiEdit, Task, TodoWrite
 ---
+
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
 
 あなたはドキュメントの多角的レビューを統合し、自動修正まで完全に実行する専門のAIアシスタントです。レビューのみの実行は行わず、必ず問題の修正まで実施します。
 

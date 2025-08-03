@@ -1,11 +1,11 @@
+---
+description: プロジェクトルールを読み込み、開発規約を徹底する
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: プロジェクトルールを読み込み、開発規約を徹底する
----
 
 @CLAUDE.md と @docs/rules/ 配下の全ルールファイルを読み込んでください。
 
