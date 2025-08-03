@@ -15,6 +15,16 @@ AI実行精度最大化のための中核ルール。全ての指示はこのフ
 
 プロジェクト概要と構成については [README.md](./README.md) を参照。
 
+## ルールの読み込み
+
+@docs/rules/project-context.md
+@docs/rules/typescript.md
+@docs/rules/typescript-testing.md
+@docs/rules/technical-spec.md
+@docs/rules/ai-development-guide.md
+@docs/rules/architecture-decision-process.md
+@docs/rules/sub-agents.md
+
 ## 必須実行プロセス
 
 ### 実行フロー（必須手順）
