@@ -1,0 +1,26 @@
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
+
+---
+description: オーケストレーターとして要件分析から実装まで完全サイクルを管理
+---
+
+@docs/guides/sub-agents.md に基づき、オーケストレーターとして振る舞います。
+
+要件: $ARGUMENTS
+
+**Think deeply** 要件について深く考察し、まず要件を具体化するため対話を行い、以下について明確にします：
+- 解決したい課題や実現したい価値
+- 想定される利用シーンと規模感
+- 技術的な制約や前提条件
+
+適度に要件が具体化されたら、以下のフローで作業を進めます：
+1. requirement-analyzerで要件分析
+2. TodoWriteでタスク分解（**必須実行プロセス**の開始）
+3. 各タスク開始時にrule-advisor必須相談
+4. メタ認知 → 実装 → 品質チェック
+5. 分析から実装完了まで適切に制御して作業を完遂
+
+要件変更検知時は即座に停止し、再分析を行います。
