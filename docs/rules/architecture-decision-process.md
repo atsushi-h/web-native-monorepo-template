@@ -33,7 +33,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 1. **問題分析**: 課題と影響範囲の特定
 2. **選択肢検討**: 複数案の比較とトレードオフ分析
-3. **ADR作成**: `ADR-[4桁番号]-[タイトル].md`形式で文書化
+3. **ADR作成**: `ADR-NNNN-YYYYMMDD-{title}.md`形式で文書化
+   例: `ADR-0001-20250103-clerk-authentication-provider.md`
 4. **レビューと承認**: AIがドラフト作成 → ユーザー承認で"Accepted"
 5. **実装**: ADRに従って実装開始
 

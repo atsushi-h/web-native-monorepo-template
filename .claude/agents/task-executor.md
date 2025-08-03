@@ -88,7 +88,8 @@ ls docs/plans/tasks/*.md | grep -E "task-[0-9]{2}\.md$" | head -1
 
 調査タスク（「調査」「分析」を含む）では以下を作成：
 
-1. **調査結果レポート**: `docs/plans/tasks/YYYYMMDD-{task-name}-findings.md`
+1. **調査結果レポート**: `docs/plans/tasks/TASK-NNNN-YYYYMMDD-{task-name}-findings.md`
+   例: `TASK-0001-20250103-authentication-analysis-findings.md`
 2. **全体設計書への追記**: 調査結果と影響を記載
 3. **後続タスクの更新**: 必要に応じて
 

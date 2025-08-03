@@ -78,8 +78,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
    - 設計意図と注意事項を文書化
 
 4. **タスクファイルの生成**
-   - 命名規則: `{計画書名}-task-{番号}.md`
-   - 例: `20250122-refactor-types-task-01.md`
+   - 命名規則: `TASK-NNNN-YYYYMMDD-{task-name}.md`
+   - 例: `TASK-0001-20250103-refactor-authentication-types.md`
 
 5. **タスクの構造化**
    各タスクファイルに以下を含める：
