@@ -1,11 +1,11 @@
+---
+description: 分解済みタスクを自律実行モードで実装
+---
+
 <!--
 Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
-
----
-description: 分解済みタスクを自律実行モードで実装
----
 
 **コマンドコンテキスト**: このコマンドは実装フェーズ専用です。
 
