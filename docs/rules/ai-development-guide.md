@@ -1,0 +1,226 @@
+<!--
+Based on ai-coding-project-boilerplate by Shinsuke Kagawa
+https://github.com/shinpr/ai-coding-project-boilerplate
+-->
+
+# AI開発者ガイド - 技術的判断基準とアンチパターン集
+
+このドキュメントは、LLM（あなた）が実装時に参照すべき技術的な判断基準、アンチパターン、デバッグ手法、品質チェックコマンドをまとめたものです。本ドキュメントは純粋に技術的なガイダンスに特化します。
+
+## 技術的アンチパターン（赤信号パターン）
+
+以下のパターンを検出したら即座に停止し、設計を見直すこと：
+
+### コード品質のアンチパターン
+1. **同じようなコードを3回以上書いた** - Rule of Threeに違反
+2. **単一ファイルに複数の責務が混在** - 単一責任原則（SRP）違反
+3. **同じ内容を複数ファイルで定義** - DRY原則違反
+4. **依存関係を確認せずに変更** - 予期しない影響の可能性
+5. **コメントアウトでコード無効化** - バージョン管理を活用すべき
+6. **エラーの握りつぶし** - 問題の隠蔽は技術的負債
+7. **型アサーション（as）の多用** - 型安全性の放棄
+
+### 設計のアンチパターン
+- **「一旦動くように」という思考** - 技術的負債の蓄積
+- **継ぎ足し実装** - 既存コードへの無計画な追加
+- **対処療法的修正** - 根本原因を解決しない表面的な修正
+- **無計画な大規模変更** - 段階的アプローチの欠如
+
+### モノレポ特有のアンチパターン
+- **パッケージ間の循環依存** - packages間で相互参照
+- **共有UIの過度な汎用化** - Web/Native固有の要件を無視
+- **ワークスペース設定の不整合** - tsconfig/biome設定の不統一
+- **不適切な依存関係の配置** - root/app/packageの依存関係混在
+
+## Rule of Three - コード重複の判断基準
+
+Martin Fowler「Refactoring」に基づく重複コードの扱い方：
+
+| 重複回数 | 対応 | 理由 |
+|---------|------|------|
+| 1回目 | インライン実装 | 将来の変化が予測できない |
+| 2回目 | 将来の統合を意識 | パターンが見え始める |
+| 3回目 | 共通化実施 | パターンが確立された |
+
+### 共通化の判断基準
+
+**共通化すべきケース**
+- ビジネスロジックの重複
+- 複雑な処理アルゴリズム
+- 一括変更が必要になる可能性が高い箇所
+- バリデーションルール
+
+**共通化を避けるべきケース**
+- 偶然の一致（たまたま同じコード）
+- 将来異なる方向に進化する可能性
+- 共通化により可読性が著しく低下
+- テストコード内の簡単なヘルパー
+
+### 実装例
+```typescript
+// ❌ 悪い例: 1回目の重複で即共通化
+function validateUserEmail(email: string) { /* ... */ }
+function validateContactEmail(email: string) { /* ... */ }
+// → 早すぎる抽象化
+
+// ✅ 良い例: 3回目で共通化
+// 1回目: inline実装
+// 2回目: コピーだが将来を意識
+// 3回目: 共通バリデーターに抽出
+function validateEmail(email: string, context: 'user' | 'contact' | 'admin') { /* ... */ }
+```
+
+### モノレポでの共通化例（Tamagui UI）
+```typescript
+// ❌ 悪い例: Web/Native固有の要件を無視
+// packages/ui/src/Button.tsx
+export const Button = styled(View, {
+  // Web固有のhover状態をNativeでも定義
+  hoverStyle: { ... }
+})
+
+// ✅ 良い例: プラットフォーム対応
+// packages/ui/src/Button.tsx
+import { isWeb } from '@tamagui/core'
+
+export const Button = styled(View, {
+  // 共通スタイル
+  pressStyle: { opacity: 0.8 },
+  // Web固有
+  ...(isWeb && {
+    hoverStyle: { opacity: 0.9 }
+  })
+})
+```
+
+## よくある失敗パターンと回避方法
+
+### パターン1: エラー修正の連鎖
+**症状**: エラーを修正すると新しいエラーが発生
+**原因**: 根本原因を理解せずに表面的な修正
+**回避方法**: 5 Whysで根本原因を特定してから修正
+
+### パターン2: 型安全性の放棄
+**症状**: any型やasの多用
+**原因**: 型エラーを回避したい衝動
+**回避方法**: unknown型と型ガードで安全に処理
+
+### パターン3: テスト不足での実装
+**症状**: 実装後にバグ多発
+**原因**: Red-Green-Refactorプロセスの無視
+**回避方法**: 必ず失敗するテストから開始
+
+## デバッグ手法
+
+### 1. エラー分析手順
+```bash
+# スタックトレースの読み方
+1. エラーメッセージ（最初の行）を正確に読む
+2. スタックトレースの最初と最後に注目
+3. 自分のコードが現れる最初の行を特定
+```
+
+### 2. 5 Whys - 根本原因分析
+```
+症状: TypeScriptのビルドエラー
+Why1: 型定義が一致しない → Why2: インターフェースが更新された
+Why3: 依存関係の変更 → Why4: パッケージ更新の影響
+Why5: 破壊的変更を含むメジャーバージョンアップ
+根本原因: package.jsonでのバージョン指定が不適切
+```
+
+### 3. 最小再現コード
+問題を切り分けるため、最小限のコードで再現を試みる：
+- 関連のない部分を削除
+- モックで外部依存を置き換え
+- 問題が再現する最小構成を作成
+
+### 4. デバッグのためのログ出力
+```typescript
+// 構造化ログで問題を追跡
+console.log('DEBUG:', {
+  context: 'user-creation',
+  input: { email, name },
+  state: currentState,
+  timestamp: new Date().toISOString()
+})
+```
+
+## 品質チェックコマンドリファレンス
+
+### Phase 1-3: 基本チェック
+```bash
+# Biome総合チェック（lint + format）
+pnpm check
+
+# TypeScript型チェック
+pnpm check-types
+
+# モノレポ全体のビルド
+pnpm build
+
+# 特定アプリのビルド
+pnpm build:web
+pnpm build:native
+pnpm build:api
+```
+
+### Phase 4-6: テストと最終確認
+```bash
+# テスト実行（Vitest）
+pnpm test
+
+# テストウォッチモード
+pnpm test:watch
+```
+
+### 補助コマンド
+```bash
+# 自動修正
+pnpm fix          # Biomeによる自動修正
+
+# 開発サーバー
+pnpm dev          # すべてのアプリ
+pnpm dev:web      # Webのみ
+pnpm dev:native   # Nativeのみ
+pnpm dev:api      # APIのみ
+
+# Turboフィルター使用
+turbo dev --filter=@repo/web
+turbo build --filter=@repo/api
+```
+
+### トラブルシューティング
+- **ポート使用中エラー**: 各アプリのポートを確認（Web:3000, API:8787）
+- **依存関係エラー**: `pnpm install`で再インストール
+- **型エラー**: `pnpm check-types`で詳細確認
+
+## 技術的判断が必要な場面
+
+### 抽象化のタイミング
+- 具体的な実装を3回書いてからパターンを抽出
+- YAGNIを意識し、現在必要な機能のみ実装
+- 将来の拡張性より現在のシンプルさを優先
+
+### パフォーマンス vs 可読性
+- 明確なボトルネックがない限り可読性を優先
+- 計測してから最適化（推測するな、計測せよ）
+- 最適化する場合はコメントで理由を明記
+
+### 型定義の粒度
+- 過度に細かい型は保守性を低下させる
+- ドメインを適切に表現する型を設計
+- ユーティリティ型を活用して重複を削減
+
+## 継続的改善のマインドセット
+
+- **謙虚**: 完璧なコードは存在しない、フィードバック歓迎
+- **勇気**: 必要なリファクタリングは大胆に実行
+- **透明性**: 技術的な判断理由を明確に記録
+
+## 参照した手法・原則
+- **Rule of Three**: Martin Fowler「Refactoring」
+- **単一責任原則（SRP）**: Robert C. Martin「Clean Code」
+- **5 Whys**: トヨタ生産方式
+- **YAGNI原則**: Kent Beck「Extreme Programming Explained」
+- **DRY原則**: Andy Hunt & Dave Thomas「The Pragmatic Programmer」
