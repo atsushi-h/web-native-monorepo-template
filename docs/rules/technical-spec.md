@@ -25,14 +25,28 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ### PRD/ADR/Design Doc/作業計画書作成プロセス
 
 #### 作成が必要なケース
-1. **新機能追加時**: PRD → ADR（アーキテクチャ変更がある場合） → Design Doc → 作業計画書 → 実装
-2. **大規模変更時（6ファイル以上）**: ADR → Design Doc → 作業計画書（必須） → 実装
-3. **中規模変更時（3-5ファイル）**: Design Doc作成を検討 → 作業計画書（推奨） → 実装
-4. **小規模修正時（1-2ファイル）**: 直接実装
+
+以下の規模判定基準に従って、必要なドキュメント作成を判断します：
+
+| 規模 | ファイル数 | PRD | ADR | Design Doc | 作業計画書 |
+|------|-----------|-----|-----|------------|----------|
+| 小規模 | 1-2 | 不要 | 不要 | 不要 | 簡易版 |
+| 中規模 | 3-5 | 不要 | 条件付き※1 | **必須** | **必須** |
+| 大規模 | 6以上 | 条件付き※2 | 条件付き※1 | **必須** | **必須** |
+
+※1: アーキテクチャ変更、新技術導入、データフロー変更がある場合
+※2: 新機能追加の場合
+
+#### 実装フロー
+1. **新機能追加時**: requirement-analyzer → PRD（大規模の場合） → ADR（条件付き） → Design Doc → 作業計画書 → 実装
+2. **大規模変更時（6ファイル以上）**: requirement-analyzer → ADR（条件付き） → Design Doc → 作業計画書 → 実装
+3. **中規模変更時（3-5ファイル）**: requirement-analyzer → Design Doc → 作業計画書 → 実装
+4. **小規模修正時（1-2ファイル）**: 簡易計画書 → 直接実装
 
 #### 作業計画書について
 - **保存場所**: `docs/plans/`（.gitignoreで除外）
-- **命名規則**: `YYYYMMDD-{feature|fix|refactor}-{brief-description}.md`
+- **命名規則**: `PLAN-NNNN-YYYYMMDD-{type}-{title}.md`
+  例: `PLAN-0001-20250103-feature-user-authentication.md`
 - **テンプレート**: `docs/plans/template.md`
 - **運用フロー**: 
   1. 中規模以上の変更開始時に作成
@@ -41,6 +55,9 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 #### ADR（Architecture Decision Record）
 重要な技術的決定を記録し、将来の実装者が意思決定の背景を理解できるようにする。
+
+#### サブエージェント連携
+上記のプロセスはサブエージェントと連携して実行されます。詳細なオーケストレーションフローは`docs/rules/sub-agents.md`を参照してください。
 
 ### データフロー統一原則
 
