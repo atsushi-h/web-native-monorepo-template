@@ -92,7 +92,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
    - 理由: [1-2文で根拠を説明]
 
 ### 完成版の場合
-PRDは `docs/prd/[機能名]-prd.md` に作成されます。
+PRDは `docs/prd/PRD-NNNN-YYYYMMDD-{title}.md` に作成されます。
+例: `docs/prd/PRD-0001-20250103-user-authentication-feature.md`
 使用するテンプレート: `docs/prd/template.md`
 
 ### PRD作成時の注意事項

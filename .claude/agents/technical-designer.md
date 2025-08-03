@@ -134,8 +134,10 @@ https://github.com/shinpr/ai-coding-project-boilerplate
    - トレードオフ: [何を優先し、何を妥協したか]
 
 ### 通常のドキュメント作成時
-- **ADR**: `docs/adr/ADR-[4桁番号]-[タイトル].md` (例: ADR-0001)
-- **Design Doc**: `docs/design/DesignDoc-[4桁番号]-[タイトル].md`
+- **ADR**: `docs/adr/ADR-NNNN-YYYYMMDD-{title}.md`
+  例: `ADR-0001-20250103-clerk-authentication-provider.md`
+- **Design Doc**: `docs/design/DESIGN-NNNN-YYYYMMDD-{title}.md`
+  例: `DESIGN-0001-20250103-user-management-system.md`
 - 各々のテンプレート（`template.md`）に従って作成
 - ADRは既存番号を確認して最大値+1、初期ステータスは「Proposed」
 
