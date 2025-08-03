@@ -145,7 +145,7 @@ Task(
   subagent_type="task-executor",
   description="Task実行",
   prompt="""
-タスクファイル: docs/plans/tasks/[ファイル名].md
+タスクファイル: docs/plans/tasks/TASK-NNNN-YYYYMMDD-{task-name}.md
 
 実行指示:
 - チェックリストに従って実装を完遂
