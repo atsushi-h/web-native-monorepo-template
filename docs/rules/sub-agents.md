@@ -112,6 +112,9 @@ graph TD
 ## 📏 規模判定の解釈基準
 
 ### 規模判定とドキュメント要件（requirement-analyzer結果の解釈用）
+
+以下の規模判定基準に従って、必要なドキュメント作成を判断します：
+
 | 規模 | ファイル数 | PRD | ADR | Design Doc | 作業計画書 |
 |------|-----------|-----|-----|------------|-----------|
 | 小規模 | 1-2 | 不要 | 不要 | 不要 | 簡易版 |
@@ -120,6 +123,30 @@ graph TD
 
 ※1: アーキテクチャ変更、新技術導入、データフロー変更がある場合
 ※2: 新機能追加の場合
+
+#### 命名規則の詳細と例外ケース
+
+**基本命名規則**:
+```
+ADR:     ADR-NNNN-YYYYMMDD-{title}.md
+Design:  DESIGN-NNNN-YYYYMMDD-{title}.md  
+PRD:     PRD-NNNN-YYYYMMDD-{title}.md
+Plan:    PLAN-NNNN-YYYYMMDD-{type}-{title}.md
+Task:    TASK-NNNN-YYYYMMDD-{task-name}.md
+```
+
+**バージョン管理**:
+- 既存ドキュメントの大幅更新: `{original-name}-v2.md`
+- 例: `ADR-0001-20250103-clerk-auth-v2.md`
+
+**派生ドキュメント**:
+- 調査レポート: `{base-name}-findings.md`
+- 実装ログ: `{base-name}-implementation.md`
+- 例: `TASK-0001-20250103-auth-analysis-findings.md`
+
+**複数プロジェクト対応**:
+- プロジェクト固有: `{PROJECT}-{type}-NNNN-YYYYMMDD-{title}.md`
+- 例: `WEB-ADR-0001-20250103-routing-strategy.md`
 
 ## 構造化レスポンス仕様
 
@@ -135,6 +162,35 @@ Task(
   subagent_type="prd-creator", 
   description="PRD作成と質問事項抽出", 
   prompt="対話的にPRDを作成してください。ユーザーに確認すべき質問事項をリストアップし、特に機能の優先順位、スコープの境界、非機能要件、想定される利用シーンを明確にしてください"
+)
+```
+
+### エラーハンドリングと要件変更時の例
+
+#### requirement-analyzerでの要件変更対応
+```
+Task(
+  subagent_type="requirement-analyzer",
+  description="統合要件分析",
+  prompt="初回要件: ユーザー管理機能を作りたい\n追加要件: 権限管理も必要\n\n上記の統合要件で作業規模判定と推奨アプローチを分析してください。要件変更による影響範囲と実装順序も含めて検討してください。"
+)
+```
+
+#### quality-fixerでのエラー修正
+```
+Task(
+  subagent_type="quality-fixer",
+  description="型エラー修正",
+  prompt="以下の型エラーを修正してください：\n- Property 'id' does not exist on type 'User'\n- Argument of type 'string' is not assignable to parameter of type 'number'\n\n全ての型エラーを修正し、テストが通るまで完全に処理してください。エラー原因の分析と修正方針も報告してください。"
+)
+```
+
+#### document-fixerでの整合性修正
+```
+Task(
+  subagent_type="document-fixer",
+  description="PRDとDesign Docの整合性修正",
+  prompt="PRD-0001-20250103-user-auth.mdとDESIGN-0001-20250103-auth-system.mdの間で矛盾が発見されました。以下の観点で整合性を確保してください：\n1. 認証方式の記述\n2. データベース設計\n3. API仕様\n\n矛盾点を特定し、統一された内容に修正してください。"
 )
 ```
 
