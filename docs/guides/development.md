@@ -132,7 +132,7 @@ pnpm dev:api      # ローカル開発（デフォルト）
 pnpm dev:remote   # Cloudflare環境で開発
 ```
 
-詳細は[API設定ガイド](./API.md)を参照
+詳細は apps/api/README.md を参照
 
 ## パッケージ
 

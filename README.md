@@ -56,7 +56,7 @@ web-native-monorepo-template/
 ### 前提条件
 
 - Node.js >= 24
-- pnpm 10.12.4 (自動インストール)
+- pnpm 10.13.1 (自動インストール)
 
 ### セットアップ
 
@@ -146,18 +146,9 @@ pnpm check-types
 ## 📚 ドキュメント
 
 ### 全体設計・ワークフロー
-- 📘 [開発ガイド](./docs/DEVELOPMENT.md) - 詳細なアーキテクチャとAPI
-- 📗 [Git/GitHubワークフロー](./docs/GIT_WORKFLOW.md) - ブランチルールとPR作成
-- 📙 [コマンドリファレンス](./docs/COMMANDS.md) - 利用可能なコマンド
-- 🔍 [トラブルシューティング](./docs/TROUBLESHOOTING.md) - よくある問題と解決方法
-
-### API・データベース
-- 🔑 [API設定ガイド](./docs/API.md) - 環境設定・開発ワークフロー
-- 🗄️ [D1データベース設定](./docs/D1_SETUP.md) - Cloudflare D1セットアップ
-
-### 開発ツール
-- 🔧 [MCP設定ガイド](./docs/MCP.md) - Claude Code設定
-- 🎨 [Tamagui設定ガイド](./docs/TAMAGUI_SETUP.md) - UI コンポーネント
+- 📘 [開発ガイド](./docs/guides/development.md) - 詳細なアーキテクチャとAPI
+- 📙 [コマンドリファレンス](./docs/guides/commands.md) - 利用可能なコマンド
+- 🔍 [トラブルシューティング](./docs/guides/troubleshooting.md) - よくある問題と解決方法
 
 ### アプリ個別
 各アプリの詳細な使い方は、apps/*/README.md を参照（最低限の情報のみ）
