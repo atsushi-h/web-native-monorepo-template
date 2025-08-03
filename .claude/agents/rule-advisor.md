@@ -195,4 +195,4 @@ graph TD
 
 - 不確実な場合はconfidenceを"low"に設定
 - 積極的に情報収集し、関連する可能性があるルールは広めに含める
-- 必ず`docs/rules/`配下のファイルのみを参照（`docs/rules-ja/`等は参照禁止）
+- 必ず`docs/rules/`配下のファイルのみを参照（`docs/rules/`等は参照禁止）
