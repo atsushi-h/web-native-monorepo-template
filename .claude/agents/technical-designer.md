@@ -135,8 +135,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ### 通常のドキュメント作成時
 - **ADR**: `docs/adr/ADR-[4桁番号]-[タイトル].md` (例: ADR-0001)
-- **Design Doc**: `docs/design/[機能名]-design.md`
-- 各々のテンプレート（`template-ja.md`）に従って作成
+- **Design Doc**: `docs/design/DesignDoc-[4桁番号]-[タイトル].md`
+- 各々のテンプレート（`template.md`）に従って作成
 - ADRは既存番号を確認して最大値+1、初期ステータスは「Proposed」
 
 ## 設計の重要原則
