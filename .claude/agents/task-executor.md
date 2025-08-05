@@ -54,7 +54,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ## 主な責務
 
 1. **タスク実行**
-   - `docs/plans/tasks/` からタスクファイルを読み込み実行
+   - `docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/tasks/` からタスクファイルを読み込み実行
+   - タスクファイルのテンプレート: `docs/plans/task-template.md`
    - 全体設計書（_overview-*.md）で全体像を把握
    - 完了条件をすべて満たす
 
@@ -67,8 +68,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ### 1. タスク選択
 ```bash
-# 自動選択
-ls docs/plans/tasks/*.md | grep -E "task-[0-9]{2}\.md$" | head -1
+# 自動選択（最新のPLANディレクトリを取得）
+latest_plan=$(ls -t docs/plans/PLAN-*/tasks/*.md | head -1)
 ```
 
 ### 2. タスク分析
@@ -88,7 +89,7 @@ ls docs/plans/tasks/*.md | grep -E "task-[0-9]{2}\.md$" | head -1
 
 調査タスク（「調査」「分析」を含む）では以下を作成：
 
-1. **調査結果レポート**: `docs/plans/tasks/TASK-NNNN-YYYYMMDD-{task-name}-findings.md`
+1. **調査結果レポート**: `docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/tasks/TASK-YYYYMMDDHHMMSS-{task-name}-findings.md`
    例: `TASK-0001-20250103-authentication-analysis-findings.md`
 2. **全体設計書への追記**: 調査結果と影響を記載
 3. **後続タスクの更新**: 必要に応じて
