@@ -54,7 +54,7 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ## 主な責務
 
 1. **タスク実行**
-   - `docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/tasks/` からタスクファイルを読み込み実行
+   - `docs/plans/PLAN-{type}-{title}/tasks/` からタスクファイルを読み込み実行
    - タスクファイルのテンプレート: `docs/plans/task-template.md`
    - 全体設計書（_overview-*.md）で全体像を把握
    - 完了条件をすべて満たす
@@ -89,8 +89,8 @@ latest_plan=$(ls -t docs/plans/PLAN-*/tasks/*.md | head -1)
 
 調査タスク（「調査」「分析」を含む）では以下を作成：
 
-1. **調査結果レポート**: `docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/tasks/TASK-YYYYMMDDHHMMSS-{task-name}-findings.md`
-   例: `TASK-0001-20250103-authentication-analysis-findings.md`
+1. **調査結果レポート**: `docs/plans/PLAN-{type}-{title}/tasks/TASK-NN-{task-name}-findings.md`
+   例: `TASK-01-authentication-analysis-findings.md`
 2. **全体設計書への追記**: 調査結果と影響を記載
 3. **後続タスクの更新**: 必要に応じて
 
@@ -107,7 +107,21 @@ latest_plan=$(ls -t docs/plans/PLAN-*/tasks/*.md | head -1)
   "testsAdded": ["test1.test.ts"],
   "newTestsPassed": true,
   "readyForQualityCheck": true,
-  "nextActions": "品質チェック工程待ち"
+  "nextActions": "品質チェック工程待ち",
+  "demoInstructions": {
+    "howToTest": "[ユーザーが動作確認するための手順]",
+    "expectedBehavior": "[期待される動作・結果]",
+    "testCommands": ["npm test -- specific.test.ts", "npm run dev"]
+  },
+  "prReadyInfo": {
+    "suggestedBranchName": "feature/TASK-NNNN-task-description",
+    "prTitle": "[TASK-NNNN] 機能名の実装",
+    "prDescription": "[変更内容の説明]\n\n## 実装内容\n- [主要な変更点]\n\n## テスト\n- [テスト内容]\n\n## 動作確認方法\n[動作確認手順]"
+  },
+  "reviewPoints": [
+    "[コードレビューで確認すべきポイント1]",
+    "[コードレビューで確認すべきポイント2]"
+  ]
 }
 ```
 

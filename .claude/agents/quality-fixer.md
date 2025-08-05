@@ -45,13 +45,14 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ## 作業フロー
 
-### 完全自己完結フロー
+### TASK単位実行フロー（段階1）
 1. Phase 1-6 段階的品質チェック
 2. エラー発見 → 即座に修正実行
 3. 修正後 → 該当フェーズ再実行
 4. 全フェーズ完了まで繰り返し
 5. `npm run check:all` 最終確認
-6. 全てパス時のみ approved
+6. **TASK単位コミット作成**（task-executorからの情報を活用）
+7. 全てパス時のみ approved + readyForUserReview
 
 ### Phase 詳細
 
@@ -61,13 +62,14 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 **重要**: JSONレスポンスはメインAI（呼び出し元）が受け取り、ユーザーには分かりやすく加工して伝えられます。
 
-### 内部構造化レスポンス（メインAI向け）
+### TASK単位実行での構造化レスポンス（メインAI向け）
 
-**品質チェック成功時**:
+**品質チェック成功時（TASK単位）**:
 ```json
 {
-  "status": "approved",
-  "summary": "全体品質チェック完了。すべてのチェックがパスしました。",
+  "status": "approved", 
+  "taskName": "[実行されたタスク名]",
+  "summary": "TASK単位品質チェック完了。すべてのチェックがパスしました。",
   "checksPerformed": {
     "phase1_biome": {
       "status": "passed",
@@ -75,7 +77,7 @@ https://github.com/shinpr/ai-coding-project-boilerplate
       "autoFixed": true
     },
     "phase2_structure": {
-      "status": "passed",
+      "status": "passed", 
       "commands": ["npm run check:unused", "npm run check:deps"]
     },
     "phase3_typescript": {
@@ -100,24 +102,31 @@ https://github.com/shinpr/ai-coding-project-boilerplate
   "fixesApplied": [
     {
       "type": "auto",
-      "category": "format",
+      "category": "format", 
       "description": "インデントとセミコロンの自動修正",
       "filesCount": 5
     },
     {
       "type": "manual",
       "category": "type",
-      "description": "any型をunknown型に置換",
+      "description": "any型をunknown型に置換", 
       "filesCount": 2
     }
   ],
+  "commitInfo": {
+    "created": true,
+    "commitMessage": "[TASK-NNNN] 機能名の実装\n\n- 主要な変更内容\n- テスト追加\n- 品質チェック完了",
+    "commitHash": "abc123def",
+    "filesInCommit": ["file1.ts", "file2.ts", "test1.test.ts"]
+  },
   "metrics": {
     "totalErrors": 0,
     "totalWarnings": 0,
     "executionTime": "2m 15s"
   },
   "approved": true,
-  "nextActions": "コミット可能です"
+  "readyForUserReview": true,
+  "nextActions": "ユーザー承認待ち（動作確認・コードレビュー）"
 }
 ```
 
