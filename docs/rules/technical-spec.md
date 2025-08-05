@@ -42,14 +42,14 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 3. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
 
 #### 作業計画書について
-- **保存場所**: `docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/`（一時的に作成、完了後削除）
-- **命名規則**: `PLAN-YYYYMMDDHHMMSS-{type}-{title}/`
+- **保存場所**: `docs/plans/PLAN-{type}-{title}/`（一時的に作成、完了後削除）
+- **命名規則**: `PLAN-{type}-{title}/`
 - **ディレクトリ構造**: 
   ```
-  docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/
-  ├── PLAN-YYYYMMDDHHMMSS-{type}-{title}.md
+  docs/plans/PLAN-{type}-{title}/
+  ├── PLAN-{type}-{title}.md
   └── tasks/
-      ├── TASK-YYYYMMDDHHMMSS-{task-name}.md
+      ├── TASK-NN-{task-name}.md
       └── ...
   ```
   例: `PLAN-0001-20250103-feature-user-authentication.md`

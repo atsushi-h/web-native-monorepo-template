@@ -77,8 +77,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 - [参考実装]
 
 ### 依存関係
-- **前提タスク**: TASK-YYYYMMDDHHMMSS-{task-name}
-- **後続タスク**: TASK-YYYYMMDDHHMMSS-{task-name}
+- **前提タスク**: TASK-NN-{task-name}
+- **後続タスク**: TASK-NN-{task-name}
 
 ## 進捗記録
 
