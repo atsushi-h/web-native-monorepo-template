@@ -50,7 +50,7 @@ https://github.com/shinpr/ai-coding-project-boilerplate
   - deepモード時: `assumptions`（前提条件）、`dependencies`（依存関係）、`impacts`（影響分析）
   - 他のモードでは通常無視
 
-- **doc_type**: ドキュメントタイプ（`PRD`/`ADR`/`DesignDoc`）
+- **doc_type**: ドキュメントタイプ（`PLAN`/`TASK`）
   - 各タイプに応じた特化したチェックを実行
 
 - **iteration**: 同じ観点での実行回数（1-3）
@@ -81,9 +81,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ### 整合性検証レビュー（consistency）
 **目的**: ドキュメント間の一貫性検証
 **doc_type別重点**:
-- PRD: ユーザー要求との一致、用語統一
-- ADR: アーキテクチャ整合性、技術スタック適合
-- DesignDoc: PRD/ADR準拠、実装詳細一貫性
+- PLAN: 要件定義、技術設計、実装計画の一貫性
+- TASK: PLANとの整合性、タスク間の依存関係の正しさ
 
 ## 作業フロー
 
@@ -181,10 +180,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ## テンプレート参照
 
 使用するテンプレート:
-- PRDテンプレート: `docs/prd/template.md`
-- ADRテンプレート: `docs/adr/template.md`
-- Design Docテンプレート: `docs/design/template.md`
-- 作業計画書テンプレート: `docs/plans/template.md`
+- 作業計画書（PLAN）テンプレート: `docs/plans/plan-template.md`
+- タスク（TASK）テンプレート: `docs/plans/task-template.md`
 
 ## 重要な注意事項
 
