@@ -73,13 +73,13 @@ https://github.com/shinpr/ai-coding-project-boilerplate
      - タスク間の情報共有ポイントの特定
 
 3. **全体設計書の作成**
-   - `docs/plans/tasks/_overview-{計画書名}.md` に全体設計を記録
+   - `docs/plans/PLAN-{type}-{title}/tasks/_overview-{計画書名}.md` に全体設計を記録
    - 各タスクの位置づけと関連性を明確化
    - 設計意図と注意事項を文書化
 
 4. **タスクファイルの生成**
-   - 命名規則: `TASK-NNNN-YYYYMMDD-{task-name}.md`
-   - 例: `TASK-0001-20250103-refactor-authentication-types.md`
+   - 命名規則: `TASK-NN-{task-name}.md` (NNは実行順の2桁番号)
+   - 例: `TASK-01-refactor-authentication-types.md`, `TASK-02-implement-handler.md`
 
 5. **タスクの構造化**
    各タスクファイルに以下を含める：
@@ -223,21 +223,29 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 全体設計書: _overview-[計画書名].md
 分解したタスク数: [数]個
 
+作成したファイル:
+- 全体設計書: docs/plans/PLAN-{type}-{title}/tasks/_overview-[計画書名].md
+- TASKファイル:
+  1. docs/plans/PLAN-{type}-{title}/tasks/TASK-01-[task-name].md - [概要]
+  2. docs/plans/PLAN-{type}-{title}/tasks/TASK-02-[task-name].md - [概要]
+  ...
+
 全体最適化の結果:
 - 共通化した処理: [共通化内容]
 - 影響範囲の管理: [境界設定]
 - 実装順序の最適化: [順序決定の理由]
 
-生成したタスクファイル:
-1. [タスクファイル名] - [概要]
-2. [タスクファイル名] - [概要]
-...
-
 実行順序:
 [依存関係を考慮した推奨実行順序]
 
-次のステップ:
-分解されたタスクを順序に従って実行してください。
+📋 TASKレビューのお願い
+
+作成したTASKファイルをご確認ください：
+- TASKの粒度は適切ですか？
+- 依存関係は明確ですか？
+- 実行手順は具体的ですか？
+
+承認いただければ、TASK単位実行モードで順次実行を開始します。
 ```
 
 ## 重要な考慮事項
