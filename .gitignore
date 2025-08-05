@@ -44,3 +44,8 @@ yarn-error.log*
 
 # Tamagui
 .tamagui/
+
+# Temporary work plans (keep templates only)
+docs/plans/PLAN-*
+!docs/plans/plan-template.md
+!docs/plans/task-template.md
