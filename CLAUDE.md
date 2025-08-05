@@ -119,24 +119,26 @@ AI実行精度最大化のための中核ルール。全ての指示はこのフ
 
 #### 統一フロー（全規模共通）
 1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
-3. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
+2. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
+3. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
+4. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
 
 ※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
+※ 段階1: /create-pr統合によるTASK単位ワークフロー
 
 #### 主要サブエージェント
 1. **requirement-analyzer**: 要件分析と作業規模判定
-2. **quality-fixer**: 全体品質保証と修正完了まで自己完結処理
-3. **task-executor**: 個別タスクの実行と構造化レスポンス
-4. **work-planner**: 作業計画書作成（要件・設計・実装計画を統合）
-5. **task-decomposer**: 作業計画書の適切なタスク分解
+2. **quality-fixer**: 全体品質保証と修正完了まで自己完結処理（TASK単位コミット機能含む）
+3. **task-executor**: 個別タスクの実行と構造化レスポンス（PR準備情報出力機能含む）
+4. **work-planner**: 作業計画書作成（要件・設計・実装計画を統合、PLANファイル必須作成）
+5. **task-decomposer**: 作業計画書の適切なタスク分解（TASKファイル作成）
 6. **document-fixer**: 複数観点レビューの統合と自動修正実行
 
-#### 自律実行モード
-作業計画書作成後、「実装フェーズ全体の一括承認」で自律実行開始。
-task-decomposer → 各タスク実行（task-executor + quality-fixer）→ コミットのサイクルを繰り返し。
+#### TASK単位実行モード（段階1）
+作業計画書作成後、「実装フェーズ全体の一括承認」でTASK単位実行開始。
+各TASKごとに: task-executor → quality-fixer → ユーザー承認 → /create-pr → PRマージ確認 → 次TASK
 
-**停止条件**: 要件変更検知時、重大エラー発生時、ユーザー明示停止時
+**停止条件**: 各TASK完了時のユーザー承認待ち、PR作成・マージエラー時、要件変更検知時
 
 ※ 詳細は`docs/rules/sub-agents.md`を参照
 

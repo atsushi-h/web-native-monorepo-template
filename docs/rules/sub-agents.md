@@ -123,30 +123,32 @@ graph TD
 
 **基本命名規則**:
 ```
-PLANディレクトリ: PLAN-YYYYMMDDHHMMSS-{type}-{title}/
-PLAN本体:      PLAN-YYYYMMDDHHMMSS-{type}-{title}.md
-TASKファイル:    tasks/TASK-YYYYMMDDHHMMSS-{task-name}.md
+PLANディレクトリ: PLAN-{type}-{title}/
+PLAN本体:      PLAN-{type}-{title}.md
+TASKファイル:    tasks/TASK-NN-{task-name}.md (NNは実行順2桁番号)
+全体設計書:     tasks/_overview-{title}.md
 ```
 
 **バージョン管理**:
 - 既存ドキュメントの大幅更新: `{original-name}-v2.md`
-- 例: `PLAN-20250805143022-auth-system-v2.md`
+- 例: `PLAN-feature-auth-system-v2.md`
 
 **ディレクトリ構造**:
 ```
 docs/plans/
-├── PLAN-20250805143022-feature-auth-system/
-│   ├── PLAN-20250805143022-feature-auth-system.md
+├── PLAN-feature-auth-system/
+│   ├── PLAN-feature-auth-system.md
 │   └── tasks/
-│       ├── TASK-20250805143055-implement-login.md
-│       └── TASK-20250805143128-add-registration.md
+│       ├── _overview-auth-system.md
+│       ├── TASK-01-implement-login.md
+│       └── TASK-02-add-registration.md
 ├── plan-template.md
 └── task-template.md
 ```
 
 **派生ファイル**:
-- 調査レポート: `tasks/TASK-YYYYMMDDHHMMSS-{task-name}-findings.md`
-- 実装ログ: `tasks/TASK-YYYYMMDDHHMMSS-{task-name}-implementation.md`
+- 調査レポート: `tasks/TASK-NN-{task-name}-findings.md`
+- 実装ログ: `tasks/TASK-NN-{task-name}-implementation.md`
 
 ## 構造化レスポンス仕様
 
@@ -201,7 +203,7 @@ Task(
   subagent_type="task-executor",
   description="Task実行",
   prompt="""
-タスクファイル: docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/tasks/TASK-YYYYMMDDHHMMSS-{task-name}.md
+タスクファイル: docs/plans/PLAN-{type}-{title}/tasks/TASK-NN-{task-name}.md
 
 実行指示:
 - チェックリストに従って実装を完遂
@@ -249,40 +251,45 @@ requirement-analyzerは「完全自己完結」の原則に従い、要件変更
 
 ### 統一フロー（全規模共通）
 1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
-3. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
+2. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
+3. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
+4. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
 
 ※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
+※ 段階1: /create-pr統合によるTASK単位ワークフロー
 
-## 🤖 自律実行モード
+## 🤖 TASK単位実行モード（段階1: /create-pr統合）
 
-### 🔑 権限委譲
+### 🔑 権限委譲と実行方針
 
-**自律実行モード開始後**：
-- 実装フェーズ全体の一括承認により、サブエージェントに権限委譲
-- task-executor：実装権限（Edit/Write使用可）
-- quality-fixer：修正権限（品質エラー自動修正）
+**TASK単位実行モード**：
+- 各TASK完了毎にユーザー承認を取得（動作確認・コードレビュー）
+- 承認後に`/create-pr`実行を促進してPR作成
+- PRマージ確認後に次TASKを自動開始
 
-### 自律実行モードの定義
-work-plannerでの「実装フェーズ全体の一括承認」後、以下の処理を人間の承認なしで自律実行します：
+### TASK単位実行フローの定義
+task-decomposerでの「TASK承認・実装開始確認」後、以下のTASK単位サイクルを実行します：
 
 ```mermaid
 graph TD
-    START[実装フェーズ全体の一括承認] --> AUTO[自律実行モード開始]
-    AUTO --> TD[task-decomposer: タスク分解]
-    TD --> LOOP[タスク実行ループ]
-    LOOP --> TE[task-executor: 実装]
-    TE --> QF[quality-fixer: 品質チェック・修正]
-    QF --> COMMIT[コミット作成]
-    COMMIT --> CHECK{残りタスクあり?}
-    CHECK -->|Yes| LOOP
-    CHECK -->|No| REPORT[完了報告]
+    START[TASK承認・実装開始確認] --> NEXT[次TASK選択]
+    NEXT --> TE[task-executor: TASK実装]
+    TE --> QF[quality-fixer: 品質チェック・コミット]
+    QF --> DEMO[動作確認情報提示]
+    DEMO --> WAIT[ユーザー承認待ち]
+    WAIT --> APPROVE{承認?}
+    APPROVE -->|No| FIX[修正対応]
+    FIX --> TE
+    APPROVE -->|Yes| PRINFO[PR作成情報提示]
+    PRINFO --> PRCREATE[ユーザー/create-pr実行]
+    PRCREATE --> MERGE[PRマージ確認]
+    MERGE --> CHECK{残TASK?}
+    CHECK -->|Yes| NEXT
+    CHECK -->|No| COMPLETE[完了報告]
     
-    LOOP --> INTERRUPT{ユーザー入力?}
-    INTERRUPT -->|なし| TE
-    INTERRUPT -->|あり| REQCHECK{要件変更チェック}
-    REQCHECK -->|変更なし| TE
-    REQCHECK -->|変更あり| STOP[自律実行停止]
+    WAIT --> INTERRUPT{要件変更?}
+    INTERRUPT -->|なし| APPROVE
+    INTERRUPT -->|あり| STOP[TASK単位実行停止]
     STOP --> RA[requirement-analyzerで再分析]
     
     TE --> ERROR{重大エラー?}
@@ -290,28 +297,42 @@ graph TD
     ERROR -->|あり| ESC[エスカレーション]
 ```
 
-### 自律実行の停止条件
-以下の場合に自律実行を停止し、ユーザーにエスカレーションします：
+### 🆚 従来の自律実行モードとの違い
+
+| 観点 | 従来の自律実行モード | 新しいTASK単位実行モード |
+|------|---------------------|------------------------|
+| **承認タイミング** | 実装フェーズ全体の一括承認 | 各TASK完了毎の承認 |
+| **PR作成** | 全TASK完了後に一括 | 各TASK完了毎に個別 |
+| **ユーザー参加** | 実装中は不参加 | 各TASK毎に動作確認・レビュー |
+| **品質保証** | 最終まとめて実施 | 各TASK毎に実施 |
+| **修正対応** | 全体完了後に対応 | TASK毎に即座対応 |
+
+### TASK単位実行の停止条件
+以下の場合にTASK単位実行を停止し、ユーザーにエスカレーションします：
 
 1. **要件変更検知時**
    - 要件変更検知チェックリストで1つでも該当
-   - 自律実行を停止し、requirement-analyzerに統合要件で再分析
+   - TASK単位実行を停止し、requirement-analyzerに統合要件で再分析
 
 2. **重大エラー発生時**
    - 実装エラー、品質チェック失敗、ビルドエラー等
    - エラー内容をユーザーに報告し、対応策の指示を待つ
 
-3. **work-planner更新制限に抵触時**
-   - task-decomposer開始後の要件変更は全体再設計が必要
-   - requirement-analyzerから全体フローを再開
+3. **ユーザー承認拒否時**
+   - TASK完了時の動作確認・コードレビューで修正指示
+   - 修正対応後に再度承認を求める
 
-4. **ユーザー明示停止時**
+4. **PR作成・マージエラー時**
+   - `/create-pr`実行失敗やマージコンフリクト等
+   - エラー内容をユーザーに報告し、手動対応を依頼
+
+5. **ユーザー明示停止時**
    - 直接的な停止指示や割り込み
 
-### 自律実行中の品質保証
-- 各タスクごとに`task-executor → quality-fixer → commit`サイクルを自動実行
-- quality-fixerに全品質チェックと修正を完全自己完結で処理させる
-- 全タスク完了まで品質基準を維持
+### TASK単位実行の品質保証
+- 各TASKごとに`task-executor → quality-fixer → commit → user-approval → PR`サイクルを実行
+- quality-fixerに各TASK毎の品質チェックと修正を完全自己完結で処理させる
+- ユーザー承認により品質とビジネス要件の両方を保証
 
 ## 🎼 私のオーケストレーターとしての主な役割
 
@@ -342,11 +363,13 @@ graph TD
 
 ### 主要な停止ポイント
 - **requirement-analyzer完了後**: 要件分析結果と質問事項の確認
-- **PLAN作成→document-fixer実行後**: 作業計画書の実装可能性、要件整合性、技術設計妥当性の確認
-- **TASK作成→document-fixer実行後**: タスクの実行可能性、チェックリスト完全性、依存関係の確認
-- **計画書作成後**: 実装フェーズ全体の一括承認（計画サマリーで確認）
+- **work-planner完了後**: 作業計画書の実装可能性、要件整合性、技術設計妥当性の確認（PLAN承認・次ステップ確認）
+- **task-decomposer完了後**: タスクの実行可能性、チェックリスト完全性、依存関係の確認（TASK承認・実装開始確認）
 
-### 自律実行中の停止ポイント
+### TASK単位実行中の停止ポイント
+- **各TASK完了時**: ユーザーによる動作確認・コードレビュー→承認待ち
+- **PR作成前**: `/create-pr`実行促進→ユーザーによるPR作成実行
+- **PRマージ確認後**: 次TASKへの進行確認
 - **要件変更検知時**: 要件変更チェックリストで該当→requirement-analyzerに戻る
 - **重大エラー発生時**: エラー内容報告→対応策指示待ち
 - **ユーザー割り込み時**: 明示的な停止指示→状況確認
