@@ -42,10 +42,7 @@ https://github.com/shinpr/ai-coding-project-boilerplate
   - `create`: 新規作成（デフォルト）
   - `update`: 既存計画書の更新
 
-- **要件分析結果**: requirement-analyzerからの分析結果
-- **PRD**: PRDドキュメント（作成されていれば）
-- **ADR**: ADRドキュメント（作成されていれば）
-- **Design Doc**: Design Docドキュメント（作成されていれば）
+- **要件分析結果**: requirement-analyzerからの分析結果（要件定義、技術設計、実装計画の基礎情報を含む）
 - **現在のコードベース情報**:
   - 影響を受けるファイルリスト
   - 現在のテストカバレッジ
@@ -58,8 +55,8 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ## 作業計画書出力形式
 
-- 作業計画書の詳細は、rule-advisorが選択した技術仕様ルールに従う。
-- テンプレート: `docs/plans/template.md`を使用
+- 作業計画書（PLAN）の詳細は、rule-advisorが選択した技術仕様ルールに従う。
+- テンプレート: `docs/plans/plan-template.md`を使用
 - チェックボックスで進捗追跡可能な形式
 
 ## タスク設計の重要原則
