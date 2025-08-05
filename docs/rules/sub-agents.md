@@ -23,11 +23,9 @@ graph TD
     Check2 -->|Yes| UseSubAgent
     Check2 -->|No| Check3{新機能追加・開発依頼？}
     Check3 -->|Yes| RequirementAnalyzer[requirement-analyzerから開始]
-    Check3 -->|No| Check4{設計・計画・分析の依頼？}
-    Check4 -->|Yes| RequirementAnalyzer
-    Check4 -->|No| Check5{品質チェックが必要？}
-    Check5 -->|Yes| QualityFixer[quality-fixerに委譲]
-    Check5 -->|No| SelfExecute[自分で実行を検討]
+    Check3 -->|No| Check4{品質チェックが必要？}
+    Check4 -->|Yes| QualityFixer[quality-fixerに委譲]
+    Check4 -->|No| SelfExecute[自分で実行を検討]
 ```
 
 ### ユーザーレスポンス受け取り時の判断フロー
@@ -59,11 +57,9 @@ graph TD
 
 ### ドキュメント作成エージェント
 4. **requirement-analyzer**: 要件分析と作業規模判定
-5. **prd-creator**: Product Requirements Document作成
-6. **technical-designer**: ADR/Design Doc作成
-7. **work-planner**: 作業計画書作成
-8. **document-reviewer**: ドキュメント整合性チェック
-9. **document-fixer**: 複数観点レビューの統合と自動修正実行
+5. **work-planner**: 作業計画書作成（要件・設計・実装計画を統合）
+6. **document-reviewer**: ドキュメント整合性チェック
+7. **document-fixer**: 複数観点レビューの統合と自動修正実行
 
 ## 🎭 私のオーケストレーション原則
 
@@ -115,38 +111,42 @@ graph TD
 
 以下の規模判定基準に従って、必要なドキュメント作成を判断します：
 
-| 規模 | ファイル数 | PRD | ADR | Design Doc | 作業計画書 |
-|------|-----------|-----|-----|------------|-----------|
-| 小規模 | 1-2 | 不要 | 不要 | 不要 | 簡易版 |
-| 中規模 | 3-5 | 不要 | 条件付き※1 | **必須** | **必須** |
-| 大規模 | 6以上 | 条件付き※2 | 条件付き※1 | **必須** | **必須** |
+| 規模 | ファイル数 | 作業計画書（PLAN） | タスク分解（TASK） |
+|------|-----------|-----------------|------------------|
+| 小規模 | 1-2 | **必須** | **必須** |
+| 中規模 | 3-5 | **必須** | **必須** |
+| 大規模 | 6以上 | **必須** | **必須** |
 
-※1: アーキテクチャ変更、新技術導入、データフロー変更がある場合
-※2: 新機能追加の場合
+※ 作業計画書（PLAN）には、要件定義、技術設計、実装計画が統合されます
 
 #### 命名規則の詳細と例外ケース
 
 **基本命名規則**:
 ```
-ADR:     ADR-NNNN-YYYYMMDD-{title}.md
-Design:  DESIGN-NNNN-YYYYMMDD-{title}.md  
-PRD:     PRD-NNNN-YYYYMMDD-{title}.md
-Plan:    PLAN-NNNN-YYYYMMDD-{type}-{title}.md
-Task:    TASK-NNNN-YYYYMMDD-{task-name}.md
+PLANディレクトリ: PLAN-YYYYMMDDHHMMSS-{type}-{title}/
+PLAN本体:      PLAN-YYYYMMDDHHMMSS-{type}-{title}.md
+TASKファイル:    tasks/TASK-YYYYMMDDHHMMSS-{task-name}.md
 ```
 
 **バージョン管理**:
 - 既存ドキュメントの大幅更新: `{original-name}-v2.md`
-- 例: `ADR-0001-20250103-clerk-auth-v2.md`
+- 例: `PLAN-20250805143022-auth-system-v2.md`
 
-**派生ドキュメント**:
-- 調査レポート: `{base-name}-findings.md`
-- 実装ログ: `{base-name}-implementation.md`
-- 例: `TASK-0001-20250103-auth-analysis-findings.md`
+**ディレクトリ構造**:
+```
+docs/plans/
+├── PLAN-20250805143022-feature-auth-system/
+│   ├── PLAN-20250805143022-feature-auth-system.md
+│   └── tasks/
+│       ├── TASK-20250805143055-implement-login.md
+│       └── TASK-20250805143128-add-registration.md
+├── plan-template.md
+└── task-template.md
+```
 
-**複数プロジェクト対応**:
-- プロジェクト固有: `{PROJECT}-{type}-NNNN-YYYYMMDD-{title}.md`
-- 例: `WEB-ADR-0001-20250103-routing-strategy.md`
+**派生ファイル**:
+- 調査レポート: `tasks/TASK-YYYYMMDDHHMMSS-{task-name}-findings.md`
+- 実装ログ: `tasks/TASK-YYYYMMDDHHMMSS-{task-name}-implementation.md`
 
 ## 構造化レスポンス仕様
 
@@ -201,7 +201,7 @@ Task(
   subagent_type="task-executor",
   description="Task実行",
   prompt="""
-タスクファイル: docs/plans/tasks/TASK-NNNN-YYYYMMDD-{task-name}.md
+タスクファイル: docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/tasks/TASK-YYYYMMDDHHMMSS-{task-name}.md
 
 実行指示:
 - チェックリストに従って実装を完遂
@@ -240,31 +240,19 @@ requirement-analyzerは「完全自己完結」の原則に従い、要件変更
 
 私が各エージェントを呼ぶタイミングの判断基準:
 - **work-planner**: 実行前のみ更新を依頼
-- **technical-designer**: 設計変更に応じて更新を依頼 → document-fixerで整合性保証
-- **prd-creator**: 要件変更に応じて更新を依頼 → document-fixerで整合性保証
-- **document-fixer**: PRD/ADR/Design Doc作成・更新後、ユーザー承認前に必ず実行
+- **document-fixer**: 作業計画書作成・更新後、ユーザー承認前に必ず実行
 
 ## 📄 作業計画時の私の基本フロー
 
 新機能や変更依頼を受けたら、まずrequirement-analyzerに要件分析を依頼します。
 規模判定に応じて：
 
-### 大規模（新機能・6ファイル以上）
+### 統一フロー（全規模共通）
 1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. prd-creator → PRD作成 → document-fixer実行 **[停止: 要件確認]**
-3. technical-designer → ADR作成 → document-fixer実行 **[停止: 技術方針決定]**
-4. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
-5. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
+2. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
+3. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
 
-### 中規模（3-5ファイル）
-1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. technical-designer → Design Doc作成 → document-fixer実行 **[停止: 技術方針決定]**
-3. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
-4. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
-
-### 小規模（1-2ファイル）
-1. 簡易計画書作成 **[停止: 実装フェーズ全体の一括承認]**
-2. **自律実行モード開始**: 直接実装 → 完了報告
+※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
 
 ## 🤖 自律実行モード
 
