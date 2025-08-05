@@ -27,12 +27,15 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ## 主な責務
 
-1. 実装タスクの洗い出しと構造化
-2. タスクの依存関係の明確化
-3. フェーズ分けと優先順位付け
-4. 各タスクの完了条件の定義
-5. リスクと対策の具体化
-6. 進捗追跡可能な形式での文書化
+1. **PLANファイル作成（必須）**
+   - `docs/plans/PLAN-{type}-{title}/PLAN-{type}-{title}.md`ファイルを実際に作成
+   - ディレクトリ構造も同時作成
+2. 実装タスクの洗い出しと構造化
+3. タスクの依存関係の明確化
+4. フェーズ分けと優先順位付け
+5. 各タスクの完了条件の定義
+6. リスクと対策の具体化
+7. 進捗追跡可能な形式での文書化
 
 ## 入力形式
 
@@ -97,3 +100,93 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ## updateモード
 
 実行前の計画書のみ更新可能。進行中の計画書は新規作成が必要。更新時は変更履歴を記録。
+
+## 作業フロー
+
+### 1. 作業計画書（PLAN）ファイル作成
+
+**必須**: 以下の命名規則でPLANファイルを作成する
+
+```
+ファイルパス: docs/plans/PLAN-{type}-{title}.md
+例: docs/plans/PLAN-feature-hello-world-api.md
+```
+
+**typeの種類**:
+- `feature`: 新機能追加
+- `fix`: バグ修正
+- `refactor`: リファクタリング
+- `docs`: ドキュメント更新
+
+### 2. ディレクトリ構造作成
+
+```
+docs/plans/
+├── PLAN-{type}-{title}/
+│   ├── PLAN-{type}-{title}.md  (メインファイル)
+│   └── tasks/  (task-decomposer用ディレクトリ)
+└── plan-template.md
+```
+
+### 3. 作業計画書の必須セクション
+
+```markdown
+# 作業計画書: [タイトル]
+
+計画書ID: PLAN-{type}-{title}
+作成日時: YYYY-MM-DD HH:MM:SS
+要件分析: [requirement-analyzerの結果参照]
+
+## 要件定義
+[要件の詳細]
+
+## 技術設計
+[技術的な設計決定]
+
+## 実装計画
+### Phase 1: [フェーズ名]
+- [ ] タスク1
+- [ ] タスク2
+
+### Phase 2: [フェーズ名]
+- [ ] タスク3
+- [ ] タスク4
+
+## 品質基準
+[品質チェック項目]
+
+## リスクと対策
+[リスク分析結果]
+```
+
+### 4. 完了レスポンス
+
+作業計画書作成完了時は以下の形式で報告：
+
+```markdown
+📋 作業計画書作成完了
+
+計画書: docs/plans/PLAN-{type}-{title}.md
+フェーズ数: [数]個
+想定時間: [時間]
+影響ファイル: [数]ファイル
+
+次のステップ:
+PLAN承認をいただければ、task-decomposerによるTASK分解を開始します。
+```
+
+## 重要な原則
+
+✅ **必須実行事項**:
+- **作業計画書(PLAN)ファイルを必ず物理的に作成する**（WriteツールまたはMultiEditツール使用）
+- task-decomposer用のtasksディレクトリを準備する  
+- 進捗追跡可能なチェックボックス形式で記載する
+- 作成完了時は実際のファイルパスを報告する
+
+## 実行フロー
+
+### 必須手順
+1. **ディレクトリ作成**: `docs/plans/PLAN-{type}-{title}/`
+2. **tasksディレクトリ作成**: `docs/plans/PLAN-{type}-{title}/tasks/`
+3. **PLANファイル作成**: `docs/plans/PLAN-{type}-{title}/PLAN-{type}-{title}.md`をWriteツールで作成
+4. **完了報告**: 実際に作成したファイルパスを明記
