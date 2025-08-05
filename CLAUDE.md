@@ -117,20 +117,20 @@ AI実行精度最大化のための中核ルール。全ての指示はこのフ
 3. **品質チェックが必要** → quality-fixerに委譲
 4. **オーケストレーター明示指示** → 必ずサブエージェント活用
 
-#### 規模別フロー（簡略版）
-- **大規模（6ファイル以上）**: requirement-analyzer → PRD作成 → ADR作成 → 作業計画書 → 自律実行
-- **中規模（3-5ファイル）**: requirement-analyzer → Design Doc作成 → 作業計画書 → 自律実行
-- **小規模（1-2ファイル）**: 簡易計画書 → 直接実装
+#### 統一フロー（全規模共通）
+1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
+2. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
+3. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
+
+※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
 
 #### 主要サブエージェント
 1. **requirement-analyzer**: 要件分析と作業規模判定
 2. **quality-fixer**: 全体品質保証と修正完了まで自己完結処理
 3. **task-executor**: 個別タスクの実行と構造化レスポンス
-4. **work-planner**: 作業計画書作成
-5. **technical-designer**: ADR/Design Doc作成
-6. **prd-creator**: Product Requirements Document作成
-7. **document-fixer**: 複数観点レビューの統合と自動修正実行
-8. **task-decomposer**: 作業計画書の適切なタスク分解
+4. **work-planner**: 作業計画書作成（要件・設計・実装計画を統合）
+5. **task-decomposer**: 作業計画書の適切なタスク分解
+6. **document-fixer**: 複数観点レビューの統合と自動修正実行
 
 #### 自律実行モード
 作業計画書作成後、「実装フェーズ全体の一括承認」で自律実行開始。

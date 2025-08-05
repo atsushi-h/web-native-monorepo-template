@@ -22,39 +22,43 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ## 設計ドキュメントとプロセス
 
-### PRD/ADR/Design Doc/作業計画書作成プロセス
+### 作業計画書作成プロセス
 
 #### 作成が必要なケース
 
 以下の規模判定基準に従って、必要なドキュメント作成を判断します：
 
-| 規模 | ファイル数 | PRD | ADR | Design Doc | 作業計画書 |
-|------|-----------|-----|-----|------------|----------|
-| 小規模 | 1-2 | 不要 | 不要 | 不要 | 簡易版 |
-| 中規模 | 3-5 | 不要 | 条件付き※1 | **必須** | **必須** |
-| 大規模 | 6以上 | 条件付き※2 | 条件付き※1 | **必須** | **必須** |
+| 規模 | ファイル数 | 作業計画書（PLAN） | タスク分解（TASK） |
+|------|-----------|-----------------|------------------|
+| 小規模 | 1-2 | **必須** | **必須** |
+| 中規模 | 3-5 | **必須** | **必須** |
+| 大規模 | 6以上 | **必須** | **必須** |
 
-※1: アーキテクチャ変更、新技術導入、データフロー変更がある場合
-※2: 新機能追加の場合
+※ 作業計画書（PLAN）には、要件定義、技術設計、実装計画が統合されます
 
-#### 実装フロー
-1. **新機能追加時**: requirement-analyzer → PRD（大規模の場合） → ADR（条件付き） → Design Doc → 作業計画書 → 実装
-2. **大規模変更時（6ファイル以上）**: requirement-analyzer → ADR（条件付き） → Design Doc → 作業計画書 → 実装
-3. **中規模変更時（3-5ファイル）**: requirement-analyzer → Design Doc → 作業計画書 → 実装
-4. **小規模修正時（1-2ファイル）**: 簡易計画書 → 直接実装
+#### 実装フロー（統一）
+1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
+2. work-planner → 作業計画書作成 **[停止: 実装フェーズ全体の一括承認]**
+3. **自律実行モード開始**: task-decomposer → 全タスク実行 → 完了報告
 
 #### 作業計画書について
-- **保存場所**: `docs/plans/`（.gitignoreで除外）
-- **命名規則**: `PLAN-NNNN-YYYYMMDD-{type}-{title}.md`
+- **保存場所**: `docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/`（一時的に作成、完了後削除）
+- **命名規則**: `PLAN-YYYYMMDDHHMMSS-{type}-{title}/`
+- **ディレクトリ構造**: 
+  ```
+  docs/plans/PLAN-YYYYMMDDHHMMSS-{type}-{title}/
+  ├── PLAN-YYYYMMDDHHMMSS-{type}-{title}.md
+  └── tasks/
+      ├── TASK-YYYYMMDDHHMMSS-{task-name}.md
+      └── ...
+  ```
   例: `PLAN-0001-20250103-feature-user-authentication.md`
-- **テンプレート**: `docs/plans/template.md`
+- **PLANテンプレート**: `docs/plans/plan-template.md`（gitで管理）
+- **TASKテンプレート**: `docs/plans/task-template.md`（gitで管理）
 - **運用フロー**: 
   1. 中規模以上の変更開始時に作成
   2. 各フェーズ完了時に進捗更新（チェックボックス）
   3. 全タスク完了後、ユーザー承認を得て削除
-
-#### ADR（Architecture Decision Record）
-重要な技術的決定を記録し、将来の実装者が意思決定の背景を理解できるようにする。
 
 #### サブエージェント連携
 上記のプロセスはサブエージェントと連携して実行されます。詳細なオーケストレーションフローは`docs/rules/sub-agents.md`を参照してください。
