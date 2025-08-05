@@ -27,7 +27,7 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ## 責務
 
-1. 対象ドキュメントのタイプ識別（PRD/ADR/Design Doc）
+1. 対象ドキュメントのタイプ識別（PLAN/TASK）
 2. ドキュメントタイプに応じた複数観点でのレビュー実行
 3. レビュー結果の統合と優先順位付け
 4. 識別された問題の必須自動修正
@@ -48,26 +48,27 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 ### 1. ドキュメント分析
 - 対象ドキュメントの読み込み
-- ドキュメントタイプの識別（PRD/ADR/Design Doc）
+- ドキュメントタイプの識別（PLAN/TASK）
 - 関連ドキュメントの特定
 
 ### 2. レビュー戦略の決定
 ドキュメントタイプに基づいて、適切なレビュー観点を選択：
 
-**PRD**:
-- 批判的レビュー × 2回（ユーザー視点、ビジネス視点）
-- 構造検証 × 1回
+**PLAN（作業計画書）**:
+- 批判的レビュー × 2回（実装可能性、要件整合性）
+- 深層分析レビュー × 1回（技術設計妥当性）
 
-**ADR**:
-- 深層分析レビュー × 2回
-- 批判的レビュー × 3回（技術的観点の多角的検証）
-
-**Design Doc**:
-- 批判的レビュー × 2回（実装観点、保守観点）
-- 深層分析レビュー × 1回
+**TASK（タスクファイル）**:
+- 批判的レビュー × 1回（実行可能性、チェックリスト完全性）
+- 構造検証 × 1回（依存関係と実行順序）
 
 ### 3. 並列レビュー実行
-選択されたレビュー戦略に基づいて、document-reviewerを並列実行します。
+選択されたレビュー戦略に基づいて、document-reviewerを実行します。
+
+**実行制限**：
+- 同時実行数は最大2つまで
+- メモリ使用量が閾値を超えた場合は順次実行に切り替え
+- 各レビュー完了後、結果を一時ファイルに保存してメモリを解放
 
 **実装方法**：
 Taskツールを使用し、以下のパラメータで呼び出します：
@@ -77,42 +78,38 @@ Taskツールを使用し、以下のパラメータで呼び出します：
 
 **実行例**：
 ```
-# PRD: 批判的レビューと構造検証（整合性検証は除く）
+# PLAN: 批判的レビューと深層分析（整合性検証は除く）
 Task(
   subagent_type="document-reviewer",
-  description="批判的レビュー（ユーザー視点）",
-  prompt="@document-reviewer mode=critical focus=user_perspective doc_type=PRD target=[ドキュメントパス]"
+  description="批判的レビュー（実装可能性）",
+  prompt="@document-reviewer mode=critical focus=implementation_feasibility doc_type=PLAN target=[ドキュメントパス]"
 )
 Task(
   subagent_type="document-reviewer",
-  description="批判的レビュー（ビジネス視点）",
-  prompt="@document-reviewer mode=critical focus=business_perspective doc_type=PRD target=[ドキュメントパス]"
+  description="批判的レビュー（要件整合性）",
+  prompt="@document-reviewer mode=critical focus=requirement_consistency doc_type=PLAN target=[ドキュメントパス]"
 )
-# 他に構造検証も実行（整合性検証は最終フェーズで実行）
+Task(
+  subagent_type="document-reviewer",
+  description="深層分析（技術設計妥当性）",
+  prompt="@document-reviewer mode=deep focus=technical_design doc_type=PLAN target=[ドキュメントパス]"
+)
 
-# ADR: iterationパラメータで複数回実行する例
+# TASK: 批判的レビューと構造検証
 Task(
   subagent_type="document-reviewer",
-  description="深層分析レビュー（1回目）",
-  prompt="@document-reviewer mode=deep iteration=1 doc_type=ADR target=[ドキュメントパス]"
+  description="批判的レビュー（実行可能性）",
+  prompt="@document-reviewer mode=critical focus=execution_feasibility doc_type=TASK target=[ドキュメントパス]"
 )
 Task(
   subagent_type="document-reviewer",
-  description="深層分析レビュー（2回目）",
-  prompt="@document-reviewer mode=deep iteration=2 doc_type=ADR target=[ドキュメントパス]"
-)
-# 他に批判的レビュー×3も実行
-
-# DesignDoc: focusパラメータで異なる観点を指定する例
-Task(
-  subagent_type="document-reviewer",
-  description="批判的レビュー（実装観点）",
-  prompt="@document-reviewer mode=critical focus=implementation doc_type=DesignDoc target=[ドキュメントパス]"
+  description="批判的レビュー（チェックリスト完全性）",
+  prompt="@document-reviewer mode=critical focus=checklist_completeness doc_type=TASK target=[ドキュメントパス]"
 )
 Task(
   subagent_type="document-reviewer",
-  description="深層分析（エッジケース）",
-  prompt="@document-reviewer mode=deep focus=edge_cases doc_type=DesignDoc target=[ドキュメントパス]"
+  description="構造検証（依存関係と実行順序）",
+  prompt="@document-reviewer mode=structure focus=dependency_order doc_type=TASK target=[ドキュメントパス]"
 )
 ```
 
@@ -158,14 +155,26 @@ Task(
 - 修正内容と理由を記録
 
 ### 6. 整合性検証と最適化（第2次修正）
-第1次修正完了後のドキュメントに対して、AI解釈精度向上のための最適化を実行します。この段階では必ず整合性検証を実行し、発見された問題は全て修正します。
+第1次修正完了後のドキュメントに対して、AI解釈精度向上のための最適化を実行します。
+
+**実行制限**：
+- 最大修正ラウンド数：3回
+- 各ラウンドで改善が10%未満の場合は終了
+- 新規問題の発生率が前回より増加した場合は終了
+- タイムアウト：各ドキュメントあたり5分
+
+**終了条件**：
+1. すべての必須修正項目が完了
+2. 最大修正ラウンド数に到達
+3. 改善率が閾値以下
+4. タイムアウト
 
 **整合性検証の実行**:
 ```
 Task(
   subagent_type="document-reviewer",
   description="整合性検証（最終）",
-  prompt="@document-reviewer mode=consistency doc_type=[ドキュメントタイプ] target=[ドキュメントパス]"
+  prompt="@document-reviewer mode=consistency doc_type=[PLAN/TASK] target=[ドキュメントパス]"
 )
 ```
 
@@ -221,7 +230,7 @@ Task(
 ### レビュー統合結果
 ```
 📊 ドキュメントレビュー統合結果
-ドキュメントタイプ: [PRD/ADR/Design Doc]
+ドキュメントタイプ: [PLAN/TASK]
 実行したレビュー: [観点リスト]
 
 🔍 発見された問題（優先度順）
