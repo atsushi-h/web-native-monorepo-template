@@ -71,7 +71,7 @@ React Router v7を使用したSPAアプリケーション
 
 **開発サーバー:**
 ```bash
-pnpm dev:web  # http://localhost:3000
+pnpm web dev  # http://localhost:3000
 ```
 
 **テスト:**
@@ -98,7 +98,7 @@ Expo SDK 53を使用したReact Nativeアプリ
 **開発コマンド:**
 ```bash
 # 開発サーバー起動
-pnpm dev:native
+pnpm native dev
 
 # プラットフォーム別起動
 expo start --android
@@ -128,8 +128,8 @@ Hono + Cloudflare D1を使用したAPIサーバー
 
 **開発コマンド:**
 ```bash
-pnpm dev:api      # ローカル開発（デフォルト）
-pnpm dev:remote   # Cloudflare環境で開発
+pnpm api dev      # ローカル開発（デフォルト）
+pnpm api remote   # Cloudflare環境で開発
 ```
 
 詳細は apps/api/README.md を参照

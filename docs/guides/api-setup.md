@@ -33,7 +33,7 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 ### 3. 開発サーバー起動
 ```bash
 # ローカルDB使用（推奨）
-pnpm dev:api
+pnpm api dev
 # または
 pnpm --filter api dev:local
 
@@ -85,7 +85,7 @@ migrations_dir = "drizzle/migrations"
 
 ```bash
 # 開発サーバー起動（ローカルDB使用、推奨）
-pnpm dev:api
+pnpm api dev
 # または
 pnpm --filter api dev
 

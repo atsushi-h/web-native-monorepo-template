@@ -7,9 +7,9 @@
 | コマンド | 説明 | 使用場面 |
 |---------|------|---------|
 | `pnpm dev` | すべてのアプリを開発モードで起動 | 通常の開発時 |
-| `pnpm dev:web` | Webアプリのみ起動 | Web開発に集中したい時 |
-| `pnpm dev:native` | Nativeアプリのみ起動 | Native開発に集中したい時 |
-| `pnpm dev:api` | APIアプリのみ起動 | API開発に集中したい時 |
+| `pnpm web dev` | Webアプリのみ起動 | Web開発に集中したい時 |
+| `pnpm native dev` | Nativeアプリのみ起動 | Native開発に集中したい時 |
+| `pnpm api dev` | APIアプリのみ起動 | API開発に集中したい時 |
 | `pnpm build` | すべてのアプリをビルド | 本番デプロイ前 |
 | `pnpm fix` | コードの自動修正とフォーマット | コミット前（必須） |
 | `pnpm check` | lint + format + 型チェック | PR作成前（必須） |
