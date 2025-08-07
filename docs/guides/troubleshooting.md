@@ -43,7 +43,7 @@
 |------|----------|
 | Wrangler開発サーバーエラー | `cd apps/api && wrangler dev --env development --local`で詳細確認 |
 | 環境変数が読み込まれない | `.dev.vars`ファイルの存在と内容を確認 |
-| D1データベースエラー | `pnpm dev:api`で環境設定付き起動を確認 |
+| D1データベースエラー | `pnpm api dev`で環境設定付き起動を確認 |
 | "D1 Database binding is not set"エラー | `--env development`フラグの指定漏れを確認 |
 | CORSエラー | `wrangler.toml`のCORS設定を確認 |
 | デプロイエラー | Cloudflareアカウント設定を確認 |
@@ -157,7 +157,7 @@ ls apps/api/.dev.vars
 cat apps/api/.dev.vars
 
 3. 正しいコマンドで起動しているか
-pnpm dev:api  # または pnpm --filter api dev
+pnpm api dev  # または pnpm --filter api dev
 ```
 
 #### 問題: Drizzle Kitが動作しない
@@ -171,7 +171,7 @@ D1_DATABASE_ID_DEV=your-database-id
 #### 問題: D1データベースにアクセスできない
 ```bash
 # 開発時は必ず環境を指定
-pnpm dev:api  # --env developmentが自動付与される
+pnpm api dev  # --env developmentが自動付与される
 
 # 手動実行時も環境指定が必要
 wrangler dev --env development --local

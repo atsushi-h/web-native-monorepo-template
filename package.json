@@ -4,12 +4,10 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "dev:web": "turbo dev --filter=@repo/web",
-    "dev:native": "turbo dev --filter=@repo/native",
-    "dev:api": "turbo dev --filter=@repo/api",
     "web": "turbo run --filter=@repo/web",
     "native": "turbo run --filter=@repo/native",
     "api": "turbo run --filter=@repo/api",
+    "api:remote": "turbo run dev:remote --filter=@repo/api",
     "check": "turbo run check",
     "fix": "turbo run fix",
     "lint": "turbo run lint",

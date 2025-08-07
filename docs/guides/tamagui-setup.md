@@ -87,7 +87,7 @@ import { TamaguiCard } from '@repo/ui/card'
 ## 📝 重要事項
 
 1. **キャッシュクリア**: セットアップ後、初めてアプリを実行する際はキャッシュをクリアしてください：
-   - Web: `pnpm dev:web`
+   - Web: `pnpm web dev`
    - Native: `npx expo start -c`
 
 2. **テーマサポート**: 両方のアプリはシステム設定に基づく自動テーマ切り替えで構成されています。

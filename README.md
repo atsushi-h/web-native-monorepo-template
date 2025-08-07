@@ -76,13 +76,13 @@ pnpm dev
 
 ```bash
 # Webアプリのみ (http://localhost:3000)
-pnpm dev:web
+pnpm web dev
 
 # Nativeアプリのみ
-pnpm dev:native
+pnpm native dev
 
 # APIのみ (http://localhost:8787)
-pnpm dev:api
+pnpm api dev
 ```
 
 ## 🧪 テスト

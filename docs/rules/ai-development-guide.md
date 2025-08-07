@@ -181,9 +181,9 @@ pnpm fix          # Biomeによる自動修正
 
 # 開発サーバー
 pnpm dev          # すべてのアプリ
-pnpm dev:web      # Webのみ
-pnpm dev:native   # Nativeのみ
-pnpm dev:api      # APIのみ
+pnpm web dev      # Webのみ
+pnpm native dev   # Nativeのみ
+pnpm api dev      # APIのみ
 
 # Turboフィルター使用
 turbo dev --filter=@repo/web
