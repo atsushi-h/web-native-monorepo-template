@@ -7,20 +7,27 @@
 
 ## 開発コマンド
 - `pnpm dev` - すべてのアプリを開発モードで起動
-- `pnpm dev:web` - Webアプリのみ起動（http://localhost:3000）
-- `pnpm dev:native` - Nativeアプリのみ起動
-- `pnpm dev:api` - APIアプリのみ起動（http://localhost:8787）
+- `pnpm web dev` - Webアプリのみ起動（http://localhost:3000）
+- `pnpm native dev` - Nativeアプリのみ起動
+- `pnpm api dev` - APIアプリのみ起動（http://localhost:8787）
 
 ## ビルドコマンド
 - `pnpm build` - すべてのアプリをビルド
-- `pnpm --filter web build` - Webアプリのみビルド
-- `pnpm --filter native build` - Nativeアプリのみビルド
-- `pnpm --filter api build` - APIアプリのみビルド
+- `pnpm web build` - Webアプリのみビルド
+- `pnpm native build` - Nativeアプリのみビルド
+- `pnpm api build` - APIアプリのみビルド
+
+## 品質チェックコマンド
+- `pnpm web check` - Webアプリのみチェック
+- `pnpm native check` - Nativeアプリのみチェック
+- `pnpm api check` - APIアプリのみチェック
 
 ## テストコマンド
 - `pnpm test` - 全プロジェクトのテスト実行
-- `pnpm --filter web test` - Webアプリのテストのみ
-- `pnpm --filter web test:watch` - Webアプリのテストをウォッチモード
+- `pnpm web test` - Webアプリのテストのみ
+- `pnpm native test` - Nativeアプリのテストのみ
+- `pnpm api test` - APIアプリのテストのみ
+- `pnpm web test:watch` - Webアプリのテストをウォッチモード
 
 ## 依存関係管理
 - `pnpm add <package> --filter=@repo/web` - 特定アプリへパッケージ追加
