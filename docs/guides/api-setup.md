@@ -35,10 +35,10 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 # ローカルDB使用（推奨）
 pnpm api dev
 # または
-pnpm --filter api dev:local
+pnpm api dev
 
 # リモートDB使用（検証用）
-pnpm --filter api dev:remote
+pnpm api remote
 ```
 
 ## 🔧 環境変数管理
@@ -90,7 +90,7 @@ pnpm api dev
 pnpm --filter api dev
 
 # リモートDB使用（Cloudflare環境でテスト）
-pnpm --filter api dev:remote
+pnpm api remote
 
 # ビルド
 pnpm --filter api build
