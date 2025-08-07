@@ -129,7 +129,7 @@ Hono + Cloudflare D1を使用したAPIサーバー
 **開発コマンド:**
 ```bash
 pnpm api dev      # ローカル開発（デフォルト）
-pnpm api remote   # Cloudflare環境で開発
+pnpm api:remote   # Cloudflare環境で開発
 ```
 
 詳細は apps/api/README.md を参照

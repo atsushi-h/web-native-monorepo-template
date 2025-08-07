@@ -38,7 +38,7 @@ pnpm api dev
 pnpm api dev
 
 # リモートDB使用（検証用）
-pnpm api remote
+pnpm api:remote
 ```
 
 ## 🔧 環境変数管理
@@ -90,7 +90,7 @@ pnpm api dev
 pnpm --filter api dev
 
 # リモートDB使用（Cloudflare環境でテスト）
-pnpm api remote
+pnpm api:remote
 
 # ビルド
 pnpm --filter api build
