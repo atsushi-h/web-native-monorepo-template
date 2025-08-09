@@ -68,6 +68,34 @@ graph TD
 ※ ADR/Design Docはdocs/adr/、docs/design/に永続的に保存、PLANはdocs/plans/に一時的に作成
 ※ 各ドキュメントの詳細仕様は[technical-spec.md#設計ドキュメントとプロセス](./technical-spec.md#設計ドキュメントとプロセス)を参照
 
+### ADR/Design Doc作成判断フロー
+
+```mermaid
+graph TD
+    START[requirement-analyzer完了] --> ADR_CHECK{ADR作成の必要性を<br/>ユーザーに確認}
+    ADR_CHECK -->|必要| ADR_CREATE[ADRテンプレートから作成<br/>docs/adr/ADR-YYYYMMDD-title.md]
+    ADR_CHECK -->|不要| DESIGN_CHECK{Design Doc作成の必要性を<br/>ユーザーに確認}
+    ADR_CREATE --> DESIGN_CHECK
+    
+    DESIGN_CHECK -->|必要| DESIGN_CREATE[Design Docテンプレートから作成<br/>docs/design/DESIGN-YYYYMMDD-feature.md]
+    DESIGN_CHECK -->|不要| WORK_PLANNER[work-plannerで<br/>作業計画書作成へ]
+    DESIGN_CREATE --> WORK_PLANNER
+    
+    %% スタイル設定
+    classDef userAction fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef templateAction fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef nextStep fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class ADR_CHECK,DESIGN_CHECK userAction
+    class ADR_CREATE,DESIGN_CREATE templateAction
+    class WORK_PLANNER nextStep
+```
+
+**判断のポイント**：
+- **ADR**: アーキテクチャ決定、技術選定、破壊的変更など
+- **Design Doc**: 複雑な機能実装、パフォーマンス要件、セキュリティ要件など
+- 両方とも永続保存され、プロジェクトの知識として蓄積されます
+
 ## 🤖 TASK単位実行モード（段階1: /create-pr統合）
 
 ### 🔑 権限委譲と実行方針
