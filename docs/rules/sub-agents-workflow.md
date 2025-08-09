@@ -57,12 +57,16 @@ graph TD
 
 ### 統一フロー（全規模共通）
 1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
-3. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
-4. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
+2. ADR作成確認 → ユーザーにADR作成の必要性を確認、必要な場合テンプレートから作成 **[停止: ユーザーによるADR作成要否判断]**
+3. Design Doc作成確認 → ユーザーにDesign Doc作成の必要性を確認、必要な場合テンプレートから作成 **[停止: ユーザーによるDesign Doc作成要否判断]**
+4. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
+5. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
+6. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
 
 ※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
 ※ 段階1: /create-pr統合によるTASK単位ワークフロー
+※ ADR/Design Docはdocs/adr/、docs/design/に永続的に保存、PLANはdocs/plans/に一時的に作成
+※ 各ドキュメントの詳細仕様は[technical-spec.md#設計ドキュメントとプロセス](./technical-spec.md#設計ドキュメントとプロセス)を参照
 
 ## 🤖 TASK単位実行モード（段階1: /create-pr統合）
 
@@ -150,6 +154,8 @@ graph TD
 
 ### 主要な停止ポイント
 - **requirement-analyzer完了後**: 要件分析結果と質問事項の確認
+- **ADR作成確認時**: ユーザーにADR作成の必要性について確認
+- **Design Doc作成確認時**: ユーザーにDesign Doc作成の必要性について確認
 - **work-planner完了後**: 作業計画書の実装可能性、要件整合性、技術設計妥当性の確認（PLAN承認・次ステップ確認）
 - **task-decomposer完了後**: タスクの実行可能性、チェックリスト完全性、依存関係の確認（TASK承認・実装開始確認）
 
