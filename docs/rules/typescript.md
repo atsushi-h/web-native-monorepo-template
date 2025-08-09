@@ -3,22 +3,23 @@ Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
 
-# TypeScript 開発ルール
+# TypeScript 実装ルール
 
 ## 基本原則
 
 ✅ **積極的なリファクタリング** - 技術的負債を防ぎ、健全性を維持
 ❌ **使われない「念のため」のコード** - YAGNI原則（Kent Beck）に反する
+🚨 **調査OK、実装STOP** - Edit/Write/MultiEditツールを使用する前に必ずユーザー承認を取得
 
 ## コメント記述ルール
 - **機能説明重視**: コードが「何をするか」を記述
-- **履歴情報禁止**: 開発履歴は記載しない
+- **履歴情報禁止**: 実装履歴は記載しない
 - **タイムレス**: いつ読んでも有効な内容のみ記述
 - **簡潔性**: 必要最小限の説明にとどめる
 
 ## 型安全性
 
-**絶対ルール**: any型は完全禁止。型チェックが無効化され、実行時エラーの温床となる。
+**絶対ルール**: any型は完全に禁止 - unknown型と型ガードを使用。型チェックが無効化され、実行時エラーの温床となる。
 
 **any型の代替手段（優先順位順）**
 1. **unknown型 + 型ガード**: 外部入力の検証に使用
@@ -41,7 +42,7 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 - ネスト深さ: 3階層まで（超えたらフラット化）
 - 型アサーション: 3回以上使用したら設計見直し
 
-## コーディング規約
+## 実装規約
 
 **非同期処理**
 - Promise処理: 必ず`async/await`を使用

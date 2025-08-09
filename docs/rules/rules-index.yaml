@@ -19,7 +19,7 @@ rules:
       - "基本原則"
       - "コメント記述ルール"
       - "型安全性"
-      - "コーディング規約"
+      - "実装規約"
       - "エラーハンドリング"
       - "リファクタリング手法"
       - "パフォーマンス最適化"
@@ -94,7 +94,7 @@ rules:
   sub-agents:
     file: "sub-agents.md"
     tags: [orchestration, process, sub-agents, requirement-analysis, planning, quality, documentation]
-    typical-use: "サブエージェント活用、タスクオーケストレーション、新機能開発、品質保証"
+    typical-use: "サブエージェント活用、タスクオーケストレーション、新機能実装、品質チェック"
     size: large
     key-references:
       - "オーケストレーションパターン - エンタープライズアーキテクチャ"
