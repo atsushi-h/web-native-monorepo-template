@@ -93,22 +93,49 @@ rules:
 
   sub-agents:
     file: "sub-agents.md"
-    tags: [orchestration, process, sub-agents, requirement-analysis, planning, quality, documentation]
-    typical-use: "サブエージェント活用、タスクオーケストレーション、新機能実装、品質チェック"
-    size: large
+    tags: [orchestration, process, sub-agents, overview, basic-principles]
+    typical-use: "サブエージェント概要理解、オーケストレーション基本原則"
+    size: medium
     key-references:
       - "オーケストレーションパターン - エンタープライズアーキテクチャ"
       - "責務分離原則 - Clean Architecture"
-      - "規模判定手法 - プロジェクト管理実務"
     sections:
       - "私の基本的な立ち位置"
-      - "タスク受領時の判断フロー"
       - "私が活用できるサブエージェント"
       - "私のオーケストレーション原則"
-      - "規模判定の解釈基準"
-      - "作業計画時の私の基本フロー"
-      - "自律実行モード"
+      - "判断パターン"
+
+  sub-agents-workflow:
+    file: "sub-agents-workflow.md"
+    tags: [workflow, process, task-execution, planning, quality, dialogue]
+    typical-use: "タスク実行フロー、TASK単位実行モード、要件変更対応、人間との対話"
+    size: large
+    key-references:
+      - "規模判定手法 - プロジェクト管理実務"
+      - "反復的開発 - Agile Software Development"
+      - "要件変更管理 - Software Requirements Engineering"
+    sections:
+      - "タスク受領時の判断フロー"
+      - "作業計画時の基本フロー"
+      - "TASK単位実行モード"
+      - "要件変更への対応パターン"
       - "人間との必須対話ポイント"
+
+  sub-agents-reference:
+    file: "sub-agents-reference.md"
+    tags: [api, reference, specifications, naming, error-handling]
+    typical-use: "サブエージェント詳細仕様、呼び出し方法、エラーハンドリング"
+    size: large
+    key-references:
+      - "API設計原則 - RESTful Web Services"
+      - "構造化レスポンス設計 - JSON Schema"
+      - "命名規則 - Clean Code"
+    sections:
+      - "規模判定の解釈基準"
+      - "各サブエージェントの詳細"
+      - "呼び出し方法"
+      - "構造化レスポンス仕様"
+      - "エラーハンドリング"
 
   architecture-decision-process:
     file: "architecture-decision-process.md"
