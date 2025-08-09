@@ -3,7 +3,7 @@ Based on ai-coding-project-boilerplate by Shinsuke Kagawa
 https://github.com/shinpr/ai-coding-project-boilerplate
 -->
 
-# AI開発者ガイド - 技術的判断基準とアンチパターン集
+# AI実装者ガイド - 技術的判断基準とアンチパターン集
 
 このドキュメントは、LLM（あなた）が実装時に参照すべき技術的な判断基準、アンチパターン、デバッグ手法、品質チェックコマンドをまとめたものです。本ドキュメントは純粋に技術的なガイダンスに特化します。
 
