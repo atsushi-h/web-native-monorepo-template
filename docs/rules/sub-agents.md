@@ -7,6 +7,26 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 このドキュメントは、私（Claude）がサブエージェントを活用してタスクを効率的に処理するための実践的な行動指針です。
 
+## 📑 目次
+
+| セクション | 内容 | 参照先 |
+|-----------|------|--------|
+| [🎯 基本的な立ち位置](#-私の基本的な立ち位置) | オーケストレーター役割の理解 | - |
+| [📋 判断フロー](#-タスク受領時の判断フロー) | タスク受領時の基本判断 | [詳細フロー→](./sub-agents-workflow.md#-タスク受領時の判断フロー) |
+| [🤖 サブエージェント一覧](#-私が活用できるサブエージェント) | 8つのエージェントの概要 | [詳細仕様→](./sub-agents-reference.md#-各サブエージェントの詳細) |
+| [🎭 オーケストレーション原則](#-私のオーケストレーション原則) | 責務分離と標準フロー | - |
+| [💡 判断パターン](#-判断パターン) | 4つの基本パターン | - |
+| [🎼 主な役割](#-私のオーケストレーターとしての主な役割) | 状態管理・情報橋渡し | - |
+| [🎯 行動チェックリスト](#-私の行動チェックリスト) | タスク受領時の確認項目 | - |
+
+## 🔗 Quick Jump Links
+
+### よく使う組み合わせ
+- **新機能実装**: [基本フロー](./sub-agents-workflow.md#-作業計画時の基本フロー) → [requirement-analyzer](./sub-agents-reference.md#requirement-analyzer)
+- **品質チェック**: [quality-fixer詳細](./sub-agents-reference.md#quality-fixer) → [エラーハンドリング](./sub-agents-reference.md#-エラーハンドリングと要件変更時の例)
+- **TASK実行**: [TASK単位実行モード](./sub-agents-workflow.md#-task単位実行モード段階1-create-pr統合) → [task-executor](./sub-agents-reference.md#task-executor)
+- **要件変更対応**: [変更検知](./sub-agents-workflow.md#要件変更検知チェックリスト) → [統合方法](./sub-agents-workflow.md#要件統合方法)
+
 ## 🎯 私の基本的な立ち位置
 
 **私はオーケストレーター（指揮者）です。** タスクを受けたら、まず「どのサブエージェントに任せるべきか」を考えます。
@@ -106,4 +126,13 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 ## 📚 関連ドキュメント
 
 - [sub-agents-workflow.md](./sub-agents-workflow.md) - 実行フローと対話ポイント
-- [sub-agents-reference.md](./sub-agents-reference.md) - 詳細仕様とAPI
+- [sub-agents-reference.md](./sub-agents-reference.md) - 詳細仕様とAPI  
+- [sub-agents-faq.md](./sub-agents-faq.md) - よくある質問とシーン別ナビゲーション
+
+## 🔍 困った時は？
+
+**シーン別ガイドを活用してください**：
+- 🆕 新機能実装 → [FAQ: 新機能ガイド](./sub-agents-faq.md#新機能を実装したい)
+- 🔧 品質チェック → [FAQ: 品質チェックガイド](./sub-agents-faq.md#品質チェックしたい)  
+- 🚨 エラー発生 → [FAQ: エラー対処ガイド](./sub-agents-faq.md#エラーが発生した)
+- 📝 要件変更 → [FAQ: 要件変更ガイド](./sub-agents-faq.md#要件が変更された)
