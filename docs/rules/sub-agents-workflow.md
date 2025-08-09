@@ -57,12 +57,44 @@ graph TD
 
 ### 統一フロー（全規模共通）
 1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
-3. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
-4. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
+2. ADR作成確認 → ユーザーにADR作成の必要性を確認、必要な場合テンプレートから作成 **[停止: ユーザーによるADR作成要否判断]**
+3. Design Doc作成確認 → ユーザーにDesign Doc作成の必要性を確認、必要な場合テンプレートから作成 **[停止: ユーザーによるDesign Doc作成要否判断]**
+4. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
+5. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
+6. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
 
 ※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
 ※ 段階1: /create-pr統合によるTASK単位ワークフロー
+※ ADR/Design Docはdocs/adr/、docs/design/に永続的に保存、PLANはdocs/plans/に一時的に作成
+※ 各ドキュメントの詳細仕様は[technical-spec.md#設計ドキュメントとプロセス](./technical-spec.md#設計ドキュメントとプロセス)を参照
+
+### ADR/Design Doc作成判断フロー
+
+```mermaid
+graph TD
+    START[requirement-analyzer完了] --> ADR_CHECK{ADR作成の必要性を<br/>ユーザーに確認}
+    ADR_CHECK -->|必要| ADR_CREATE[ADRテンプレートから作成<br/>docs/adr/ADR-YYYYMMDD-title.md]
+    ADR_CHECK -->|不要| DESIGN_CHECK{Design Doc作成の必要性を<br/>ユーザーに確認}
+    ADR_CREATE --> DESIGN_CHECK
+    
+    DESIGN_CHECK -->|必要| DESIGN_CREATE[Design Docテンプレートから作成<br/>docs/design/DESIGN-YYYYMMDD-feature.md]
+    DESIGN_CHECK -->|不要| WORK_PLANNER[work-plannerで<br/>作業計画書作成へ]
+    DESIGN_CREATE --> WORK_PLANNER
+    
+    %% スタイル設定
+    classDef userAction fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef templateAction fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef nextStep fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class ADR_CHECK,DESIGN_CHECK userAction
+    class ADR_CREATE,DESIGN_CREATE templateAction
+    class WORK_PLANNER nextStep
+```
+
+**判断のポイント**：
+- **ADR**: アーキテクチャ決定、技術選定、破壊的変更など
+- **Design Doc**: 複雑な機能実装、パフォーマンス要件、セキュリティ要件など
+- 両方とも永続保存され、プロジェクトの知識として蓄積されます
 
 ## 🤖 TASK単位実行モード（段階1: /create-pr統合）
 
@@ -150,6 +182,8 @@ graph TD
 
 ### 主要な停止ポイント
 - **requirement-analyzer完了後**: 要件分析結果と質問事項の確認
+- **ADR作成確認時**: ユーザーにADR作成の必要性について確認
+- **Design Doc作成確認時**: ユーザーにDesign Doc作成の必要性について確認
 - **work-planner完了後**: 作業計画書の実装可能性、要件整合性、技術設計妥当性の確認（PLAN承認・次ステップ確認）
 - **task-decomposer完了後**: タスクの実行可能性、チェックリスト完全性、依存関係の確認（TASK承認・実装開始確認）
 

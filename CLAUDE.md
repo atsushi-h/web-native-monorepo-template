@@ -119,12 +119,15 @@ AI実行精度最大化のための中核ルール。全ての指示はこのフ
 
 #### 統一フロー（全規模共通）
 1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
-3. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
-4. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
+2. ADR作成確認 → ユーザーにADR作成の必要性を確認、必要な場合テンプレートから作成 **[停止: ユーザーによるADR作成要否判断]**
+3. Design Doc作成確認 → ユーザーにDesign Doc作成の必要性を確認、必要な場合テンプレートから作成 **[停止: ユーザーによるDesign Doc作成要否判断]**
+4. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
+5. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
+6. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
 
 ※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
 ※ 段階1: /create-pr統合によるTASK単位ワークフロー
+※ ADR/Design Docはdocs/adr/、docs/design/に永続的に保存、PLANはdocs/plans/に一時的に作成
 
 #### 主要サブエージェント
 1. **requirement-analyzer**: 要件分析と作業規模判定
