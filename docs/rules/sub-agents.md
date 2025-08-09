@@ -15,40 +15,15 @@ https://github.com/shinpr/ai-coding-project-boilerplate
 
 タスクを受けたら、以下の順番で判断します：
 
-```mermaid
-graph TD
-    Start[タスクを受領] --> Check1{「オーケストレーター」という<br/>指示がある？}
-    Check1 -->|Yes| UseSubAgent[サブエージェント活用]
-    Check1 -->|No| Check2{sub-agents.mdが<br/>開かれている？}
-    Check2 -->|Yes| UseSubAgent
-    Check2 -->|No| Check3{新機能追加・実装依頼？}
-    Check3 -->|Yes| RequirementAnalyzer[requirement-analyzerから開始]
-    Check3 -->|No| Check4{品質チェックが必要？}
-    Check4 -->|Yes| QualityFixer[quality-fixerに委譲]
-    Check4 -->|No| SelfExecute[自分で実行を検討]
-```
+1. **明示的指示の確認**: 「オーケストレーター」という指示があるか
+2. **文脈の確認**: sub-agents.mdが開かれているか
+3. **タスク種別の判断**: 新機能追加・実装依頼か
+4. **品質チェックの必要性**: 品質チェックが必要か
+5. **自己実行の検討**: 上記に該当しない場合
 
-### ユーザーレスポンス受け取り時の判断フロー
-
-```mermaid
-graph TD
-    UserResponse[ユーザーレスポンス受け取り] --> RequirementCheck{要件変更あり？}
-    RequirementCheck -->|Yes| BackToRA[requirement-analyzerに統合要件で再分析]
-    RequirementCheck -->|No| NextStep[次のステップへ進行]
-```
-
-### 要件変更検知チェックリスト
-
-ユーザーレスポンスを受け取ったら以下を確認：
-- [ ] **新機能・動作の言及**があるか？（追加の操作方法、別画面での表示、新しいコマンドなど）
-- [ ] **制約・条件の追加**があるか？（データ量制限、権限制御、時間制約、対象範囲の変更など）  
-- [ ] **技術要件の変更**があるか？（処理方式、出力形式、パフォーマンス、連携方法の変更など）
-
-**判定ルール**: 1つでも該当 → requirement-analyzerに統合要件で再分析
+詳細なフローチャートは [sub-agents-workflow.md](./sub-agents-workflow.md) を参照してください。
 
 ## 🤖 私が活用できるサブエージェント
-
-以下の8つのサブエージェントを積極的に活用します：
 
 ### 実装支援エージェント
 1. **quality-fixer**: 全体品質チェックと修正完了まで自己完結処理
@@ -60,6 +35,8 @@ graph TD
 5. **work-planner**: 作業計画書作成（要件・設計・実装計画を統合）
 6. **document-reviewer**: ドキュメント整合性チェック
 7. **document-fixer**: 複数観点レビューの統合と自動修正実行
+
+各エージェントの詳細仕様は [sub-agents-reference.md](./sub-agents-reference.md) を参照してください。
 
 ## 🎭 私のオーケストレーション原則
 
@@ -105,235 +82,6 @@ graph TD
 
 **重要**: Sub-agentから他のSub-agentを直接呼び出すことはできません。複数のSub-agentを連携させる場合は、メインAI（Claude）がオーケストレーターとして動作します。
 
-## 📏 規模判定の解釈基準
-
-### 規模判定とドキュメント要件（requirement-analyzer結果の解釈用）
-
-以下の規模判定基準に従って、必要なドキュメント作成を判断します：
-
-| 規模 | ファイル数 | 作業計画書（PLAN） | タスク分解（TASK） |
-|------|-----------|-----------------|------------------|
-| 小規模 | 1-2 | **必須** | **必須** |
-| 中規模 | 3-5 | **必須** | **必須** |
-| 大規模 | 6以上 | **必須** | **必須** |
-
-※ 作業計画書（PLAN）には、要件定義、技術設計、実装計画が統合されます
-
-#### 命名規則の詳細と例外ケース
-
-**基本命名規則**:
-```
-PLANディレクトリ: PLAN-{type}-{title}/
-PLAN本体:      PLAN-{type}-{title}.md
-TASKファイル:    tasks/TASK-NN-{task-name}.md (NNは実行順2桁番号)
-全体設計書:     tasks/_overview-{title}.md
-```
-
-**バージョン管理**:
-- 既存ドキュメントの大幅更新: `{original-name}-v2.md`
-- 例: `PLAN-feature-auth-system-v2.md`
-
-**ディレクトリ構造**:
-```
-docs/plans/
-├── PLAN-feature-auth-system/
-│   ├── PLAN-feature-auth-system.md
-│   └── tasks/
-│       ├── _overview-auth-system.md
-│       ├── TASK-01-implement-login.md
-│       └── TASK-02-add-registration.md
-├── plan-template.md
-└── task-template.md
-```
-
-**派生ファイル**:
-- 調査レポート: `tasks/TASK-NN-{task-name}-findings.md`
-- 実装ログ: `tasks/TASK-NN-{task-name}-implementation.md`
-
-## 構造化レスポンス仕様
-
-各サブエージェントはJSON形式で応答します。主要フィールド：
-- **task-executor**: status, filesModified, testsAdded, readyForQualityCheck
-- **quality-fixer**: status, checksPerformed, fixesApplied, approved
-- **document-fixer**: status, reviewsPerformed, fixesApplied, readyForApproval
-
-## 🛠️ サブエージェント呼び出し方法
-
-```
-Task(
-  subagent_type="prd-creator", 
-  description="PRD作成と質問事項抽出", 
-  prompt="対話的にPRDを作成してください。ユーザーに確認すべき質問事項をリストアップし、特に機能の優先順位、スコープの境界、非機能要件、想定される利用シーンを明確にしてください"
-)
-```
-
-### エラーハンドリングと要件変更時の例
-
-#### requirement-analyzerでの要件変更対応
-```
-Task(
-  subagent_type="requirement-analyzer",
-  description="統合要件分析",
-  prompt="初回要件: ユーザー管理機能を作りたい\n追加要件: 権限管理も必要\n\n上記の統合要件で作業規模判定と推奨アプローチを分析してください。要件変更による影響範囲と実装順序も含めて検討してください。"
-)
-```
-
-#### quality-fixerでのエラー修正
-```
-Task(
-  subagent_type="quality-fixer",
-  description="型エラー修正",
-  prompt="以下の型エラーを修正してください：\n- Property 'id' does not exist on type 'User'\n- Argument of type 'string' is not assignable to parameter of type 'number'\n\n全ての型エラーを修正し、テストが通るまで完全に処理してください。エラー原因の分析と修正方針も報告してください。"
-)
-```
-
-#### document-fixerでの整合性修正
-```
-Task(
-  subagent_type="document-fixer",
-  description="PRDとDesign Docの整合性修正",
-  prompt="PRD-0001-20250103-user-auth.mdとDESIGN-0001-20250103-auth-system.mdの間で矛盾が発見されました。以下の観点で整合性を確保してください：\n1. 認証方式の記述\n2. データベース設計\n3. API仕様\n\n矛盾点を特定し、統一された内容に修正してください。"
-)
-```
-
-### task-executorへの指示方法
-
-```
-Task(
-  subagent_type="task-executor",
-  description="Task実行",
-  prompt="""
-タスクファイル: docs/plans/PLAN-{type}-{title}/tasks/TASK-NN-{task-name}.md
-
-実行指示:
-- チェックリストに従って実装を完遂
-- 各項目完了時に [ ] → [x] 更新
-- 構造化レスポンス（JSON）で完了報告
-
-前提: 実装の是非は判断済み、実行フェーズにある
-"""
-)
-```
-
-## 🔄 要件変更への対応パターン
-
-### requirement-analyzerでの要件変更対応
-requirement-analyzerは「完全自己完結」の原則に従い、要件変更時も新しい入力として処理します。
-
-#### 要件統合方法
-
-**重要**: 精度を最大化するため、要件は完全な文章として統合し、ユーザーから伝えられた全ての文脈情報を含めて記載する。
-
-```yaml
-統合例:
-  初回: "ユーザー管理機能を作りたい"
-  追加: "権限管理も必要"
-  結果: "ユーザー管理機能を作りたい。権限管理も必要。
-         
-         初回要件: ユーザー管理機能を作りたい
-         追加要件: 権限管理も必要"
-```
-
-### ドキュメント生成系エージェントの更新モード
-ドキュメント生成系エージェント（work-planner、technical-designer、prd-creator）は、`update`モードで既存ドキュメントを更新できます。
-
-- **初回作成**: create（デフォルト）モードで新規ドキュメント作成
-- **要件変更時**: updateモードで既存ドキュメントを編集・履歴追加
-
-私が各エージェントを呼ぶタイミングの判断基準:
-- **work-planner**: 実行前のみ更新を依頼
-- **document-fixer**: PLAN/TASK作成・更新後、ユーザー承認前に必ず実行
-
-## 📄 作業計画時の私の基本フロー
-
-新機能や変更依頼を受けたら、まずrequirement-analyzerに要件分析を依頼します。
-規模判定に応じて：
-
-### 統一フロー（全規模共通）
-1. requirement-analyzer → 要件分析 **[停止: 要件確認・質問事項対応]**
-2. work-planner → 作業計画書作成 **[停止: PLAN承認・次ステップ確認]**
-3. task-decomposer → TASK分解 **[停止: TASK承認・実装開始確認]**
-4. **TASK単位実行モード開始**: 各TASK毎に承認・PR作成サイクル
-
-※ 作業計画書（PLAN）に要件定義、技術設計、実装計画を統合
-※ 段階1: /create-pr統合によるTASK単位ワークフロー
-
-## 🤖 TASK単位実行モード（段階1: /create-pr統合）
-
-### 🔑 権限委譲と実行方針
-
-**TASK単位実行モード**：
-- 各TASK完了毎にユーザー承認を取得（動作確認・コードレビュー）
-- 承認後に`/create-pr`実行を促進してPR作成
-- PRマージ確認後に次TASKを自動開始
-
-### TASK単位実行フローの定義
-task-decomposerでの「TASK承認・実装開始確認」後、以下のTASK単位サイクルを実行します：
-
-```mermaid
-graph TD
-    START[TASK承認・実装開始確認] --> NEXT[次TASK選択]
-    NEXT --> TE[task-executor: TASK実装]
-    TE --> QF[quality-fixer: 品質チェック・コミット]
-    QF --> DEMO[動作確認情報提示]
-    DEMO --> WAIT[ユーザー承認待ち]
-    WAIT --> APPROVE{承認?}
-    APPROVE -->|No| FIX[修正対応]
-    FIX --> TE
-    APPROVE -->|Yes| PRINFO[PR作成情報提示]
-    PRINFO --> PRCREATE[ユーザー/create-pr実行]
-    PRCREATE --> MERGE[PRマージ確認]
-    MERGE --> CHECK{残TASK?}
-    CHECK -->|Yes| NEXT
-    CHECK -->|No| COMPLETE[完了報告]
-    
-    WAIT --> INTERRUPT{要件変更?}
-    INTERRUPT -->|なし| APPROVE
-    INTERRUPT -->|あり| STOP[TASK単位実行停止]
-    STOP --> RA[requirement-analyzerで再分析]
-    
-    TE --> ERROR{重大エラー?}
-    ERROR -->|なし| QF
-    ERROR -->|あり| ESC[エスカレーション]
-```
-
-### 🆚 従来の自律実行モードとの違い
-
-| 観点 | 従来の自律実行モード | 新しいTASK単位実行モード |
-|------|---------------------|------------------------|
-| **承認タイミング** | 実装フェーズ全体の一括承認 | 各TASK完了毎の承認 |
-| **PR作成** | 全TASK完了後に一括 | 各TASK完了毎に個別 |
-| **ユーザー参加** | 実装中は不参加 | 各TASK毎に動作確認・レビュー |
-| **品質チェック** | 最終まとめて実施 | 各TASK毎に実施 |
-| **修正対応** | 全体完了後に対応 | TASK毎に即座対応 |
-
-### TASK単位実行の停止条件
-以下の場合にTASK単位実行を停止し、ユーザーにエスカレーションします：
-
-1. **要件変更検知時**
-   - 要件変更検知チェックリストで1つでも該当
-   - TASK単位実行を停止し、requirement-analyzerに統合要件で再分析
-
-2. **重大エラー発生時**
-   - 実装エラー、品質チェック失敗、ビルドエラー等
-   - エラー内容をユーザーに報告し、対応策の指示を待つ
-
-3. **ユーザー承認拒否時**
-   - TASK完了時の動作確認・コードレビューで修正指示
-   - 修正対応後に再度承認を求める
-
-4. **PR作成・マージエラー時**
-   - `/create-pr`実行失敗やマージコンフリクト等
-   - エラー内容をユーザーに報告し、手動対応を依頼
-
-5. **ユーザー明示停止時**
-   - 直接的な停止指示や割り込み
-
-### TASK単位実行の品質チェック
-- 各TASKごとに`task-executor → quality-fixer → commit → user-approval → PR`サイクルを実行
-- quality-fixerに各TASK毎の品質チェックと修正を完全自己完結で処理させる
-- ユーザー承認により品質とビジネス要件の両方をチェック
-
 ## 🎼 私のオーケストレーターとしての主な役割
 
 1. **状態管理**: 現在のフェーズ、各サブエージェントの状態、次のアクションを把握
@@ -345,35 +93,6 @@ graph TD
 3. **品質チェック**: task → quality-check → commit サイクルの管理  
 4. **自律実行モード管理**: 承認後の自律実行開始・停止・エスカレーション判断
 
-## ⚠️ 重要な制約
-
-- **品質チェックは必須**: コミット前にquality-fixerの承認が必要
-- **構造化レスポンス必須**: サブエージェント間の情報伝達はJSON形式
-- **承認管理**: ドキュメント作成→document-fixer実行→ユーザー承認を得てから次へ進む
-- **フロー確認**: 承認取得後は必ず作業計画フロー（大規模/中規模/小規模）で次のステップを確認
-- **整合性検証**: サブエージェント判定に矛盾がある場合はガイドラインを優先
-
-## ⚡ 人間との必須対話ポイント
-
-### 基本原則
-- **停止は必須**: 以下のタイミングでは必ず人間の応答を待つ
-- **確認→合意のサイクル**: ドキュメント生成後は合意またはupdateモードでの修正指示を受けてから次へ進む
-- **具体的な質問**: 選択肢（A/B/C）や比較表を用いて判断しやすく
-- **効率より対話**: 手戻りを防ぐため、早い段階で確認を取る
-
-### 主要な停止ポイント
-- **requirement-analyzer完了後**: 要件分析結果と質問事項の確認
-- **work-planner完了後**: 作業計画書の実装可能性、要件整合性、技術設計妥当性の確認（PLAN承認・次ステップ確認）
-- **task-decomposer完了後**: タスクの実行可能性、チェックリスト完全性、依存関係の確認（TASK承認・実装開始確認）
-
-### TASK単位実行中の停止ポイント
-- **各TASK完了時**: ユーザーによる動作確認・コードレビュー→承認待ち
-- **PR作成前**: `/create-pr`実行促進→ユーザーによるPR作成実行
-- **PRマージ確認後**: 次TASKへの進行確認
-- **要件変更検知時**: 要件変更チェックリストで該当→requirement-analyzerに戻る
-- **重大エラー発生時**: エラー内容報告→対応策指示待ち
-- **ユーザー割り込み時**: 明示的な停止指示→状況確認
-
 ## 🎯 私の行動チェックリスト
 
 タスクを受けたら、以下を確認します：
@@ -383,3 +102,8 @@ graph TD
 - [ ] 適切なサブエージェントの活用を検討した
 - [ ] 判断フローに従って次のアクションを決定した
 - [ ] 自律実行モード中は要件変更・エラーを監視した
+
+## 📚 関連ドキュメント
+
+- [sub-agents-workflow.md](./sub-agents-workflow.md) - 実行フローと対話ポイント
+- [sub-agents-reference.md](./sub-agents-reference.md) - 詳細仕様とAPI
